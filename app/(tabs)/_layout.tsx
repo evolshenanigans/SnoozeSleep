@@ -1,20 +1,16 @@
-import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { Image, useColorScheme } from 'react-native';
 import { Link, Tabs } from 'expo-router';
-import { Pressable, useColorScheme } from 'react-native';
-
 import Colors from '../../constants/Colors';
+import homeIcon from '../../assets/images/home.png';
+import calendarIcon from '../../assets/images/calendar.png';
+import challengesIcon from '../../assets/images/challenges.png';
+import accountIcon from '../../assets/images/account.png';
 
-/**
- * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
- */
-function TabBarIcon(props: {
-  name: React.ComponentProps<typeof FontAwesome>['name'];
-  color: string;
-}) {
-  return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />;
-}
+type TabLayoutProps = {
+  currentUser: any;  // Replace 'any' with the actual type of currentUser, if known
+};
 
-export default function TabLayout() {
+export default function TabLayout({currentUser}: TabLayoutProps) {
   const colorScheme = useColorScheme();
 
   return (
@@ -23,31 +19,51 @@ export default function TabLayout() {
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
       }}>
       <Tabs.Screen
-        name="index"
+        name="Home"
         options={{
-          title: 'Tab One',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-          headerRight: () => (
-            <Link href="/modal" asChild>
-              <Pressable>
-                {({ pressed }) => (
-                  <FontAwesome
-                    name="info-circle"
-                    size={25}
-                    color={Colors[colorScheme ?? 'light'].text}
-                    style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-                  />
-                )}
-              </Pressable>
-            </Link>
+          title: 'Home',
+          tabBarIcon: ({ focused }) => (
+            <Image
+              source={homeIcon}
+              style={{ width: 28, height: 28, tintColor: focused ? Colors[colorScheme ?? 'light'].tint : undefined }}
+            />
           ),
         }}
       />
       <Tabs.Screen
-        name="two"
+        name="Calendar"
         options={{
-          title: 'Tab Two',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          title: 'Calendar',
+          tabBarIcon: ({ focused }) => (
+            <Image
+              source={calendarIcon}
+              style={{ width: 28, height: 28, tintColor: focused ? Colors[colorScheme ?? 'light'].tint : undefined }}
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="Challenges"
+        options={{
+          title: 'Challenges',
+          tabBarIcon: ({ focused }) => (
+            <Image
+              source={challengesIcon}
+              style={{ width: 28, height: 28, tintColor: focused ? Colors[colorScheme ?? 'light'].tint : undefined }}
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="Account"
+        options={{
+          title: 'Account',
+          tabBarIcon: ({ focused }) => (
+            <Image
+              source={accountIcon}
+              style={{ width: 28, height: 28, tintColor: focused ? Colors[colorScheme ?? 'light'].tint : undefined }}
+            />
+          ),
         }}
       />
     </Tabs>

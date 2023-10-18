@@ -1,0 +1,21 @@
+export const colors = {
+  mainButton: "#9174D0",
+  mainButtonText: "#151515",
+  inactiveMainButton: "#645F70",
+  inactiveButtonText: "#CECECE",
+  textWhite: "#F2F2F2",
+  textBlack: "#151515",
+  secondaryButton: "#534992",
+  secondaryButtonText: "#F2F2F2",
+  background: "#0E1438",
+  progressBarBg: "#525B82",
+  // Theme colors, probably more reliable. Lea notes the specific colors in the figma:
+  themeBlack: "#151515",
+  themeBackground: "#0A0C1A",
+  themeCTAColor: "#9174D0",
+  themeWhite: "#F2F2F2",
+  themeAccent1: "#525B82",
+  themeAccent2: "#EBB980",
+  themeAccent3: "#2C2432",
+  themeAccent4: "#534992",
+} as const;
