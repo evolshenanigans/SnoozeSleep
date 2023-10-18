@@ -19,21 +19,21 @@
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Login from "../screens/Login";
-import OnboardingStep1 from "../screens/onboarding/OnboardingStep1";
-import OnboardingStep2 from "../screens/onboarding/OnboardingStep2";
-import OnboardingStep3 from "../screens/onboarding/OnboardingStep3";
-import OnboardingStep4 from "../screens/onboarding/OnboardingStep4";
-import OnboardingStep5 from "../screens/onboarding/OnboardingStep5";
+import Login from "./screens/Login";
+import OnboardingStep1 from "./screens/onboarding/OnboardingStep1";
+import OnboardingStep2 from "./screens/onboarding/OnboardingStep2";
+import OnboardingStep3 from "./screens/onboarding/OnboardingStep3";
+import OnboardingStep4 from "./screens/onboarding/OnboardingStep4";
+import OnboardingStep5 from "./screens/onboarding/OnboardingStep5";
 import React, { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
-import { FIREBASE_AUTH, FIREBASE_DB } from "../services/FirebaseConfig";
+import { FIREBASE_AUTH, FIREBASE_DB } from "./services/FirebaseConfig";
 // import Tabs from "../screens/tabs";
-import TabLayout from "./_layout";
+import TabLayout from "./(tabs)/_layout";
 
 import { getFirestore, doc, getDoc } from "@firebase/firestore";
-import { AppNavProps } from "../types/indexTypes";
-import LoadingScreen from "../screens/LoadingScreen";
+import { AppNavProps } from "./types/indexTypes";
+import LoadingScreen from "./screens/LoadingScreen";
 
 const db = getFirestore();
 
