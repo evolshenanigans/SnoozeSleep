@@ -33,15 +33,7 @@ const todayDate = new Date().getDate(); //Current Date
 
 const Home: React.FC<NavAndUserProps> = ({ navigation, currentUser }) => {
   const { userData } = useUserData(currentUser ? currentUser.email : null);
-  const dayRef: string[] = [
-    "sun",
-    "mon",
-    "tues",
-    "wednes",
-    "thurs",
-    "fri",
-    "satur",
-  ];
+  const dayRef: string[] = ["sun", "mon", "tues", "wednes", "thurs", "fri", "satur"];
   const today = new Date();
   const dayOfWeek = dayRef[today.getDay()];
 
@@ -106,8 +98,7 @@ const Home: React.FC<NavAndUserProps> = ({ navigation, currentUser }) => {
             style={[
               styles.dayContainer,
               {
-                backgroundColor:
-                  item.date === todayDate ? "#534992" : "#212121",
+                backgroundColor: item.date === todayDate ? "#534992" : "#212121",
               },
             ]}
           >

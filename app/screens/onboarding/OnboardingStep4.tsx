@@ -10,10 +10,7 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { updateUserFields } from "../../services/handleFirestore";
-import {
-  calculateTime,
-  calculateTimeWithSubtraction,
-} from "../../services/handleTime";
+import { calculateTime, calculateTimeWithSubtraction } from "../../services/handleTime";
 import { colors } from "../../utils/colors";
 import { text } from "../../utils/text";
 import OnboardingHeader from "./OnboardingHeader";
@@ -105,7 +102,10 @@ const OnboardingStep4 = ({ navigation, currentUser }) => {
         <View style={styles.formContainer}>
           <Text style={text.heroText}>{"\n"}Create Sleep Schedule</Text>
           <View style={styles.hoursRecommendation}>
-            <Image source={require("../../../assets/images/white_clock.png")} style={styles.icon} />
+            <Image
+              source={require("../../../assets/images/white_clock.png")}
+              style={styles.icon}
+            />
             <Text style={text.subtitle}>
               {"\t"}
               {userData && userData.sleepDurationGoal} Hours
@@ -130,7 +130,10 @@ const OnboardingStep4 = ({ navigation, currentUser }) => {
               ]}
               onPress={() => setBedTimeSelected((prev) => !prev)}
             >
-              <Image source={require("../../../assets/images/blue_moon.png")} style={styles.icon} />
+              <Image
+                source={require("../../../assets/images/blue_moon.png")}
+                style={styles.icon}
+              />
               <Text style={{ color: colors.textWhite }}>Bed Time At</Text>
             </Pressable>
 

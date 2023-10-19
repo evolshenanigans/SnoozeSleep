@@ -142,8 +142,7 @@ export default function App() {
           currentUser={currentUser}
           setCurrentUserIsNew={setCurrentUserIsNew}
         />
-      ) 
-      : (
+      ) : (
         <TabLayout currentUser={currentUser} />
       )}
     </NavigationContainer>

@@ -31,7 +31,10 @@ const LoadingScreen = () => {
     //   style={styles.container}
     // >
     <View>
-      <Image source={require("../../assets/images/loadingStar.png")} style={styles.icon} />
+      <Image
+        source={require("../../assets/images/loadingStar.png")}
+        style={styles.icon}
+      />
 
       <View style={styles.progressView}>
         <ProgressBar progress={loadingPercent} />

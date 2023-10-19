@@ -73,7 +73,7 @@ export default function App({ currentUser }) {
   ]);
   // const [challenges, setChallenges] = useState(["Challenge 1", "Challenge 2"]);
   const [completedChallenges, setCompletedChallenges] = useState<string[]>([]);
-  const { challenges } = useUserData(currentUser ? currentUser.email : null)
+  const { challenges } = useUserData(currentUser ? currentUser.email : null);
 
   const onComplete = (challenge) => {
     // setChallenges(challenges.filter((item) => item !== challenge));
