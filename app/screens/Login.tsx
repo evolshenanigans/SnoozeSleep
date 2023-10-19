@@ -12,13 +12,15 @@ import { FIREBASE_AUTH } from "../services/FirebaseConfig";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { colors } from "../utils/colors";
 import { text } from "../utils/text";
+import { Link, useRouter } from "expo-router";
 
-const Login = ({ navigation }) => {
+const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
   const auth = FIREBASE_AUTH;
+  const router = useRouter();
 
   const handleLogin = async () => {
     if (email + password !== "") {
@@ -26,6 +28,7 @@ const Login = ({ navigation }) => {
       try {
         const res = await signInWithEmailAndPassword(auth, email, password);
         console.log(res);
+        router.replace("/(tabs)/_layout");
       } catch (err) {
         console.log(err);
         if (err.message === "Firebase: Error (auth/invalid-login-credentials).") {
@@ -74,14 +77,14 @@ const Login = ({ navigation }) => {
               <Text style={{ color: colors.mainButtonText }}>Sign In</Text>
             </View>
           </Pressable>
-          <Pressable onPress={() => navigation.navigate("SignUp")}>
+          <Link href="/screens/onboarding/OnboardingStep1" style={styles.signUpContainer}>
             <View style={styles.signUpContainer}>
               <Text style={styles.text}>
                 {"\n\n"}Don't have an account?{" "}
                 <Text style={styles.signUpButton}>Sign Up</Text>
               </Text>
             </View>
-          </Pressable>
+          </Link>
         </View>
       )}
     </View>

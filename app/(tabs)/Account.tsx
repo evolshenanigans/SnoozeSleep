@@ -1,21 +1,17 @@
-import {
-  Text,
-  SafeAreaView,
-  StyleSheet,
-  View,
-  TouchableOpacity,
-  SafeAreaViewBase,
-} from "react-native";
+import { Text, SafeAreaView, StyleSheet, View, TouchableOpacity } from "react-native";
 import { FIREBASE_AUTH } from "../services/FirebaseConfig";
-import React from "react";
+import { useLocalSearchParams, useRouter } from "expo-router";
 
-const Account = ({ currentUser }) => {
+const Account = () => {
+  // const Account = ({ currentUser }) => {
+  const router = useRouter();
+  const { currentUser } = useLocalSearchParams<{ currentUser: any }>();
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.header}>Account Settings</Text>
       <View style={styles.section}>
         <Text style={styles.section}>Profile Information</Text>
-        {renderCard("username")}
+        {renderCard("username", currentUser.username)}
         {renderCard("Email")}
         <View style={styles.separator} />
         {renderCard("Birthday")}
@@ -26,16 +22,18 @@ const Account = ({ currentUser }) => {
       {renderCard("Sign Out", () => {
         FIREBASE_AUTH.signOut();
         console.log("tried to sign you out.");
+        router.replace("/screens/Login");
       })}
     </SafeAreaView>
   );
 };
 
-function renderCard(text: string, handlePress?) {
+function renderCard(text: string, val?: any, handlePress?) {
   return (
     <View style={styles.cardContainer}>
       <View style={styles.card}>
         <Text style={styles.username}>{text}</Text>
+        <Text style={styles.username}>{val}</Text>
         <TouchableOpacity onPress={handlePress}>
           <Text style={styles.arrow}>&gt;</Text>
         </TouchableOpacity>

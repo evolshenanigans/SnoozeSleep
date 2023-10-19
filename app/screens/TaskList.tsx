@@ -68,7 +68,7 @@ const TaskList = ({ currentUser }) => {
               <Text style={styles.message}>You currently have no sleep tasks</Text>
             )
           ) : (
-            <Text>Loading...</Text>
+            <Text style={{ color: "gray", textAlign: "center" }}>Loading...</Text>
           )}
         </View>
 

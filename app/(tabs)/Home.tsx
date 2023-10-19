@@ -12,9 +12,10 @@ import {
 import useUserData from "../hooks/useUserData";
 import { calculateTime } from "../services/handleTime";
 import TaskList from "../screens/TaskList";
-import { NavAndUserProps } from "../types/componentTypes";
+import { UserProps } from "../types/componentTypes";
 import { colors } from "../utils/colors";
 import * as Brightness from "expo-brightness";
+import { Link } from "expo-router";
 
 const getNext14Days: () => { day: string; date: number }[] = () => {
   const abbreviatedDays = ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"];
@@ -31,7 +32,7 @@ const getNext14Days: () => { day: string; date: number }[] = () => {
 
 const todayDate = new Date().getDate(); //Current Date
 
-const Home: React.FC<NavAndUserProps> = ({ navigation, currentUser }) => {
+const Home: React.FC<UserProps> = ({ currentUser }) => {
   const { userData } = useUserData(currentUser ? currentUser.email : null);
   const dayRef: string[] = ["sun", "mon", "tues", "wednes", "thurs", "fri", "satur"];
   const today = new Date();
@@ -161,14 +162,11 @@ const Home: React.FC<NavAndUserProps> = ({ navigation, currentUser }) => {
             <Text style={styles.headerText}>Challenges</Text>
           </View>
           <Text style={styles.message}>You currently have no challenges</Text>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              navigation.navigate("Challenges");
-            }}
-          >
+          <Link href="/Challenges" style={styles.button}>
+            {/* <TouchableOpacity  onPress={() => {}}> */}
             <Text style={styles.buttonText}>Add a Challenge</Text>
-          </TouchableOpacity>
+            {/* </TouchableOpacity> */}
+          </Link>
         </View>
         <View style={styles.challengesContainer}>
           <View style={styles.header}>
@@ -195,6 +193,8 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 20,
     alignItems: "center",
+    textAlign: "center",
+    justifyContent: "center",
     width: 240,
   },
   buttonText: {

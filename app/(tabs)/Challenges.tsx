@@ -64,7 +64,7 @@ const SavedTab = () => (
   </View>
 );
 
-export default function App({ currentUser }) {
+export default function Challenges({ currentUser }) {
   const [index, setIndex] = useState(0);
   const [routes] = useState([
     { key: "current", title: "Current" },

@@ -15,6 +15,7 @@ import OnboardingHeader from "./OnboardingHeader";
 import ContinueButton from "./ContinueButton";
 import useUserData from "../../hooks/useUserData";
 import { commonStyles } from "../../utils/commonStyles";
+import { useRouter } from "expo-router";
 
 const calculateAgeBasedSleepGoal = (age: number) => {
   switch (true) {
@@ -34,7 +35,7 @@ const calculateAgeBasedSleepGoal = (age: number) => {
 };
 
 // START COMPONENT
-const OnboardingStep3 = ({ navigation, currentUser }) => {
+const OnboardingStep3 = ({ currentUser }) => {
   /**
    * This is onboarding for SLEEP DURATION GOAL
    */
@@ -43,6 +44,7 @@ const OnboardingStep3 = ({ navigation, currentUser }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const { userData } = useUserData(currentUser.email);
   const currentYear = new Date().getFullYear();
+  const router = useRouter();
 
   useEffect(() => {
     if (userData) {
@@ -60,7 +62,9 @@ const OnboardingStep3 = ({ navigation, currentUser }) => {
           updateUserFields(currentUser.email, {
             sleepDurationGoal: parseFloat(goalHours),
           });
-          navigation.navigate("Step4");
+          router.replace(
+            `/screens/onboarding/OnboardingStep4?currentUser=${currentUser}`
+          );
         } else
           throw {
             message: `goal hours must be between 0 and 24.`,
@@ -86,12 +90,7 @@ const OnboardingStep3 = ({ navigation, currentUser }) => {
     >
       <View style={commonStyles.onboardingContainer}>
         {/* HEADER */}
-        <OnboardingHeader
-          page={"3"}
-          navigation={navigation}
-          progressPercent={(3 / 6) * 100}
-          prevPageNavigation={"Step2"}
-        />
+        <OnboardingHeader page={"3"} progressPercent={(3 / 6) * 100} />
         {/* SLEEP GOAL TITLE */}
         <View style={styles.formContainer}>
           <Text style={text.heroText}>

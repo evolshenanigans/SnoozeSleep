@@ -20,9 +20,10 @@ import ContinueButton from "./ContinueButton";
 import useUserData from "../../hooks/useUserData";
 import { RepeatsPopup } from "../RepeatsPopup";
 import { commonStyles } from "../../utils/commonStyles";
+import { useRouter } from "expo-router";
 
 // START COMPONENT
-const OnboardingStep5 = ({ navigation, currentUser, setCurrentUserIsNew }) => {
+const OnboardingStep5 = ({ currentUser, setCurrentUserIsNew }) => {
   /**
    * This is onboarding for CREATE ALARM
    */
@@ -34,6 +35,7 @@ const OnboardingStep5 = ({ navigation, currentUser, setCurrentUserIsNew }) => {
   const [allFieldsFilled, setAllFieldsFilled] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const { userData } = useUserData(currentUser.email);
+  const router = useRouter();
 
   // TODO: I don't think this does what it's supposed to do.
   const handleSubmitAlarm = async () => {
@@ -64,7 +66,8 @@ const OnboardingStep5 = ({ navigation, currentUser, setCurrentUserIsNew }) => {
             saturdaySleepTime: userData.generalSleepTime,
           });
         }
-        navigation.navigate("Step5");
+        router.replace(`/screens/onboarding/OnboardingStep5?currentUser=${currentUser}`);
+        // router.back()
       } catch (error) {
         console.error("Error submitting sleep schedule: ", error);
         alert("Whoa, " + error.message);
@@ -88,6 +91,7 @@ const OnboardingStep5 = ({ navigation, currentUser, setCurrentUserIsNew }) => {
       .then(() => {
         console.log("Successfully updated DB");
         setCurrentUserIsNew(false); // Update the state
+        router.replace(`../../(tabs)/_layout?currentUser=${currentUser}`);
       })
       .catch((error) => {
         console.error("Error updating user onboarding status:", error);
@@ -110,12 +114,7 @@ const OnboardingStep5 = ({ navigation, currentUser, setCurrentUserIsNew }) => {
           {/* <ScrollView style={{ flex: 1 }}> */}
           <View style={commonStyles.onboardingContainer}>
             {/* HEADER */}
-            <OnboardingHeader
-              page={"5"}
-              navigation={navigation}
-              progressPercent={(5 / 6) * 100}
-              prevPageNavigation={"Step4"}
-            />
+            <OnboardingHeader page={"5"} progressPercent={(5 / 6) * 100} />
             {/* ALARM FORM */}
             <View style={styles.formContainer}>
               <Text style={text.heroText}>{"\n"}Create Alarm</Text>
@@ -135,7 +134,11 @@ const OnboardingStep5 = ({ navigation, currentUser, setCurrentUserIsNew }) => {
                 {/* Bedtime Box: */}
                 <Pressable
                   style={styles.bedOrWakeBox}
-                  onPress={() => navigation.navigate("Step4")}
+                  onPress={() =>
+                    router.replace(
+                      `/screens/onboarding/OnboardingStep4?currentUser=${currentUser}`
+                    )
+                  }
                 >
                   <Image
                     source={require("../../../assets/images/blue_moon.png")}
@@ -150,7 +153,11 @@ const OnboardingStep5 = ({ navigation, currentUser, setCurrentUserIsNew }) => {
                 {/* Wake Up Box: */}
                 <Pressable
                   style={styles.bedOrWakeBox}
-                  onPress={() => navigation.navigate("Step4")}
+                  onPress={() =>
+                    router.replace(
+                      `/screens/onboarding/OnboardingStep4?currentUser=${currentUser}`
+                    )
+                  }
                 >
                   <Image
                     source={require("../../../assets/images/yellow_sun.png")}

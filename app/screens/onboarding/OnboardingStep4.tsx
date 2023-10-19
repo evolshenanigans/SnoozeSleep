@@ -18,9 +18,10 @@ import ContinueButton from "./ContinueButton";
 import useUserData from "../../hooks/useUserData";
 import TimeSelector from "./TimeSelector";
 import { commonStyles } from "../../utils/commonStyles";
+import { useRouter } from "expo-router";
 
 // START COMPONENT
-const OnboardingStep4 = ({ navigation, currentUser }) => {
+const OnboardingStep4 = ({ currentUser }) => {
   /**
    * This is onboarding for SLEEP SCHEDULE
    */
@@ -33,6 +34,7 @@ const OnboardingStep4 = ({ navigation, currentUser }) => {
   const [allFieldsFilled, setAllFieldsFilled] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const { userData } = useUserData(currentUser.email);
+  const router = useRouter();
 
   const handleSubmitSleepSchedule = async () => {
     if (goalTime !== "") {
@@ -42,7 +44,7 @@ const OnboardingStep4 = ({ navigation, currentUser }) => {
           generalSleepTime: `${bedTime[0]}${bedTime[1]} ${bedTime[3]}${bedTime[4]} ${bedTime[6]}${bedTime[7]}`,
           generalWakeTime: `${wakeTime[0]}${wakeTime[1]} ${wakeTime[3]}${wakeTime[4]} ${wakeTime[6]}${wakeTime[7]}`,
         });
-        navigation.navigate("Step5");
+        router.replace(`/screens/onboarding/OnboardingStep5?currentUser=${currentUser}`);
       } catch (error) {
         console.error("Error submitting sleep schedule: ", error);
         alert("Whoa, " + error.message);
@@ -92,12 +94,7 @@ const OnboardingStep4 = ({ navigation, currentUser }) => {
     >
       <View style={commonStyles.onboardingContainer}>
         {/* HEADER */}
-        <OnboardingHeader
-          page={"4"}
-          navigation={navigation}
-          progressPercent={(4 / 6) * 100}
-          prevPageNavigation={"Step3"}
-        />
+        <OnboardingHeader page={"4"} progressPercent={(4 / 6) * 100} />
         {/* LOGIN FORM */}
         <View style={styles.formContainer}>
           <Text style={text.heroText}>{"\n"}Create Sleep Schedule</Text>

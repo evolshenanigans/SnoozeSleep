@@ -14,8 +14,9 @@ import { text } from "../../utils/text";
 import OnboardingHeader from "./OnboardingHeader";
 import ContinueButton from "./ContinueButton";
 import { commonStyles } from "../../utils/commonStyles";
+import { useRouter } from "expo-router";
 
-const OnboardingStep2 = ({ navigation, currentUser }) => {
+const OnboardingStep2 = ({ currentUser }) => {
   /**
    * This is onboarding for BIRTHDAY
    */
@@ -24,6 +25,7 @@ const OnboardingStep2 = ({ navigation, currentUser }) => {
   const [allFieldsFilled, setAllFieldsFilled] = useState(false);
   const [loading, setLoading] = useState(false);
   const currentYear = new Date().getFullYear();
+  const router = useRouter();
 
   const handleSubmitBirthday = async () => {
     if (birthMonth + birthYear !== "") {
@@ -41,7 +43,9 @@ const OnboardingStep2 = ({ navigation, currentUser }) => {
               } ${birthYear}`,
             });
             // then navigate to step 3 with the necessary components
-            navigation.navigate("Step3");
+            router.replace(
+              `/screens/onboarding/OnboardingStep3?currentUser=${currentUser}`
+            );
           } else throw { message: `${birthYear} is not a valid year.` };
         } else throw { message: `${birthMonth} is not a valid month.` };
       } catch (error) {
@@ -65,12 +69,7 @@ const OnboardingStep2 = ({ navigation, currentUser }) => {
     >
       <View style={commonStyles.onboardingContainer}>
         {/* HEADER */}
-        <OnboardingHeader
-          page={"2"}
-          navigation={navigation}
-          progressPercent={(2 / 6) * 100}
-          prevPageNavigation={"Step1"}
-        />
+        <OnboardingHeader page={"2"} progressPercent={(2 / 6) * 100} />
         {/* BIRTHDAY FORM */}
         <View style={styles.formContainer}>
           <Text style={text.heroText}>{"\n"}Add Your Birthday</Text>
