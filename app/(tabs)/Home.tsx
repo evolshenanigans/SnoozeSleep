@@ -14,7 +14,7 @@ import { calculateTime } from "../services/handleTime";
 import TaskList from "../screens/TaskList";
 import { NavAndUserProps } from "../types/componentTypes";
 import { colors } from "../utils/colors";
-import * as Brightness from 'expo-brightness';
+import * as Brightness from "expo-brightness";
 
 const getNext14Days: () => { day: string; date: number }[] = () => {
   const abbreviatedDays = ["Sun", "Mon", "Tues", "Wed", "Thurs", "Fri", "Sat"];
@@ -32,7 +32,7 @@ const getNext14Days: () => { day: string; date: number }[] = () => {
 const todayDate = new Date().getDate(); //Current Date
 
 const Home: React.FC<NavAndUserProps> = ({ navigation, currentUser }) => {
-  const { userData } = useUserData(currentUser ? currentUser.email : null)
+  const { userData } = useUserData(currentUser ? currentUser.email : null);
   const dayRef: string[] = [
     "sun",
     "mon",
@@ -78,20 +78,20 @@ const Home: React.FC<NavAndUserProps> = ({ navigation, currentUser }) => {
   }, [userData]);
   const [isEnabled, setIsEnabled] = useState(false);
 
-const toggleSwitch = async () => {
-  setIsEnabled(previousState => {
-    const newBrightness = previousState ? 0.1 : 1; // switch between 10% and 100% brightness
-    toggleBrightness(newBrightness);
-    return !previousState;
-  });
-};
+  const toggleSwitch = () => {
+    setIsBedtimeEnabled((previousState) => {
+      const newBrightness = previousState ? 1 : 0.1; // switch between 10% and 100% brightness
+      toggleBrightness(newBrightness);
+      return !previousState;
+    });
+  };
 
-const toggleBrightness = async (newBrightness: number): Promise<void> => {
-  const { status } = await Brightness.requestPermissionsAsync();
-  if (status === 'granted') {
-    Brightness.setSystemBrightnessAsync(newBrightness);
-  }
-};
+  const toggleBrightness = async (newBrightness: number): Promise<void> => {
+    const { status } = await Brightness.requestPermissionsAsync();
+    if (status === "granted") {
+      Brightness.setSystemBrightnessAsync(newBrightness);
+    }
+  };
 
   return (
     <ScrollView style={[{ flex: 1 }, styles.backgroundContainer]}>
