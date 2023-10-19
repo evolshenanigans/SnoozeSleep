@@ -23,7 +23,10 @@ const Account = ({ currentUser }) => {
         {renderCard("Alarm Settings")}
       </View>
       <View style={styles.separator} />
-      {renderCard("Sign Out", () => FIREBASE_AUTH.signOut())}
+      {renderCard("Sign Out", () => {
+        FIREBASE_AUTH.signOut();
+        console.log("tried to sign you out.");
+      })}
     </SafeAreaView>
   );
 };

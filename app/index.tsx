@@ -104,7 +104,7 @@ async function checkIfUserIsOnboarded(userId: string) {
   }
 }
 
-export default function App() {
+export default function index() {
   const [currentUser, setCurrentUser] = useState<any | null>(null);
   const [currentUserIsNew, setCurrentUserIsNew] = useState<boolean>(true); // Initialize as null to act as a tri-state
 
@@ -128,14 +128,12 @@ export default function App() {
 
   return (
     <NavigationContainer independent={true}>
-      {currentUser === null ? (
+      {currentUser === null || !currentUser ? (
         <AuthenticationLayout
           currentUser={currentUser}
           setCurrentUserIsNew={setCurrentUserIsNew}
         />
-      ) : // <LoadingScreen />
-      currentUserIsNew === null ? (
-        // <Text>Loading...</Text> // You can replace this with a proper loading screen
+      ) : currentUserIsNew === null || !currentUser ? (
         <LoadingScreen />
       ) : currentUserIsNew ? (
         <OnboardingLayout
@@ -143,7 +141,8 @@ export default function App() {
           setCurrentUserIsNew={setCurrentUserIsNew}
         />
       ) : (
-        <TabLayout currentUser={currentUser} />
+        // <TabLayout currentUser={currentUser} />
+        <></>
       )}
     </NavigationContainer>
   );

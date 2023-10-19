@@ -23,6 +23,7 @@ export default function TabLayout({ currentUser }: TabLayoutProps) {
         name="Home"
         options={{
           title: "Home",
+          headerShown: false,
           tabBarIcon: ({ focused }) => (
             <Image
               source={homeIcon}
@@ -39,6 +40,7 @@ export default function TabLayout({ currentUser }: TabLayoutProps) {
         name="Calendar"
         options={{
           title: "Calendar",
+          headerShown: false,
           tabBarIcon: ({ focused }) => (
             <Image
               source={calendarIcon}
@@ -55,6 +57,7 @@ export default function TabLayout({ currentUser }: TabLayoutProps) {
         name="Challenges"
         options={{
           title: "Challenges",
+          headerShown: false,
           tabBarIcon: ({ focused }) => (
             <Image
               source={challengesIcon}
@@ -71,6 +74,7 @@ export default function TabLayout({ currentUser }: TabLayoutProps) {
         name="Account"
         options={{
           title: "Account",
+          headerShown: false,
           tabBarIcon: ({ focused }) => (
             <Image
               source={accountIcon}
