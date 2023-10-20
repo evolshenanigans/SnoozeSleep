@@ -10,9 +10,9 @@ import { Calendar } from "react-native-calendars";
 import React, { useState } from "react";
 import useUserData from "../hooks/useUserData";
 import { colors } from "../utils/colors";
-import TaskList from "../TaskList";
+import TaskList from "../common components/TaskList";
 import { text } from "../utils/text";
-import SleepLogMaker from "../screens/SleepLogMaker";
+import SleepLogMaker from "../common components/SleepLogMaker";
 
 function MyCalendar({ currentUser }) {
   const [selected, setSelected] = useState("");

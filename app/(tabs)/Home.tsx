@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import useUserData from "../hooks/useUserData";
 import { calculateTime } from "../services/handleTime";
-import TaskList from "../TaskList";
+import TaskList from "../common components/TaskList";
 import { UserProps } from "../types/componentTypes";
 import { colors } from "../utils/colors";
 import * as Brightness from "expo-brightness";
@@ -183,7 +183,7 @@ const Home: React.FC<UserProps> = ({ currentUser }) => {
 
 const styles = StyleSheet.create({
   backgroundContainer: {
-    backgroundColor: colors.background,
+    backgroundColor: colors.themeBackground,
   },
   bedtimeContainer: {
     backgroundColor: "#252A49",
@@ -207,7 +207,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 20,
-    color: colors.textWhite,
+    color: colors.themeWhite,
   },
   container: {
     flexDirection: "row",
@@ -233,7 +233,7 @@ const styles = StyleSheet.create({
   },
   dayText: {
     fontSize: 12,
-    color: colors.textWhite,
+    color: colors.themeWhite,
   },
   goalContainer: {
     flexDirection: "row",
@@ -245,7 +245,7 @@ const styles = StyleSheet.create({
   goalText: {
     fontSize: 20,
     textAlign: "center",
-    color: colors.textWhite,
+    color: colors.themeWhite,
   },
   header: {
     flexDirection: "row",
@@ -255,7 +255,7 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 20,
     fontWeight: "bold",
-    color: colors.textWhite,
+    color: colors.themeWhite,
     textAlign: "left", // Align text to the left
   },
   icon: {
@@ -286,11 +286,11 @@ const styles = StyleSheet.create({
   timeText: {
     fontSize: 12,
     marginBottom: 10,
-    color: colors.textWhite,
+    color: colors.themeWhite,
   },
   timetime: {
     fontSize: 16,
-    color: colors.textWhite,
+    color: colors.themeWhite,
   },
   wakeUpContainer: {
     backgroundColor: "#252A49",

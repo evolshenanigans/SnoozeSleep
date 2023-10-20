@@ -8,12 +8,12 @@ import {
   ScrollView,
 } from "react-native";
 import React, { useState } from "react";
-import useUserData from "./hooks/useUserData";
-import { addTask, updateTask } from "./services/handleFirestore";
-import { Task } from "./types/indexTypes";
-import { calculateTime } from "./services/handleTime";
-import { colors } from "./utils/colors";
-import SleepLogMaker from "./screens/SleepLogMaker";
+import useUserData from "../hooks/useUserData";
+import { addTask, updateTask } from "../services/handleFirestore";
+import { Task } from "../types/indexTypes";
+import { calculateTime } from "../services/handleTime";
+import { colors } from "../utils/colors";
+import SleepLogMaker from "./SleepLogMaker";
 
 const TaskList = ({ currentUser }) => {
   const { tasks } = useUserData();
@@ -57,7 +57,7 @@ const TaskList = ({ currentUser }) => {
                     {/* {task.isComplete && <Text style={styles.checkMark}>✔</Text>} */}
                     {task.isComplete && (
                       <Image
-                        source={require("../assets/images/loadingStar.png")}
+                        source={require("../../assets/images/loadingStar.png")}
                         style={styles.checkMark}
                       />
                     )}
@@ -130,17 +130,17 @@ const styles = StyleSheet.create({
   taskText: {
     fontSize: 16,
     marginBottom: 5,
-    color: colors.textWhite,
+    color: colors.themeWhite,
   },
   tasksContainer: {
     flex: 1,
   },
   textContainer: {
     flex: 1,
-    color: colors.textWhite,
+    color: colors.themeWhite,
   },
   timeframeText: {
     fontSize: 14,
-    color: colors.textWhite,
+    color: colors.themeWhite,
   },
 });

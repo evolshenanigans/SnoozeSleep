@@ -18,7 +18,7 @@ import { text } from "../utils/text";
 import OnboardingHeader from "./OBHeader";
 import ContinueButton from "./ContinueButton";
 import useUserData from "../hooks/useUserData";
-import { RepeatsPopup } from "../screens/RepeatsPopup";
+import { RepeatsPopup } from "../common components/RepeatsPopup";
 import { commonStyles } from "../utils/commonStyles";
 import { useRouter } from "expo-router";
 

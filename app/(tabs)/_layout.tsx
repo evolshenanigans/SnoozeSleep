@@ -1,22 +1,52 @@
-import { Image, useColorScheme } from "react-native";
+import { Image, Text, View, useColorScheme, StyleSheet } from "react-native";
 import { Link, Tabs } from "expo-router";
 import Colors from "../../constants/Colors";
 import homeIcon from "../../assets/images/home.png";
 import calendarIcon from "../../assets/images/calendar.png";
 import challengesIcon from "../../assets/images/challenges.png";
 import accountIcon from "../../assets/images/account.png";
+import { colors } from "../utils/colors";
 
 type TabLayoutProps = {
   currentUser: any; // Replace 'any' with the actual type of currentUser, if known
 };
 
+const TabLabel = (focused: boolean, title: string) => {
+  return (
+    <Text
+      style={[
+        styles.tabLabel,
+        { color: focused ? colors.themePrimary : colors.themeWhite },
+      ]}
+    >
+      {title}
+    </Text>
+  );
+};
+
+const TabIcon = (focused: boolean, img) => {
+  return (
+    <Image
+      source={img}
+      style={[
+        styles.tabIcon,
+        {
+          tintColor: focused ? colors.themePrimary : colors.themeWhite,
+        },
+      ]}
+    />
+  );
+};
+
 export default function TabLayout({ currentUser }: TabLayoutProps) {
-  const colorScheme = useColorScheme();
+  // const colorScheme = useColorScheme();
 
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
+        tabBarActiveTintColor: colors.themePrimary,
+        tabBarInactiveTintColor: colors.themeWhite,
+        tabBarStyle: styles.tabBar,
       }}
     >
       <Tabs.Screen
@@ -24,16 +54,9 @@ export default function TabLayout({ currentUser }: TabLayoutProps) {
         options={{
           title: "Home",
           headerShown: false,
-          tabBarIcon: ({ focused }) => (
-            <Image
-              source={homeIcon}
-              style={{
-                width: 28,
-                height: 28,
-                tintColor: focused ? Colors[colorScheme ?? "light"].tint : undefined,
-              }}
-            />
-          ),
+          tabBarItemStyle: styles.tabItemContainer,
+          tabBarLabel: ({ focused }) => TabLabel(focused, "Home"),
+          tabBarIcon: ({ focused }) => TabIcon(focused, homeIcon),
         }}
       />
       <Tabs.Screen
@@ -41,16 +64,10 @@ export default function TabLayout({ currentUser }: TabLayoutProps) {
         options={{
           title: "Calendar",
           headerShown: false,
-          tabBarIcon: ({ focused }) => (
-            <Image
-              source={calendarIcon}
-              style={{
-                width: 28,
-                height: 28,
-                tintColor: focused ? Colors[colorScheme ?? "light"].tint : undefined,
-              }}
-            />
-          ),
+          tabBarLabelStyle: styles.tabLabel,
+          tabBarItemStyle: styles.tabItemContainer,
+          tabBarLabel: ({ focused }) => TabLabel(focused, "Calendar"),
+          tabBarIcon: ({ focused }) => TabIcon(focused, calendarIcon),
         }}
       />
       <Tabs.Screen
@@ -58,16 +75,10 @@ export default function TabLayout({ currentUser }: TabLayoutProps) {
         options={{
           title: "Challenges",
           headerShown: false,
-          tabBarIcon: ({ focused }) => (
-            <Image
-              source={challengesIcon}
-              style={{
-                width: 28,
-                height: 28,
-                tintColor: focused ? Colors[colorScheme ?? "light"].tint : undefined,
-              }}
-            />
-          ),
+          tabBarLabelStyle: styles.tabLabel,
+          tabBarItemStyle: styles.tabItemContainer,
+          tabBarLabel: ({ focused }) => TabLabel(focused, "Challenges"),
+          tabBarIcon: ({ focused }) => TabIcon(focused, challengesIcon),
         }}
       />
       <Tabs.Screen
@@ -75,18 +86,38 @@ export default function TabLayout({ currentUser }: TabLayoutProps) {
         options={{
           title: "Account",
           headerShown: false,
-          tabBarIcon: ({ focused }) => (
-            <Image
-              source={accountIcon}
-              style={{
-                width: 28,
-                height: 28,
-                tintColor: focused ? Colors[colorScheme ?? "light"].tint : undefined,
-              }}
-            />
-          ),
+          tabBarLabelStyle: styles.tabLabel,
+          tabBarItemStyle: styles.tabItemContainer,
+          tabBarLabel: ({ focused }) => TabLabel(focused, "Account"),
+          tabBarIcon: ({ focused }) => TabIcon(focused, accountIcon),
         }}
       />
     </Tabs>
   );
 }
+
+const styles = StyleSheet.create({
+  tabLabel: {
+    color: colors.themeWhite,
+    fontSize: 14,
+  },
+  tabIcon: {},
+  tabItemContainer: {
+    height: "100%",
+    display: "flex",
+    flexGrow: 1,
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    paddingVertical: 10,
+  },
+  tabBar: {
+    backgroundColor: colors.themeNavbar,
+    height: "10%",
+    borderColor: "transparent",
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-evenly",
+  },
+});
