@@ -1,9 +1,9 @@
-import { View, Text } from "react-native";
+import { View, Text, Pressable } from "react-native";
 import React, { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { FIREBASE_AUTH, FIREBASE_DB } from "./services/FirebaseConfig";
 import { doc, getDoc, getFirestore } from "firebase/firestore";
-import { useRouter } from "expo-router";
+import { Link, useRouter } from "expo-router";
 
 const index = () => {
   const [currentUser, setCurrentUser] = useState<any | null>(null);
@@ -52,7 +52,18 @@ const index = () => {
       return null;
     }
   }
-  return <></>;
+  return (
+    <>
+      <Link
+        href={{
+          pathname: "/(onboarding)/Login",
+          params: {},
+        }}
+      >
+        <Text>Go To Onboarding</Text>
+      </Link>
+    </>
+  );
 };
 
 export default index;

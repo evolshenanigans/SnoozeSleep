@@ -8,13 +8,13 @@ import {
   Platform,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { updateUserFields } from "../../services/handleFirestore";
-import { colors } from "../../utils/colors";
-import { text } from "../../utils/text";
-import OnboardingHeader from "./OnboardingHeader";
+import { updateUserFields } from "../services/handleFirestore";
+import { colors } from "../utils/colors";
+import { text } from "../utils/text";
+import OnboardingHeader from "./OBHeader";
 import ContinueButton from "./ContinueButton";
-import useUserData from "../../hooks/useUserData";
-import { commonStyles } from "../../utils/commonStyles";
+import useUserData from "../hooks/useUserData";
+import { commonStyles } from "../utils/commonStyles";
 import { useRouter } from "expo-router";
 
 const calculateAgeBasedSleepGoal = (age: number) => {
@@ -35,14 +35,14 @@ const calculateAgeBasedSleepGoal = (age: number) => {
 };
 
 // START COMPONENT
-const OnboardingStep3 = ({ currentUser }) => {
+const OB3SleepDurationGoal = ({ currentUser }) => {
   /**
    * This is onboarding for SLEEP DURATION GOAL
    */
   const [goalHours, setGoalHours] = useState<string>();
   const [allFieldsFilled, setAllFieldsFilled] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const { userData } = useUserData(currentUser.email);
+  const { userData } = useUserData();
   const currentYear = new Date().getFullYear();
   const router = useRouter();
 
@@ -62,9 +62,7 @@ const OnboardingStep3 = ({ currentUser }) => {
           updateUserFields(currentUser.email, {
             sleepDurationGoal: parseFloat(goalHours),
           });
-          router.replace(
-            `/screens/onboarding/OnboardingStep4?currentUser=${currentUser}`
-          );
+          router.replace(`/screens/onboarding/OB4SleepTime?currentUser=${currentUser}`);
         } else
           throw {
             message: `goal hours must be between 0 and 24.`,
@@ -179,4 +177,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default OnboardingStep3;
+export default OB3SleepDurationGoal;

@@ -9,16 +9,16 @@ import {
   Platform,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { FIREBASE_AUTH } from "../../services/FirebaseConfig";
+import { FIREBASE_AUTH } from "../services/FirebaseConfig";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { createNewUserWithDefaultValues } from "../../services/handleFirestore";
-import { colors } from "../../utils/colors";
-import OnboardingHeader from "./OnboardingHeader";
+import { createNewUserWithDefaultValues } from "../services/handleFirestore";
+import { colors } from "../utils/colors";
+import OnboardingHeader from "./OBHeader";
 import ContinueButton from "./ContinueButton";
-import { commonStyles } from "../../utils/commonStyles";
+import { commonStyles } from "../utils/commonStyles";
 import { Link, useRouter } from "expo-router";
 
-const OnboardingStep1 = ({ currentUser }) => {
+const OB1SignUp = ({ currentUser }) => {
   /**
    * This is onboarding for CREATE AN ACCOUNT screen
    */
@@ -40,9 +40,7 @@ const OnboardingStep1 = ({ currentUser }) => {
           const res = await createUserWithEmailAndPassword(auth, email, password);
           console.log(res);
           createNewUserWithDefaultValues(username, email);
-          router.replace(
-            `/screens/onboarding/OnboardingStep2?currentUser=${currentUser}`
-          );
+          router.replace(`/screens/onboarding/OB2Birthday?currentUser=${currentUser}`);
         } catch (err) {
           console.log(err);
           alert("Sign Up failed " + err.message);
@@ -165,4 +163,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default OnboardingStep1;
+export default OB1SignUp;

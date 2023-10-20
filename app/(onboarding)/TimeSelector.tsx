@@ -1,7 +1,7 @@
 import { View, Text, Pressable, StyleSheet, TextInput } from "react-native";
 import React, { useState, useEffect } from "react";
-import { text } from "../../utils/text";
-import { colors } from "../../utils/colors";
+import { text } from "../utils/text";
+import { colors } from "../utils/colors";
 
 const TimeSelector = ({ setGoalTime }) => {
   /**

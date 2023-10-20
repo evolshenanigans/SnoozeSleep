@@ -10,7 +10,7 @@ import { Calendar } from "react-native-calendars";
 import React, { useState } from "react";
 import useUserData from "../hooks/useUserData";
 import { colors } from "../utils/colors";
-import TaskList from "../screens/TaskList";
+import TaskList from "../TaskList";
 import { text } from "../utils/text";
 import SleepLogMaker from "../screens/SleepLogMaker";
 

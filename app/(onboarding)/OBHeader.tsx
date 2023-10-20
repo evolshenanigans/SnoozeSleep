@@ -1,15 +1,15 @@
 import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 import React from "react";
-import ProgressBar from "../ProgressBar";
-import { colors } from "../../utils/colors";
+import ProgressBar from "./ProgressBar";
+import { colors } from "../utils/colors";
 import { useRouter } from "expo-router";
 
-const OnboardingHeader = ({ progressPercent, page }) => {
+const OBHeader = ({ progressPercent, page }) => {
   const router = useRouter();
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Image source={require("../../../assets/images/logo.png")} style={styles.icon} />
+        <Image source={require("../../assets/images/logo.png")} style={styles.icon} />
         <Text style={{ color: colors.textWhite }}>Step {page} of 6</Text>
       </View>
       <View style={styles.progressView}>
@@ -22,7 +22,7 @@ const OnboardingHeader = ({ progressPercent, page }) => {
   );
 };
 
-export default OnboardingHeader;
+export default OBHeader;
 
 const styles = StyleSheet.create({
   backButton: {

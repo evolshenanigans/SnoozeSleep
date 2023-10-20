@@ -24,12 +24,6 @@ const LoadingScreen = () => {
   }, [loadingPercent]);
 
   return (
-    // <Animated.View
-    //   key={"home-loading-screen"}
-    //   entering={FadeIn.duration(400)}
-    //   exiting={FadeOut.duration(400)}
-    //   style={styles.container}
-    // >
     <View>
       <Image
         source={require("../../assets/images/loadingStar.png")}
@@ -42,7 +36,6 @@ const LoadingScreen = () => {
       <Text style={styles.text}>
         Just one moment, we are getting your sleep schedule ready!
       </Text>
-      {/* </Animated.View> */}
     </View>
   );
 };

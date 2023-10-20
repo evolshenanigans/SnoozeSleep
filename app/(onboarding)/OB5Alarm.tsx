@@ -11,19 +11,19 @@ import {
   SafeAreaView,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { updateUserFields } from "../../services/handleFirestore";
-import { calculateTime } from "../../services/handleTime";
-import { colors } from "../../utils/colors";
-import { text } from "../../utils/text";
-import OnboardingHeader from "./OnboardingHeader";
+import { updateUserFields } from "../services/handleFirestore";
+import { calculateTime } from "../services/handleTime";
+import { colors } from "../utils/colors";
+import { text } from "../utils/text";
+import OnboardingHeader from "./OBHeader";
 import ContinueButton from "./ContinueButton";
-import useUserData from "../../hooks/useUserData";
-import { RepeatsPopup } from "../RepeatsPopup";
-import { commonStyles } from "../../utils/commonStyles";
+import useUserData from "../hooks/useUserData";
+import { RepeatsPopup } from "../screens/RepeatsPopup";
+import { commonStyles } from "../utils/commonStyles";
 import { useRouter } from "expo-router";
 
 // START COMPONENT
-const OnboardingStep5 = ({ currentUser, setCurrentUserIsNew }) => {
+const OB5Alarm = ({ currentUser, setCurrentUserIsNew }) => {
   /**
    * This is onboarding for CREATE ALARM
    */
@@ -34,7 +34,7 @@ const OnboardingStep5 = ({ currentUser, setCurrentUserIsNew }) => {
   // if bedTimeSelected is false, defaults to wake time is selected
   const [allFieldsFilled, setAllFieldsFilled] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const { userData } = useUserData(currentUser.email);
+  const { userData } = useUserData();
   const router = useRouter();
 
   // TODO: I don't think this does what it's supposed to do.
@@ -66,7 +66,7 @@ const OnboardingStep5 = ({ currentUser, setCurrentUserIsNew }) => {
             saturdaySleepTime: userData.generalSleepTime,
           });
         }
-        router.replace(`/screens/onboarding/OnboardingStep5?currentUser=${currentUser}`);
+        router.replace(`/screens/onboarding/OB5Alarm?currentUser=${currentUser}`);
         // router.back()
       } catch (error) {
         console.error("Error submitting sleep schedule: ", error);
@@ -120,7 +120,7 @@ const OnboardingStep5 = ({ currentUser, setCurrentUserIsNew }) => {
               <Text style={text.heroText}>{"\n"}Create Alarm</Text>
               <View style={styles.hoursRecommendation}>
                 <Image
-                  source={require("../../../assets/images/white_clock.png")}
+                  source={require("../../assets/images/white_clock.png")}
                   style={styles.icon}
                 />
                 <Text style={text.subtitle}>
@@ -136,12 +136,12 @@ const OnboardingStep5 = ({ currentUser, setCurrentUserIsNew }) => {
                   style={styles.bedOrWakeBox}
                   onPress={() =>
                     router.replace(
-                      `/screens/onboarding/OnboardingStep4?currentUser=${currentUser}`
+                      `/screens/onboarding/OB4SleepTime?currentUser=${currentUser}`
                     )
                   }
                 >
                   <Image
-                    source={require("../../../assets/images/blue_moon.png")}
+                    source={require("../../assets/images/blue_moon.png")}
                     style={styles.icon}
                   />
                   <Text style={[text.subtitle, { color: colors.textWhite }]}>
@@ -155,12 +155,12 @@ const OnboardingStep5 = ({ currentUser, setCurrentUserIsNew }) => {
                   style={styles.bedOrWakeBox}
                   onPress={() =>
                     router.replace(
-                      `/screens/onboarding/OnboardingStep4?currentUser=${currentUser}`
+                      `/screens/onboarding/OB4SleepTime?currentUser=${currentUser}`
                     )
                   }
                 >
                   <Image
-                    source={require("../../../assets/images/yellow_sun.png")}
+                    source={require("../../assets/images/yellow_sun.png")}
                     style={styles.icon}
                   />
                   <Text style={[text.subtitle, { color: colors.textWhite }]}>
@@ -347,4 +347,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default OnboardingStep5;
+export default OB5Alarm;

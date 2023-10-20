@@ -8,15 +8,15 @@ import {
   Platform,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { updateUserFields } from "../../services/handleFirestore";
-import { colors } from "../../utils/colors";
-import { text } from "../../utils/text";
-import OnboardingHeader from "./OnboardingHeader";
+import { updateUserFields } from "../services/handleFirestore";
+import { colors } from "../utils/colors";
+import { text } from "../utils/text";
+import OnboardingHeader from "./OBHeader";
 import ContinueButton from "./ContinueButton";
-import { commonStyles } from "../../utils/commonStyles";
+import { commonStyles } from "../utils/commonStyles";
 import { useRouter } from "expo-router";
 
-const OnboardingStep2 = ({ currentUser }) => {
+const OB2Birthday = ({ currentUser }) => {
   /**
    * This is onboarding for BIRTHDAY
    */
@@ -44,7 +44,7 @@ const OnboardingStep2 = ({ currentUser }) => {
             });
             // then navigate to step 3 with the necessary components
             router.replace(
-              `/screens/onboarding/OnboardingStep3?currentUser=${currentUser}`
+              `/screens/onboarding/OB3SleepDurationGoal?currentUser=${currentUser}`
             );
           } else throw { message: `${birthYear} is not a valid year.` };
         } else throw { message: `${birthMonth} is not a valid month.` };
@@ -165,4 +165,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default OnboardingStep2;
+export default OB2Birthday;

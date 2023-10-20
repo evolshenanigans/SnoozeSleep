@@ -8,15 +8,15 @@ import {
   ScrollView,
 } from "react-native";
 import React, { useState } from "react";
-import useUserData from "../hooks/useUserData";
-import { addTask, updateTask } from "../services/handleFirestore";
-import { Task } from "../types/indexTypes";
-import { calculateTime } from "../services/handleTime";
-import { colors } from "../utils/colors";
-import SleepLogMaker from "./SleepLogMaker";
+import useUserData from "./hooks/useUserData";
+import { addTask, updateTask } from "./services/handleFirestore";
+import { Task } from "./types/indexTypes";
+import { calculateTime } from "./services/handleTime";
+import { colors } from "./utils/colors";
+import SleepLogMaker from "./screens/SleepLogMaker";
 
 const TaskList = ({ currentUser }) => {
-  const { tasks } = useUserData(currentUser ? currentUser.email : null);
+  const { tasks } = useUserData();
   const [currTask, setCurrTask] = useState<string>("abc");
 
   const handleAddATask = () => {
@@ -57,7 +57,7 @@ const TaskList = ({ currentUser }) => {
                     {/* {task.isComplete && <Text style={styles.checkMark}>✔</Text>} */}
                     {task.isComplete && (
                       <Image
-                        source={require("../../assets/images/loadingStar.png")}
+                        source={require("../assets/images/loadingStar.png")}
                         style={styles.checkMark}
                       />
                     )}

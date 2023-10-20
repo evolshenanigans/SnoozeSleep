@@ -77,7 +77,7 @@ const Login = () => {
               <Text style={{ color: colors.mainButtonText }}>Sign In</Text>
             </View>
           </Pressable>
-          <Link href="/screens/onboarding/OnboardingStep1" style={styles.signUpContainer}>
+          <Link href="/screens/onboarding/OB1SignUp" style={styles.signUpContainer}>
             <View style={styles.signUpContainer}>
               <Text style={styles.text}>
                 {"\n\n"}Don't have an account?{" "}

@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import useUserData from "../hooks/useUserData";
 import { calculateTime } from "../services/handleTime";
-import TaskList from "../screens/TaskList";
+import TaskList from "../TaskList";
 import { UserProps } from "../types/componentTypes";
 import { colors } from "../utils/colors";
 import * as Brightness from "expo-brightness";

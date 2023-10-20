@@ -20,10 +20,11 @@ const firebaseConfig = {
 
 // Initialize Firebase
 export const FIREBASE_APP = initializeApp(firebaseConfig);
-const auth = initializeAuth(FIREBASE_APP, {
-  persistence: getReactNativePersistence(ReactNativeAsyncStorage),
-});
-export const FIREBASE_AUTH = auth;
+// const auth = initializeAuth(FIREBASE_APP, {
+//   persistence: getReactNativePersistence(ReactNativeAsyncStorage),
+// });
+// export const FIREBASE_AUTH = auth;
+export const FIREBASE_AUTH = getAuth();
 const db = getFirestore(FIREBASE_APP);
 export const FIREBASE_DB = db;
 console.log("Is Firestore initialized?", FIREBASE_DB ? "Yes" : "No");
