@@ -99,9 +99,12 @@ export default function TabLayout({ currentUser }: TabLayoutProps) {
 const styles = StyleSheet.create({
   tabLabel: {
     color: colors.themeWhite,
-    fontSize: 14,
+    fontSize: 12,
   },
-  tabIcon: {},
+  tabIcon: {
+    height: 25,
+    width: 25,
+  },
   tabItemContainer: {
     height: "100%",
     display: "flex",
@@ -113,7 +116,7 @@ const styles = StyleSheet.create({
   },
   tabBar: {
     backgroundColor: colors.themeNavbar,
-    height: "10%",
+    height: 80,
     borderColor: "transparent",
     display: "flex",
     flexDirection: "row",

@@ -68,13 +68,13 @@ const TaskList = ({ currentUser }) => {
               <Text style={styles.message}>You currently have no sleep tasks</Text>
             )
           ) : (
-            <Text style={{ color: "gray", textAlign: "center" }}>Loading...</Text>
+            <Text style={styles.message}>Loading...</Text>
           )}
         </View>
 
-        <TouchableOpacity style={styles.button} onPress={handleAddATask}>
+        {/* <TouchableOpacity style={styles.button} onPress={handleAddATask}>
           <Text style={styles.buttonText}>Add a Night Routine</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </ScrollView>
     </SafeAreaView>
   );
@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
     color: "#ffffff",
   },
   message: {
-    fontSize: 16,
+    fontSize: 12,
     textAlign: "center",
     marginTop: 20,
     marginBottom: 10,
