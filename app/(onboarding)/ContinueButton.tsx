@@ -15,12 +15,10 @@ const ContinueButton = ({ activeCondition, onPressFn }) => {
       <View
         style={{
           ...styles.button,
-          backgroundColor: activeCondition
-            ? colors.mainButton
-            : colors.inactiveMainButton,
+          backgroundColor: activeCondition ? colors.themePrimary : colors.themeInactive,
         }}
       >
-        <Text style={{ color: colors.mainButtonText }}>Continue</Text>
+        <Text style={{ color: colors.themeBlack }}>Continue</Text>
       </View>
     </Pressable>
   );

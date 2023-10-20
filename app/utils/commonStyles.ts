@@ -4,7 +4,7 @@ export const commonStyles = {
   onboardingContainer: {
     display: "flex",
     justifyContent: "flex-start",
-    backgroundColor: colors.background,
+    backgroundColor: colors.themeBackground,
     height: "100%",
     paddingTop: 50,
   },

@@ -15,6 +15,7 @@ import OnboardingHeader from "./OBHeader";
 import ContinueButton from "./ContinueButton";
 import { commonStyles } from "../utils/commonStyles";
 import { useRouter } from "expo-router";
+import { Stack } from "expo-router";
 
 const OB2Birthday = ({ currentUser }) => {
   /**
@@ -43,9 +44,7 @@ const OB2Birthday = ({ currentUser }) => {
               } ${birthYear}`,
             });
             // then navigate to step 3 with the necessary components
-            router.replace(
-              `/screens/onboarding/OB3SleepDurationGoal?currentUser=${currentUser}`
-            );
+            router.replace(`/(onboarding)/OB3SleepDurationGoal`);
           } else throw { message: `${birthYear} is not a valid year.` };
         } else throw { message: `${birthMonth} is not a valid month.` };
       } catch (error) {
@@ -67,6 +66,7 @@ const OB2Birthday = ({ currentUser }) => {
       keyboardVerticalOffset={-50}
       style={{ flex: 1 }}
     >
+      <Stack.Screen options={{ title: "BIRTH :)", headerShown: false }} />
       <View style={commonStyles.onboardingContainer}>
         {/* HEADER */}
         <OnboardingHeader page={"2"} progressPercent={(2 / 6) * 100} />
@@ -96,7 +96,7 @@ const OB2Birthday = ({ currentUser }) => {
                 }
               }}
             />
-            <Text style={{ color: colors.textWhite, fontSize: 14, fontWeight: "800" }}>
+            <Text style={{ color: colors.themeWhite, fontSize: 14, fontWeight: "800" }}>
               /
             </Text>
             <TextInput
@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 40,
   },
   input: {
-    color: colors.textWhite,
+    color: colors.themeWhite,
   },
   inputLabelContainer: {
     display: "flex",
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   inputLabel: {
-    color: colors.textWhite,
+    color: colors.themeWhite,
   },
   formContainer: {
     padding: 40,

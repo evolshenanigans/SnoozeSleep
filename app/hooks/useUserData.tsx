@@ -1,14 +1,15 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { FIREBASE_DB } from "../services/FirebaseConfig";
 import { collection, doc, getDoc, getDocs, onSnapshot, query } from "firebase/firestore";
 import { Challenge, Task, User, UserDataResponse } from "../types/indexTypes";
-
-let email: string | null = null;
+import { UserContext, useUserContext } from "../services/Context";
 
 const useUserData = (): UserDataResponse => {
   const [userData, setUserData] = useState<User | any>();
   const [userTasks, setUserTasks] = useState<Task[] | any>();
   const [userChallenges, setUserChallenges] = useState<Challenge[] | any>();
+  const currentUser = useUserContext();
+  const email = currentUser?.email;
 
   const db = FIREBASE_DB;
 
@@ -119,15 +120,10 @@ const useUserData = (): UserDataResponse => {
     }
   }, [db]);
 
-  const updateCurrEmail = ({ currentUser }) => {
-    email = currentUser.email;
-  };
-
   return {
     userData,
     tasks: userTasks,
     challenges: userChallenges,
-    useUpdateCurrEmail: updateCurrEmail,
   };
 };
 

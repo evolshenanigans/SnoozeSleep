@@ -44,7 +44,7 @@ const OB4SleepTime = ({ currentUser }) => {
           generalSleepTime: `${bedTime[0]}${bedTime[1]} ${bedTime[3]}${bedTime[4]} ${bedTime[6]}${bedTime[7]}`,
           generalWakeTime: `${wakeTime[0]}${wakeTime[1]} ${wakeTime[3]}${wakeTime[4]} ${wakeTime[6]}${wakeTime[7]}`,
         });
-        router.replace(`/screens/onboarding/OB5Alarm?currentUser=${currentUser}`);
+        router.replace(`/(onboarding)/OB5Alarm`);
       } catch (error) {
         console.error("Error submitting sleep schedule: ", error);
         alert("Whoa, " + error.message);
@@ -90,7 +90,7 @@ const OB4SleepTime = ({ currentUser }) => {
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "position"}
       keyboardVerticalOffset={50}
-      style={{ flex: 1, backgroundColor: colors.background }}
+      style={{ flex: 1, backgroundColor: colors.themeBackground }}
     >
       <View style={commonStyles.onboardingContainer}>
         {/* HEADER */}
@@ -131,7 +131,7 @@ const OB4SleepTime = ({ currentUser }) => {
                 source={require("../../assets/images/blue_moon.png")}
                 style={styles.icon}
               />
-              <Text style={{ color: colors.textWhite }}>Bed Time At</Text>
+              <Text style={{ color: colors.themeWhite }}>Bed Time At</Text>
             </Pressable>
 
             {/* Wake Up Box: */}
@@ -146,7 +146,7 @@ const OB4SleepTime = ({ currentUser }) => {
                 source={require("../../assets/images/yellow_sun.png")}
                 style={styles.icon}
               />
-              <Text style={{ color: colors.textWhite }}>Wake Up At</Text>
+              <Text style={{ color: colors.themeWhite }}>Wake Up At</Text>
             </Pressable>
           </View>
 
@@ -196,9 +196,9 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   bedOrWakeTrue: {
-    backgroundColor: colors.secondaryButton,
+    backgroundColor: colors.themeSecondary,
     borderWidth: 5,
-    borderColor: colors.themeCTAColor,
+    borderColor: colors.themePrimary,
   },
   bedOrWakeFalse: {
     backgroundColor: colors.themeAccent1,
@@ -215,7 +215,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 40,
   },
   calculateOtherTime: {
-    color: colors.textWhite,
+    color: colors.themeWhite,
     textAlign: "center",
     width: "150%",
     alignSelf: "center",
@@ -227,7 +227,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     alignSelf: "center",
     fontSize: 20,
-    color: colors.textWhite,
+    color: colors.themeWhite,
   },
   hoursRecommendation: {
     display: "flex",

@@ -103,11 +103,11 @@ const styles = StyleSheet.create({
   doneBtn: {
     paddingVertical: 10,
     paddingHorizontal: 100,
-    backgroundColor: colors.mainButton,
+    backgroundColor: colors.themePrimary,
     borderRadius: 100,
   },
   exitBtn: {
-    color: colors.textWhite,
+    color: colors.themeWhite,
     alignItems: "flex-end",
     fontWeight: "bold",
   },
@@ -121,14 +121,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     bottom: 0,
     left: 0,
-    backgroundColor: colors.background,
+    backgroundColor: colors.themeBackground,
     width: "100%",
   },
   popupBg: {
     backgroundColor: "rgba(240, 240, 240, 0.76)",
   },
   repeatsOption: {
-    color: colors.textWhite,
+    color: colors.themeWhite,
     padding: 10,
     marginVertical: 5,
     width: "100%",
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
     borderColor: "transparent",
   },
   repeatsOptionTrue: {
-    backgroundColor: colors.secondaryButton,
-    borderColor: colors.mainButton,
+    backgroundColor: colors.themeSecondary,
+    borderColor: colors.themePrimary,
   },
 });

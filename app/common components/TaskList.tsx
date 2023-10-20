@@ -14,10 +14,12 @@ import { Task } from "../types/indexTypes";
 import { calculateTime } from "../services/handleTime";
 import { colors } from "../utils/colors";
 import SleepLogMaker from "./SleepLogMaker";
+import { useUserContext } from "../services/Context";
 
-const TaskList = ({ currentUser }) => {
+const TaskList = () => {
   const { tasks } = useUserData();
   const [currTask, setCurrTask] = useState<string>("abc");
+  const currentUser = useUserContext();
 
   const handleAddATask = () => {
     // TODO: this is how you add a task. Change out hardcoded vals for some input form vals maybe?
@@ -71,10 +73,6 @@ const TaskList = ({ currentUser }) => {
             <Text style={styles.message}>Loading...</Text>
           )}
         </View>
-
-        {/* <TouchableOpacity style={styles.button} onPress={handleAddATask}>
-          <Text style={styles.buttonText}>Add a Night Routine</Text>
-        </TouchableOpacity> */}
       </ScrollView>
     </SafeAreaView>
   );
@@ -115,10 +113,10 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: "#ffffff",
+    borderColor: colors.themeWhite,
     justifyContent: "center",
     alignItems: "center",
-    color: "#ffffff",
+    color: colors.themeWhite,
   },
   message: {
     fontSize: 12,

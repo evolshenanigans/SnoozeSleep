@@ -62,7 +62,7 @@ const OB3SleepDurationGoal = ({ currentUser }) => {
           updateUserFields(currentUser.email, {
             sleepDurationGoal: parseFloat(goalHours),
           });
-          router.replace(`/screens/onboarding/OB4SleepTime?currentUser=${currentUser}`);
+          router.replace(`/(onboarding)/OB4SleepTime`);
         } else
           throw {
             message: `goal hours must be between 0 and 24.`,
@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
     padding: 40,
   },
   input: {
-    color: colors.textWhite,
+    color: colors.themeWhite,
     alignSelf: "center",
     flexDirection: "row",
     display: "flex",
@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   inputLabel: {
-    color: colors.textWhite,
+    color: colors.themeWhite,
   },
   formContainer: {
     padding: 40,

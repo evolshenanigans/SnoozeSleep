@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: colors.background,
+    backgroundColor: colors.themeBackground,
     paddingHorizontal: 40,
   },
   icon: {
@@ -55,13 +55,13 @@ const styles = StyleSheet.create({
     width: 100,
   },
   text: {
-    color: colors.textWhite,
+    color: colors.themeWhite,
     fontSize: 17,
     fontWeight: "300",
     textAlign: "center",
   },
   progressView: {
-    backgroundColor: colors.background,
+    backgroundColor: colors.themeBackground,
     width: "90%",
     alignSelf: "center",
     paddingVertical: 30,

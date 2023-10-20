@@ -16,10 +16,12 @@ import { UserProps } from "../types/componentTypes";
 import { colors } from "../utils/colors";
 import * as Brightness from "expo-brightness";
 import { Link } from "expo-router";
+import { useUserContext } from "../services/Context";
 
-const Home: React.FC<UserProps> = ({ currentUser }) => {
+const Home: React.FC<UserProps> = () => {
   const [isBedtimeEnabled, setIsBedtimeEnabled] = useState(false);
   const [bedtime, setBedtime] = useState<string>("8:00 PM");
+  const currentUser = useUserContext();
 
   const [isWakeUpEnabled, setIsWakeUpEnabled] = useState(false);
   const [wakeUpTime, setWakeUpTime] = useState<string>("7:00 AM");
@@ -153,7 +155,7 @@ const Home: React.FC<UserProps> = ({ currentUser }) => {
           </Link>
         </View>
         <View style={{ alignSelf: "center" }}>
-          <TaskList currentUser={currentUser} />
+          <TaskList />
         </View>
       </View>
     </ScrollView>
@@ -220,8 +222,8 @@ const styles = StyleSheet.create({
   },
   homeImage: {
     width: "100%",
-    height: 200,
-    resizeMode: "contain",
+    height: 180,
+    resizeMode: "cover",
   },
   scheduleIcon: {
     position: "absolute",

@@ -2,15 +2,16 @@ import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 import React from "react";
 import ProgressBar from "./ProgressBar";
 import { colors } from "../utils/colors";
-import { useRouter } from "expo-router";
+import { Stack, useRouter } from "expo-router";
 
 const OBHeader = ({ progressPercent, page }) => {
   const router = useRouter();
   return (
     <View style={styles.container}>
+      <Stack.Screen options={{ headerShown: false }} />
       <View style={styles.header}>
         <Image source={require("../../assets/images/logo.png")} style={styles.icon} />
-        <Text style={{ color: colors.textWhite }}>Step {page} of 6</Text>
+        <Text style={{ color: colors.themeWhite }}>Step {page} of 6</Text>
       </View>
       <View style={styles.progressView}>
         <ProgressBar progress={progressPercent} />
@@ -26,14 +27,14 @@ export default OBHeader;
 
 const styles = StyleSheet.create({
   backButton: {
-    color: colors.textWhite,
+    color: colors.themeWhite,
     paddingLeft: 20,
   },
   container: {
     // paddingTop: 50,
     display: "flex",
     justifyContent: "center",
-    backgroundColor: colors.background,
+    backgroundColor: colors.themeBackground,
   },
   header: {
     display: "flex",
@@ -48,7 +49,7 @@ const styles = StyleSheet.create({
     width: 50,
   },
   progressView: {
-    backgroundColor: colors.background,
+    backgroundColor: colors.themeBackground,
     width: "90%",
     alignSelf: "center",
   },

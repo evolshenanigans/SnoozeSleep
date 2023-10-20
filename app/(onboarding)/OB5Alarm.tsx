@@ -66,7 +66,7 @@ const OB5Alarm = ({ currentUser, setCurrentUserIsNew }) => {
             saturdaySleepTime: userData.generalSleepTime,
           });
         }
-        router.replace(`/screens/onboarding/OB5Alarm?currentUser=${currentUser}`);
+        router.replace(`/(onboarding)/OB5Alarm`);
         // router.back()
       } catch (error) {
         console.error("Error submitting sleep schedule: ", error);
@@ -104,7 +104,7 @@ const OB5Alarm = ({ currentUser, setCurrentUserIsNew }) => {
   }, [repeats]);
 
   return (
-    <SafeAreaView style={{ backgroundColor: colors.background }}>
+    <SafeAreaView style={{ backgroundColor: colors.themeBackground }}>
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "position"}
         keyboardVerticalOffset={-50}
@@ -134,39 +134,31 @@ const OB5Alarm = ({ currentUser, setCurrentUserIsNew }) => {
                 {/* Bedtime Box: */}
                 <Pressable
                   style={styles.bedOrWakeBox}
-                  onPress={() =>
-                    router.replace(
-                      `/screens/onboarding/OB4SleepTime?currentUser=${currentUser}`
-                    )
-                  }
+                  onPress={() => router.replace(`/(onboarding)/OB4SleepTime`)}
                 >
                   <Image
                     source={require("../../assets/images/blue_moon.png")}
                     style={styles.icon}
                   />
-                  <Text style={[text.subtitle, { color: colors.textWhite }]}>
+                  <Text style={[text.subtitle, { color: colors.themeWhite }]}>
                     {userData && calculateTime(userData.generalSleepTime)}
                   </Text>
-                  <Text style={{ color: colors.textWhite }}>Bed Time</Text>
+                  <Text style={{ color: colors.themeWhite }}>Bed Time</Text>
                 </Pressable>
 
                 {/* Wake Up Box: */}
                 <Pressable
                   style={styles.bedOrWakeBox}
-                  onPress={() =>
-                    router.replace(
-                      `/screens/onboarding/OB4SleepTime?currentUser=${currentUser}`
-                    )
-                  }
+                  onPress={() => router.replace(`/(onboarding)/OB4SleepTime`)}
                 >
                   <Image
                     source={require("../../assets/images/yellow_sun.png")}
                     style={styles.icon}
                   />
-                  <Text style={[text.subtitle, { color: colors.textWhite }]}>
+                  <Text style={[text.subtitle, { color: colors.themeWhite }]}>
                     {userData && calculateTime(userData.generalWakeTime)}
                   </Text>
-                  <Text style={{ color: colors.textWhite }}>Wake Up</Text>
+                  <Text style={{ color: colors.themeWhite }}>Wake Up</Text>
                 </Pressable>
               </View>
               <View style={styles.tapToEditContainer}>
@@ -224,13 +216,13 @@ const OB5Alarm = ({ currentUser, setCurrentUserIsNew }) => {
                       style={[
                         styles.button,
                         {
-                          backgroundColor: colors.secondaryButton,
+                          backgroundColor: colors.themeSecondary,
                           marginVertical: 10,
                           marginTop: 50,
                         },
                       ]}
                     >
-                      <Text style={{ color: colors.secondaryButtonText }}>
+                      <Text style={{ color: colors.themeWhite }}>
                         Create Another Alarm
                       </Text>
                     </View>
@@ -280,7 +272,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 10,
-    backgroundColor: colors.secondaryButton,
+    backgroundColor: colors.themeSecondary,
   },
   bedOrWakeSelector: {
     flexDirection: "row",
@@ -302,7 +294,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    backgroundColor: colors.background,
+    backgroundColor: colors.themeBackground,
   },
   formContainer: {
     paddingHorizontal: 40,
@@ -312,7 +304,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     alignSelf: "center",
     fontSize: 20,
-    color: colors.textWhite,
+    color: colors.themeWhite,
   },
   hoursRecommendation: {
     display: "flex",
@@ -328,16 +320,16 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   settingHeader: {
-    color: colors.textWhite,
+    color: colors.themeWhite,
     fontSize: 12,
   },
   settingValue: {
-    color: colors.textWhite,
+    color: colors.themeWhite,
     fontWeight: "300",
     fontSize: 12,
   },
   tapToEdit: {
-    color: colors.textWhite,
+    color: colors.themeWhite,
     fontSize: 11,
   },
   tapToEditContainer: {

@@ -16,7 +16,7 @@ import { colors } from "../utils/colors";
 import OnboardingHeader from "./OBHeader";
 import ContinueButton from "./ContinueButton";
 import { commonStyles } from "../utils/commonStyles";
-import { Link, useRouter } from "expo-router";
+import { Link, Stack, useRouter } from "expo-router";
 
 const OB1SignUp = ({ currentUser }) => {
   /**
@@ -40,7 +40,7 @@ const OB1SignUp = ({ currentUser }) => {
           const res = await createUserWithEmailAndPassword(auth, email, password);
           console.log(res);
           createNewUserWithDefaultValues(username, email);
-          router.replace(`/screens/onboarding/OB2Birthday?currentUser=${currentUser}`);
+          router.replace(`/(onboarding)/OB2Birthday`);
         } catch (err) {
           console.log(err);
           alert("Sign Up failed " + err.message);
@@ -67,6 +67,7 @@ const OB1SignUp = ({ currentUser }) => {
     >
       {/* HEADER */}
       {/* <View style={{ flex: 1 }}> */}
+      <Stack.Screen options={{ headerShown: false }} />
       <OnboardingHeader page={"1"} progressPercent={(1 / 6) * 100} />
       <View style={commonStyles.onboardingContainer}>
         {/* LOGIN FORM */}
@@ -131,7 +132,7 @@ const OB1SignUp = ({ currentUser }) => {
 const styles = StyleSheet.create({
   backToLogin: {
     alignSelf: "center",
-    color: colors.textWhite,
+    color: colors.themeWhite,
     textDecorationLine: "underline",
     fontWeight: "bold",
     paddingTop: 20,
@@ -143,7 +144,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     alignSelf: "center",
     fontSize: 20,
-    color: colors.textWhite,
+    color: colors.themeWhite,
   },
   input: {
     marginVertical: 4,
@@ -152,11 +153,11 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 10,
     borderColor: "transparent",
-    backgroundColor: colors.textWhite,
+    backgroundColor: colors.themeWhite,
   },
   inputLabel: {
     alignSelf: "flex-start",
-    color: colors.textWhite,
+    color: colors.themeWhite,
   },
   loginForm: {
     padding: 40,

@@ -12,7 +12,7 @@ import { FIREBASE_AUTH } from "../services/FirebaseConfig";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { colors } from "../utils/colors";
 import { text } from "../utils/text";
-import { Link, useRouter } from "expo-router";
+import { Link, Stack, useRouter } from "expo-router";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -28,7 +28,8 @@ const Login = () => {
       try {
         const res = await signInWithEmailAndPassword(auth, email, password);
         console.log(res);
-        router.replace("/(tabs)/_layout");
+        // router.replace("/(tabs)/_layout");
+        // nav to home
       } catch (err) {
         console.log(err);
         if (err.message === "Firebase: Error (auth/invalid-login-credentials).") {
@@ -44,6 +45,7 @@ const Login = () => {
 
   return (
     <View style={styles.container}>
+      <Stack.Screen options={{ headerShown: false }} />
       <Image source={require("../../assets/images/logo.png")} style={styles.icon} />
       <Text style={text.heroText}>Welcome to SnoozeSense</Text>
       <Text style={[text.subtitle, styles.subtitle]}>
@@ -74,10 +76,10 @@ const Login = () => {
         <View style={styles.buttonContainer}>
           <Pressable onPress={() => handleLogin()}>
             <View style={[styles.button, styles.loginButton]}>
-              <Text style={{ color: colors.mainButtonText }}>Sign In</Text>
+              <Text style={{ color: colors.themeBlack }}>Sign In</Text>
             </View>
           </Pressable>
-          <Link href="/screens/onboarding/OB1SignUp" style={styles.signUpContainer}>
+          <Link href="/(onboarding)/OB1SignUp" style={styles.signUpContainer}>
             <View style={styles.signUpContainer}>
               <Text style={styles.text}>
                 {"\n\n"}Don't have an account?{" "}
@@ -97,7 +99,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: 40,
-    backgroundColor: colors.background,
+    backgroundColor: colors.themeBackground,
     width: "100%",
   },
   buttonContainer: {
@@ -115,7 +117,7 @@ const styles = StyleSheet.create({
   },
   forgotPw: {
     alignSelf: "flex-end",
-    color: colors.textWhite,
+    color: colors.themeWhite,
     textDecorationLine: "underline",
     fontSize: 12,
   },
@@ -133,14 +135,14 @@ const styles = StyleSheet.create({
     padding: 10,
     paddingHorizontal: 20,
     borderColor: "transparent",
-    backgroundColor: colors.textWhite,
+    backgroundColor: colors.themeWhite,
   },
   inputLabel: {
     alignSelf: "flex-start",
-    color: colors.textWhite,
+    color: colors.themeWhite,
   },
   loginButton: {
-    backgroundColor: colors.mainButton,
+    backgroundColor: colors.themePrimary,
   },
   signUpButton: {
     textDecorationLine: "underline",
@@ -156,7 +158,7 @@ const styles = StyleSheet.create({
   },
   text: {
     alignSelf: "center",
-    color: colors.textWhite,
+    color: colors.themeWhite,
   },
 });
 

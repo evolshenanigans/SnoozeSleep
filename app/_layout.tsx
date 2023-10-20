@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { useColorScheme } from "react-native";
 import { FIREBASE_AUTH, FIREBASE_DB } from "./services/FirebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
+import { UserContext, useUserContext } from "./services/Context";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -15,7 +16,7 @@ export {
 
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: "(tabs)",
+  initialRouteName: "(onboarding)",
 };
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -29,6 +30,11 @@ export default function RootLayout() {
   useEffect(() => {
     onAuthStateChanged(FIREBASE_AUTH, (user) => {
       setCurrentUser(user);
+      if (user == null) {
+        console.log("user is null");
+      } else {
+        console.log("we have a user, repeat we have a user");
+      }
     });
   }, []);
 
@@ -44,12 +50,11 @@ export default function RootLayout() {
     }
   }, [currentUser]);
 
-  useEffect(() => {
-    if (currentUser === null) {
-      console.log("USER IS NULL, rerouting to onboarding.");
-      // router.replace("/screens/Login");
-    }
-  }, [currentUser]);
+  // useEffect(() => {
+  //   if (currentUser === null) {
+  //     console.log("USER IS NULL, rerouting to onboarding.");
+  //   }
+  // }, [currentUser]);
 
   const db = getFirestore();
 
@@ -93,20 +98,19 @@ export default function RootLayout() {
 
 function RootLayoutNav({ currentUser }) {
   const colorScheme = useColorScheme();
+  // const currentUser = useUserContext();
 
   return (
-    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <Stack>
-        {currentUser !== null ? (
-          <Stack.Screen name="index" options={{ headerShown: false }} />
-        ) : (
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        )}
-        {/* <Stack.Screen
-          name="modal"
-          options={{ headerShown: false, presentation: "modal" }}
-        /> */}
-      </Stack>
-    </ThemeProvider>
+    <UserContext.Provider value={currentUser}>
+      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+        <Stack>
+          {currentUser ? (
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          ) : (
+            <Stack.Screen name="(onboarding)" options={{ headerShown: false }} />
+          )}
+        </Stack>
+      </ThemeProvider>
+    </UserContext.Provider>
   );
 }

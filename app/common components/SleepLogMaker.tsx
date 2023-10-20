@@ -9,9 +9,11 @@ import {
 import React, { useState } from "react";
 import { colors } from "../utils/colors";
 import { text } from "../utils/text";
+import { useUserContext } from "../services/Context";
 
-const SleepLogMaker = ({ currentUser }) => {
+const SleepLogMaker = () => {
   const [formIsOpen, setFormIsOpen] = useState<boolean>(false);
+  const currentUser = useUserContext();
   const handlePress = () => {
     console.log("new sleep log pressed");
   };

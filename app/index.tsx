@@ -3,7 +3,10 @@ import React, { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { FIREBASE_AUTH, FIREBASE_DB } from "./services/FirebaseConfig";
 import { doc, getDoc, getFirestore } from "firebase/firestore";
-import { Link, useRouter } from "expo-router";
+import { Link, useRouter, Stack } from "expo-router";
+import Home from "./(tabs)/Home";
+import TabLayout from "./(tabs)/_layout";
+import { colors } from "./utils/colors";
 
 const index = () => {
   const [currentUser, setCurrentUser] = useState<any | null>(null);
@@ -54,14 +57,25 @@ const index = () => {
   }
   return (
     <>
-      <Link
-        href={{
-          pathname: "/(onboarding)/Login",
-          params: {},
-        }}
-      >
-        <Text>Go To Onboarding</Text>
-      </Link>
+      <Stack.Screen options={{ headerShown: false }} />
+      <View style={{ padding: 50 }}>
+        <Link
+          href={{
+            pathname: "/(onboarding)/Login",
+            params: {},
+          }}
+        >
+          <Text style={{ color: colors.themePrimary }}>Go To Onboarding</Text>
+        </Link>
+        <Link
+          href={{
+            pathname: "/(tabs)/Home",
+            params: {},
+          }}
+        >
+          <Text style={{ color: colors.themePrimary }}>Go To Home</Text>
+        </Link>
+      </View>
     </>
   );
 };
