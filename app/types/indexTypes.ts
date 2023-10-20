@@ -69,4 +69,5 @@ export type UserDataResponse = {
   userData: User | any;
   tasks: Task[] | any;
   challenges: Challenge[] | any;
+  useUpdateCurrEmail: any;
 };

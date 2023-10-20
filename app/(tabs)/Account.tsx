@@ -11,7 +11,7 @@ const Account = () => {
       <Text style={styles.header}>Account Settings</Text>
       <View style={styles.section}>
         <Text style={styles.section}>Profile Information</Text>
-        {renderCard("username", currentUser.username)}
+        {renderCard("username", currentUser?.username)}
         {renderCard("Email")}
         <View style={styles.separator} />
         {renderCard("Birthday")}

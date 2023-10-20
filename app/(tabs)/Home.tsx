@@ -33,7 +33,7 @@ const getNext14Days: () => { day: string; date: number }[] = () => {
 const todayDate = new Date().getDate(); //Current Date
 
 const Home: React.FC<UserProps> = ({ currentUser }) => {
-  const { userData } = useUserData(currentUser ? currentUser.email : null);
+  const { userData } = useUserData();
   const dayRef: string[] = ["sun", "mon", "tues", "wednes", "thurs", "fri", "satur"];
   const today = new Date();
   const dayOfWeek = dayRef[today.getDay()];
