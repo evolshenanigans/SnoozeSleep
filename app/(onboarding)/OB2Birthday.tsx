@@ -16,8 +16,9 @@ import ContinueButton from "./ContinueButton";
 import { commonStyles } from "../utils/commonStyles";
 import { useRouter } from "expo-router";
 import { Stack } from "expo-router";
+import { useUserContext } from "../services/Context";
 
-const OB2Birthday = ({ currentUser }) => {
+const OB2Birthday = () => {
   /**
    * This is onboarding for BIRTHDAY
    */
@@ -27,6 +28,7 @@ const OB2Birthday = ({ currentUser }) => {
   const [loading, setLoading] = useState(false);
   const currentYear = new Date().getFullYear();
   const router = useRouter();
+  const currentUser = useUserContext();
 
   const handleSubmitBirthday = async () => {
     if (birthMonth + birthYear !== "") {

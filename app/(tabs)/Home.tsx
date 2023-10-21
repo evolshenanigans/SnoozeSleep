@@ -20,10 +20,9 @@ import { useUserContext } from "../services/Context";
 
 const Home: React.FC<UserProps> = () => {
   const [isBedtimeEnabled, setIsBedtimeEnabled] = useState(false);
-  const [bedtime, setBedtime] = useState<string>("8:00 PM");
-  const currentUser = useUserContext();
-
   const [isWakeUpEnabled, setIsWakeUpEnabled] = useState(false);
+  const [bedtime, setBedtime] = useState<string>("8:00 PM");
+
   const [wakeUpTime, setWakeUpTime] = useState<string>("7:00 AM");
   const { userData } = useUserData();
   const dayRef = {
@@ -47,11 +46,10 @@ const Home: React.FC<UserProps> = () => {
       setWakeUpTime(calculateTime(time, userData.sleepDurationGoal) || "");
     }
   }, [userData]);
-  const [isEnabled, setIsEnabled] = useState(false);
 
   const toggleSwitch = () => {
     setIsBedtimeEnabled((previousState) => {
-      const newBrightness = previousState ? 1 : 0.1; // switch between 10% and 100% brightness
+      const newBrightness = previousState ? 0.8 : 0.1; // switch between 10% and 100% brightness
       toggleBrightness(newBrightness);
       return !previousState;
     });
@@ -125,7 +123,7 @@ const Home: React.FC<UserProps> = () => {
             <Text style={styles.timetime}>{wakeUpTime}</Text>
             <Switch
               trackColor={{ false: "#767577", true: "#686868" }}
-              thumbColor={isWakeUpEnabled ? "#9174D0" : "#f4f3f4"}
+              thumbColor={isWakeUpEnabled ? colors.themePrimary : colors.themeGray}
               onValueChange={() => setIsWakeUpEnabled(!isWakeUpEnabled)}
               value={isWakeUpEnabled}
               style={styles.switches}

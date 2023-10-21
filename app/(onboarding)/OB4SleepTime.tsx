@@ -19,9 +19,10 @@ import useUserData from "../hooks/useUserData";
 import TimeSelector from "./TimeSelector";
 import { commonStyles } from "../utils/commonStyles";
 import { useRouter } from "expo-router";
+import { useUserContext } from "../services/Context";
 
 // START COMPONENT
-const OB4SleepTime = ({ currentUser }) => {
+const OB4SleepTime = () => {
   /**
    * This is onboarding for SLEEP SCHEDULE
    */
@@ -35,6 +36,7 @@ const OB4SleepTime = ({ currentUser }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const { userData } = useUserData();
   const router = useRouter();
+  const currentUser = useUserContext();
 
   const handleSubmitSleepSchedule = async () => {
     if (goalTime !== "") {
