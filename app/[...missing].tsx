@@ -1,40 +1,58 @@
 import { Link, Stack } from "expo-router";
-import { StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Image } from "react-native";
+import { colors } from "./utils/colors";
 
-import { Text, View } from "../components/Themed";
-
-export default function NotFoundScreen() {
+const LoadingScreen = () => {
   return (
-    <>
-      <Stack.Screen options={{ title: "Oops!" }} />
-      <View style={styles.container}>
-        <Text style={styles.title}>This screen doesn't exist.</Text>
+    <View style={styles.container}>
+      <Stack.Screen options={{ title: "Oops!", headerShown: false }} />
+      <Image source={require("../assets/images/loadingStar.png")} style={styles.icon} />
 
-        <Link href="/" style={styles.link}>
-          <Text style={styles.linkText}>Go to home screen!</Text>
-        </Link>
-      </View>
-    </>
+      <Text style={styles.bigText}>Well that's awkward</Text>
+      <Text style={styles.text}>This screen is broken</Text>
+      <Link href="/" style={styles.link}>
+        <Text style={[styles.text, { color: colors.themePrimary, fontWeight: "normal" }]}>
+          Go back home {` \u3009`}
+        </Text>
+      </Link>
+    </View>
   );
-}
+};
+
+export default LoadingScreen;
 
 const styles = StyleSheet.create({
+  bigText: {
+    color: colors.themeWhite,
+    fontSize: 20,
+    textAlign: "center",
+  },
   container: {
     flex: 1,
-    alignItems: "center",
     justifyContent: "center",
-    padding: 20,
+    alignItems: "center",
+    backgroundColor: colors.themeBackground,
+    paddingHorizontal: 40,
   },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
+  icon: {
+    height: 110,
+    width: 100,
+    transform: [{ scaleX: -1 }, { scaleY: -1 }],
   },
   link: {
     marginTop: 15,
     paddingVertical: 15,
   },
-  linkText: {
-    fontSize: 14,
-    color: "#2e78b7",
+  text: {
+    color: colors.themeWhite,
+    fontSize: 17,
+    fontWeight: "300",
+    textAlign: "center",
+  },
+  progressView: {
+    backgroundColor: colors.themeBackground,
+    width: "90%",
+    alignSelf: "center",
+    paddingVertical: 30,
   },
 });

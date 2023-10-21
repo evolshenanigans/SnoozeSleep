@@ -8,13 +8,14 @@ import {
   Platform,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { updateUserFields } from "../../services/handleFirestore";
-import { colors } from "../../utils/colors";
-import { text } from "../../utils/text";
-import OnboardingHeader from "./OnboardingHeader";
+import { updateUserFields } from "../services/handleFirestore";
+import { colors } from "../utils/colors";
+import { text } from "../utils/text";
+import OnboardingHeader from "./OBHeader";
 import ContinueButton from "./ContinueButton";
-import useUserData from "../../hooks/useUserData";
-import { commonStyles } from "../../utils/commonStyles";
+import useUserData from "../hooks/useUserData";
+import { commonStyles } from "../utils/commonStyles";
+import { useRouter } from "expo-router";
 
 const calculateAgeBasedSleepGoal = (age: number) => {
   switch (true) {
@@ -34,15 +35,16 @@ const calculateAgeBasedSleepGoal = (age: number) => {
 };
 
 // START COMPONENT
-const OnboardingStep3 = ({ navigation, currentUser }) => {
+const OB3SleepDurationGoal = ({ currentUser }) => {
   /**
    * This is onboarding for SLEEP DURATION GOAL
    */
   const [goalHours, setGoalHours] = useState<string>();
   const [allFieldsFilled, setAllFieldsFilled] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const { userData } = useUserData(currentUser.email);
+  const { userData } = useUserData();
   const currentYear = new Date().getFullYear();
+  const router = useRouter();
 
   useEffect(() => {
     if (userData) {
@@ -60,7 +62,7 @@ const OnboardingStep3 = ({ navigation, currentUser }) => {
           updateUserFields(currentUser.email, {
             sleepDurationGoal: parseFloat(goalHours),
           });
-          navigation.navigate("Step4");
+          router.replace(`/(onboarding)/OB4SleepTime`);
         } else
           throw {
             message: `goal hours must be between 0 and 24.`,
@@ -86,12 +88,7 @@ const OnboardingStep3 = ({ navigation, currentUser }) => {
     >
       <View style={commonStyles.onboardingContainer}>
         {/* HEADER */}
-        <OnboardingHeader
-          page={"3"}
-          navigation={navigation}
-          progressPercent={(3 / 6) * 100}
-          prevPageNavigation={"Step2"}
-        />
+        <OnboardingHeader page={"3"} progressPercent={(3 / 6) * 100} />
         {/* SLEEP GOAL TITLE */}
         <View style={styles.formContainer}>
           <Text style={text.heroText}>
@@ -144,7 +141,7 @@ const styles = StyleSheet.create({
     padding: 40,
   },
   input: {
-    color: colors.textWhite,
+    color: colors.themeWhite,
     alignSelf: "center",
     flexDirection: "row",
     display: "flex",
@@ -168,7 +165,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   inputLabel: {
-    color: colors.textWhite,
+    color: colors.themeWhite,
   },
   formContainer: {
     padding: 40,
@@ -180,4 +177,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default OnboardingStep3;
+export default OB3SleepDurationGoal;

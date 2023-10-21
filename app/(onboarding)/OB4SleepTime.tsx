@@ -9,18 +9,19 @@ import {
   Pressable,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { updateUserFields } from "../../services/handleFirestore";
-import { calculateTime, calculateTimeWithSubtraction } from "../../services/handleTime";
-import { colors } from "../../utils/colors";
-import { text } from "../../utils/text";
-import OnboardingHeader from "./OnboardingHeader";
+import { updateUserFields } from "../services/handleFirestore";
+import { calculateTime, calculateTimeWithSubtraction } from "../services/handleTime";
+import { colors } from "../utils/colors";
+import { text } from "../utils/text";
+import OnboardingHeader from "./OBHeader";
 import ContinueButton from "./ContinueButton";
-import useUserData from "../../hooks/useUserData";
+import useUserData from "../hooks/useUserData";
 import TimeSelector from "./TimeSelector";
-import { commonStyles } from "../../utils/commonStyles";
+import { commonStyles } from "../utils/commonStyles";
+import { useRouter } from "expo-router";
 
 // START COMPONENT
-const OnboardingStep4 = ({ navigation, currentUser }) => {
+const OB4SleepTime = ({ currentUser }) => {
   /**
    * This is onboarding for SLEEP SCHEDULE
    */
@@ -32,7 +33,8 @@ const OnboardingStep4 = ({ navigation, currentUser }) => {
   const [bedTimeSelected, setBedTimeSelected] = useState<boolean>(true);
   const [allFieldsFilled, setAllFieldsFilled] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const { userData } = useUserData(currentUser.email);
+  const { userData } = useUserData();
+  const router = useRouter();
 
   const handleSubmitSleepSchedule = async () => {
     if (goalTime !== "") {
@@ -42,7 +44,7 @@ const OnboardingStep4 = ({ navigation, currentUser }) => {
           generalSleepTime: `${bedTime[0]}${bedTime[1]} ${bedTime[3]}${bedTime[4]} ${bedTime[6]}${bedTime[7]}`,
           generalWakeTime: `${wakeTime[0]}${wakeTime[1]} ${wakeTime[3]}${wakeTime[4]} ${wakeTime[6]}${wakeTime[7]}`,
         });
-        navigation.navigate("Step5");
+        router.replace(`/(onboarding)/OB5Alarm`);
       } catch (error) {
         console.error("Error submitting sleep schedule: ", error);
         alert("Whoa, " + error.message);
@@ -88,22 +90,17 @@ const OnboardingStep4 = ({ navigation, currentUser }) => {
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "position"}
       keyboardVerticalOffset={50}
-      style={{ flex: 1, backgroundColor: colors.background }}
+      style={{ flex: 1, backgroundColor: colors.themeBackground }}
     >
       <View style={commonStyles.onboardingContainer}>
         {/* HEADER */}
-        <OnboardingHeader
-          page={"4"}
-          navigation={navigation}
-          progressPercent={(4 / 6) * 100}
-          prevPageNavigation={"Step3"}
-        />
+        <OnboardingHeader page={"4"} progressPercent={(4 / 6) * 100} />
         {/* LOGIN FORM */}
         <View style={styles.formContainer}>
           <Text style={text.heroText}>{"\n"}Create Sleep Schedule</Text>
           <View style={styles.hoursRecommendation}>
             <Image
-              source={require("../../../assets/images/white_clock.png")}
+              source={require("../../assets/images/white_clock.png")}
               style={styles.icon}
             />
             <Text style={text.subtitle}>
@@ -131,10 +128,10 @@ const OnboardingStep4 = ({ navigation, currentUser }) => {
               onPress={() => setBedTimeSelected((prev) => !prev)}
             >
               <Image
-                source={require("../../../assets/images/blue_moon.png")}
+                source={require("../../assets/images/blue_moon.png")}
                 style={styles.icon}
               />
-              <Text style={{ color: colors.textWhite }}>Bed Time At</Text>
+              <Text style={{ color: colors.themeWhite }}>Bed Time At</Text>
             </Pressable>
 
             {/* Wake Up Box: */}
@@ -146,10 +143,10 @@ const OnboardingStep4 = ({ navigation, currentUser }) => {
               onPress={() => setBedTimeSelected((prev) => !prev)}
             >
               <Image
-                source={require("../../../assets/images/yellow_sun.png")}
+                source={require("../../assets/images/yellow_sun.png")}
                 style={styles.icon}
               />
-              <Text style={{ color: colors.textWhite }}>Wake Up At</Text>
+              <Text style={{ color: colors.themeWhite }}>Wake Up At</Text>
             </Pressable>
           </View>
 
@@ -199,9 +196,9 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   bedOrWakeTrue: {
-    backgroundColor: colors.secondaryButton,
+    backgroundColor: colors.themeSecondary,
     borderWidth: 5,
-    borderColor: colors.themeCTAColor,
+    borderColor: colors.themePrimary,
   },
   bedOrWakeFalse: {
     backgroundColor: colors.themeAccent1,
@@ -218,7 +215,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 40,
   },
   calculateOtherTime: {
-    color: colors.textWhite,
+    color: colors.themeWhite,
     textAlign: "center",
     width: "150%",
     alignSelf: "center",
@@ -230,7 +227,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     alignSelf: "center",
     fontSize: 20,
-    color: colors.textWhite,
+    color: colors.themeWhite,
   },
   hoursRecommendation: {
     display: "flex",
@@ -244,4 +241,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default OnboardingStep4;
+export default OB4SleepTime;

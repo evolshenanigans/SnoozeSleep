@@ -8,14 +8,20 @@ import {
   Platform,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { updateUserFields } from "../../services/handleFirestore";
-import { colors } from "../../utils/colors";
-import { text } from "../../utils/text";
-import OnboardingHeader from "./OnboardingHeader";
+import { updateUserFields } from "../services/handleFirestore";
+import { colors } from "../utils/colors";
+import { text } from "../utils/text";
+import OnboardingHeader from "./OBHeader";
 import ContinueButton from "./ContinueButton";
-import { commonStyles } from "../../utils/commonStyles";
+import { commonStyles } from "../utils/commonStyles";
+import { useRouter } from "expo-router";
+import { Stack } from "expo-router";
+import PropTypes from "prop-types";
+import { useUserContext } from "../services/Context";
 
-const OnboardingStep2 = ({ navigation, currentUser }) => {
+
+const OB2Birthday = ( ) => {
+  const currentUser = useUserContext();
   /**
    * This is onboarding for BIRTHDAY
    */
@@ -24,9 +30,11 @@ const OnboardingStep2 = ({ navigation, currentUser }) => {
   const [allFieldsFilled, setAllFieldsFilled] = useState(false);
   const [loading, setLoading] = useState(false);
   const currentYear = new Date().getFullYear();
+  const router = useRouter();
 
   const handleSubmitBirthday = async () => {
-    if (birthMonth + birthYear !== "") {
+    console.log(currentUser);
+    if (currentUser && birthMonth + birthYear !== "") {
       setLoading(true);
       try {
         // try to submit their birthday.
@@ -41,7 +49,7 @@ const OnboardingStep2 = ({ navigation, currentUser }) => {
               } ${birthYear}`,
             });
             // then navigate to step 3 with the necessary components
-            navigation.navigate("Step3");
+            router.replace(`/(onboarding)/OB3SleepDurationGoal`);
           } else throw { message: `${birthYear} is not a valid year.` };
         } else throw { message: `${birthMonth} is not a valid month.` };
       } catch (error) {
@@ -63,14 +71,10 @@ const OnboardingStep2 = ({ navigation, currentUser }) => {
       keyboardVerticalOffset={-50}
       style={{ flex: 1 }}
     >
+      <Stack.Screen options={{ title: "BIRTH :)", headerShown: false }} />
       <View style={commonStyles.onboardingContainer}>
         {/* HEADER */}
-        <OnboardingHeader
-          page={"2"}
-          navigation={navigation}
-          progressPercent={(2 / 6) * 100}
-          prevPageNavigation={"Step1"}
-        />
+        <OnboardingHeader page={"2"} progressPercent={(2 / 6) * 100} />
         {/* BIRTHDAY FORM */}
         <View style={styles.formContainer}>
           <Text style={text.heroText}>{"\n"}Add Your Birthday</Text>
@@ -97,7 +101,7 @@ const OnboardingStep2 = ({ navigation, currentUser }) => {
                 }
               }}
             />
-            <Text style={{ color: colors.textWhite, fontSize: 14, fontWeight: "800" }}>
+            <Text style={{ color: colors.themeWhite, fontSize: 14, fontWeight: "800" }}>
               /
             </Text>
             <TextInput
@@ -137,7 +141,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 40,
   },
   input: {
-    color: colors.textWhite,
+    color: colors.themeWhite,
   },
   inputLabelContainer: {
     display: "flex",
@@ -147,7 +151,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   inputLabel: {
-    color: colors.textWhite,
+    color: colors.themeWhite,
   },
   formContainer: {
     padding: 40,
@@ -166,4 +170,8 @@ const styles = StyleSheet.create({
   },
 });
 
-export default OnboardingStep2;
+export default OB2Birthday;
+
+OB2Birthday.propTypes = {
+  currentUser: PropTypes.object,
+};

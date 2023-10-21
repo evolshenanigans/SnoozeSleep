@@ -14,6 +14,7 @@ import { TabView, TabBar } from "react-native-tab-view";
 import useUserData from "../hooks/useUserData";
 import { addChallenge, updateChallenge } from "../services/handleFirestore";
 import { Challenge } from "../types/indexTypes";
+import { useUserContext } from "../services/Context";
 
 const challengeList = [
   "Challenge 1",
@@ -64,7 +65,7 @@ const SavedTab = () => (
   </View>
 );
 
-export default function App({ currentUser }) {
+export default function Challenges() {
   const [index, setIndex] = useState(0);
   const [routes] = useState([
     { key: "current", title: "Current" },
@@ -73,7 +74,8 @@ export default function App({ currentUser }) {
   ]);
   // const [challenges, setChallenges] = useState(["Challenge 1", "Challenge 2"]);
   const [completedChallenges, setCompletedChallenges] = useState<string[]>([]);
-  const { challenges } = useUserData(currentUser ? currentUser.email : null);
+  const currentUser = useUserContext();
+  const { challenges } = useUserData();
 
   const onComplete = (challenge) => {
     // setChallenges(challenges.filter((item) => item !== challenge));

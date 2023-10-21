@@ -104,12 +104,12 @@ const styles = StyleSheet.create({
     marginTop: 10,
     paddingVertical: 10,
     textAlign: "center",
-    backgroundColor: colors.mainButton,
+    backgroundColor: colors.themePrimary,
     borderRadius: 100,
     width: 300,
   },
   exitBtn: {
-    color: colors.textWhite,
+    color: colors.themeWhite,
     fontWeight: "bold",
     paddingBottom: 20,
     alignSelf: "flex-end", // why not work
@@ -124,14 +124,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     bottom: 0,
     left: 0,
-    backgroundColor: colors.background,
+    backgroundColor: colors.themeBackground,
     width: "100%",
   },
   popupBg: {
     backgroundColor: "rgba(240, 240, 240, 0.60)",
   },
   repeatsOption: {
-    color: colors.textWhite,
+    color: colors.themeWhite,
     padding: 10,
     marginVertical: 8,
     width: 300,
@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
     borderColor: colors.themeAccent4,
   },
   repeatsOptionTrue: {
-    backgroundColor: colors.secondaryButton,
-    borderColor: colors.mainButton,
+    backgroundColor: colors.themeSecondary,
+    borderColor: colors.themePrimary,
   },
 });

@@ -9,15 +9,16 @@ import {
   Platform,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { FIREBASE_AUTH } from "../../services/FirebaseConfig";
+import { FIREBASE_AUTH } from "../services/FirebaseConfig";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { createNewUserWithDefaultValues } from "../../services/handleFirestore";
-import { colors } from "../../utils/colors";
-import OnboardingHeader from "./OnboardingHeader";
+import { createNewUserWithDefaultValues } from "../services/handleFirestore";
+import { colors } from "../utils/colors";
+import OnboardingHeader from "./OBHeader";
 import ContinueButton from "./ContinueButton";
-import { commonStyles } from "../../utils/commonStyles";
+import { commonStyles } from "../utils/commonStyles";
+import { Link, Stack, useRouter } from "expo-router";
 
-const OnboardingStep1 = ({ navigation, currentUser }) => {
+const OB1SignUp = ({ currentUser }) => {
   /**
    * This is onboarding for CREATE AN ACCOUNT screen
    */
@@ -29,6 +30,7 @@ const OnboardingStep1 = ({ navigation, currentUser }) => {
   const [loading, setLoading] = useState(false);
 
   const auth = FIREBASE_AUTH;
+  const router = useRouter();
 
   const handleSignUp = async () => {
     if (username + email + password + retypePassword !== "") {
@@ -36,9 +38,9 @@ const OnboardingStep1 = ({ navigation, currentUser }) => {
         setLoading(true);
         try {
           const res = await createUserWithEmailAndPassword(auth, email, password);
-          navigation.navigate("Step2");
           console.log(res);
           createNewUserWithDefaultValues(username, email);
+          router.replace(`/(onboarding)/OB2Birthday`);
         } catch (err) {
           console.log(err);
           alert("Sign Up failed " + err.message);
@@ -65,12 +67,8 @@ const OnboardingStep1 = ({ navigation, currentUser }) => {
     >
       {/* HEADER */}
       {/* <View style={{ flex: 1 }}> */}
-      <OnboardingHeader
-        page={"1"}
-        navigation={navigation}
-        progressPercent={(1 / 6) * 100}
-        prevPageNavigation="Login"
-      />
+      <Stack.Screen options={{ headerShown: false }} />
+      <OnboardingHeader page={"1"} progressPercent={(1 / 6) * 100} />
       <View style={commonStyles.onboardingContainer}>
         {/* LOGIN FORM */}
         <View style={styles.loginForm}>
@@ -118,9 +116,11 @@ const OnboardingStep1 = ({ navigation, currentUser }) => {
                 activeCondition={allFieldsFilled}
                 onPressFn={handleSignUp}
               />
-              <Pressable onPress={() => navigation.navigate("Login")}>
-                <Text style={styles.backToLogin}>{"\n<<"} Back to Login</Text>
-              </Pressable>
+              <Link href="/">
+                <Pressable onPress={() => router.back()}>
+                  <Text style={styles.backToLogin}>{"\n<<"} Back to Login</Text>
+                </Pressable>
+              </Link>
             </View>
           )}
         </View>
@@ -132,7 +132,7 @@ const OnboardingStep1 = ({ navigation, currentUser }) => {
 const styles = StyleSheet.create({
   backToLogin: {
     alignSelf: "center",
-    color: colors.textWhite,
+    color: colors.themeWhite,
     textDecorationLine: "underline",
     fontWeight: "bold",
     paddingTop: 20,
@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     alignSelf: "center",
     fontSize: 20,
-    color: colors.textWhite,
+    color: colors.themeWhite,
   },
   input: {
     marginVertical: 4,
@@ -153,15 +153,15 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 10,
     borderColor: "transparent",
-    backgroundColor: colors.textWhite,
+    backgroundColor: colors.themeWhite,
   },
   inputLabel: {
     alignSelf: "flex-start",
-    color: colors.textWhite,
+    color: colors.themeWhite,
   },
   loginForm: {
     padding: 40,
   },
 });
 
-export default OnboardingStep1;
+export default OB1SignUp;

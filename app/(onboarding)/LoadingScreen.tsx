@@ -24,12 +24,6 @@ const LoadingScreen = () => {
   }, [loadingPercent]);
 
   return (
-    // <Animated.View
-    //   key={"home-loading-screen"}
-    //   entering={FadeIn.duration(400)}
-    //   exiting={FadeOut.duration(400)}
-    //   style={styles.container}
-    // >
     <View>
       <Image
         source={require("../../assets/images/loadingStar.png")}
@@ -42,7 +36,6 @@ const LoadingScreen = () => {
       <Text style={styles.text}>
         Just one moment, we are getting your sleep schedule ready!
       </Text>
-      {/* </Animated.View> */}
     </View>
   );
 };
@@ -54,7 +47,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: colors.background,
+    backgroundColor: colors.themeBackground,
     paddingHorizontal: 40,
   },
   icon: {
@@ -62,13 +55,13 @@ const styles = StyleSheet.create({
     width: 100,
   },
   text: {
-    color: colors.textWhite,
+    color: colors.themeWhite,
     fontSize: 17,
     fontWeight: "300",
     textAlign: "center",
   },
   progressView: {
-    backgroundColor: colors.background,
+    backgroundColor: colors.themeBackground,
     width: "90%",
     alignSelf: "center",
     paddingVertical: 30,

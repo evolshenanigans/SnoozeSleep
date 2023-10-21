@@ -11,18 +11,19 @@ import {
   SafeAreaView,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { updateUserFields } from "../../services/handleFirestore";
-import { calculateTime } from "../../services/handleTime";
-import { colors } from "../../utils/colors";
-import { text } from "../../utils/text";
-import OnboardingHeader from "./OnboardingHeader";
+import { updateUserFields } from "../services/handleFirestore";
+import { calculateTime } from "../services/handleTime";
+import { colors } from "../utils/colors";
+import { text } from "../utils/text";
+import OnboardingHeader from "./OBHeader";
 import ContinueButton from "./ContinueButton";
-import useUserData from "../../hooks/useUserData";
-import { RepeatsPopup } from "../RepeatsPopup";
-import { commonStyles } from "../../utils/commonStyles";
+import useUserData from "../hooks/useUserData";
+import { RepeatsPopup } from "../common components/RepeatsPopup";
+import { commonStyles } from "../utils/commonStyles";
+import { useRouter } from "expo-router";
 
 // START COMPONENT
-const OnboardingStep5 = ({ navigation, currentUser, setCurrentUserIsNew }) => {
+const OB5Alarm = ({ currentUser, setCurrentUserIsNew }) => {
   /**
    * This is onboarding for CREATE ALARM
    */
@@ -33,7 +34,8 @@ const OnboardingStep5 = ({ navigation, currentUser, setCurrentUserIsNew }) => {
   // if bedTimeSelected is false, defaults to wake time is selected
   const [allFieldsFilled, setAllFieldsFilled] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const { userData } = useUserData(currentUser.email);
+  const { userData } = useUserData();
+  const router = useRouter();
 
   // TODO: I don't think this does what it's supposed to do.
   const handleSubmitAlarm = async () => {
@@ -64,7 +66,8 @@ const OnboardingStep5 = ({ navigation, currentUser, setCurrentUserIsNew }) => {
             saturdaySleepTime: userData.generalSleepTime,
           });
         }
-        navigation.navigate("Step5");
+        router.replace(`/(onboarding)/OB5Alarm`);
+        // router.back()
       } catch (error) {
         console.error("Error submitting sleep schedule: ", error);
         alert("Whoa, " + error.message);
@@ -88,6 +91,7 @@ const OnboardingStep5 = ({ navigation, currentUser, setCurrentUserIsNew }) => {
       .then(() => {
         console.log("Successfully updated DB");
         setCurrentUserIsNew(false); // Update the state
+        router.replace(`../../(tabs)/_layout?currentUser=${currentUser}`);
       })
       .catch((error) => {
         console.error("Error updating user onboarding status:", error);
@@ -100,7 +104,7 @@ const OnboardingStep5 = ({ navigation, currentUser, setCurrentUserIsNew }) => {
   }, [repeats]);
 
   return (
-    <SafeAreaView style={{ backgroundColor: colors.background }}>
+    <SafeAreaView style={{ backgroundColor: colors.themeBackground }}>
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "position"}
         keyboardVerticalOffset={-50}
@@ -110,18 +114,13 @@ const OnboardingStep5 = ({ navigation, currentUser, setCurrentUserIsNew }) => {
           {/* <ScrollView style={{ flex: 1 }}> */}
           <View style={commonStyles.onboardingContainer}>
             {/* HEADER */}
-            <OnboardingHeader
-              page={"5"}
-              navigation={navigation}
-              progressPercent={(5 / 6) * 100}
-              prevPageNavigation={"Step4"}
-            />
+            <OnboardingHeader page={"5"} progressPercent={(5 / 6) * 100} />
             {/* ALARM FORM */}
             <View style={styles.formContainer}>
               <Text style={text.heroText}>{"\n"}Create Alarm</Text>
               <View style={styles.hoursRecommendation}>
                 <Image
-                  source={require("../../../assets/images/white_clock.png")}
+                  source={require("../../assets/images/white_clock.png")}
                   style={styles.icon}
                 />
                 <Text style={text.subtitle}>
@@ -135,31 +134,31 @@ const OnboardingStep5 = ({ navigation, currentUser, setCurrentUserIsNew }) => {
                 {/* Bedtime Box: */}
                 <Pressable
                   style={styles.bedOrWakeBox}
-                  onPress={() => navigation.navigate("Step4")}
+                  onPress={() => router.replace(`/(onboarding)/OB4SleepTime`)}
                 >
                   <Image
-                    source={require("../../../assets/images/blue_moon.png")}
+                    source={require("../../assets/images/blue_moon.png")}
                     style={styles.icon}
                   />
-                  <Text style={[text.subtitle, { color: colors.textWhite }]}>
+                  <Text style={[text.subtitle, { color: colors.themeWhite }]}>
                     {userData && calculateTime(userData.generalSleepTime)}
                   </Text>
-                  <Text style={{ color: colors.textWhite }}>Bed Time</Text>
+                  <Text style={{ color: colors.themeWhite }}>Bed Time</Text>
                 </Pressable>
 
                 {/* Wake Up Box: */}
                 <Pressable
                   style={styles.bedOrWakeBox}
-                  onPress={() => navigation.navigate("Step4")}
+                  onPress={() => router.replace(`/(onboarding)/OB4SleepTime`)}
                 >
                   <Image
-                    source={require("../../../assets/images/yellow_sun.png")}
+                    source={require("../../assets/images/yellow_sun.png")}
                     style={styles.icon}
                   />
-                  <Text style={[text.subtitle, { color: colors.textWhite }]}>
+                  <Text style={[text.subtitle, { color: colors.themeWhite }]}>
                     {userData && calculateTime(userData.generalWakeTime)}
                   </Text>
-                  <Text style={{ color: colors.textWhite }}>Wake Up</Text>
+                  <Text style={{ color: colors.themeWhite }}>Wake Up</Text>
                 </Pressable>
               </View>
               <View style={styles.tapToEditContainer}>
@@ -217,13 +216,13 @@ const OnboardingStep5 = ({ navigation, currentUser, setCurrentUserIsNew }) => {
                       style={[
                         styles.button,
                         {
-                          backgroundColor: colors.secondaryButton,
+                          backgroundColor: colors.themeSecondary,
                           marginVertical: 10,
                           marginTop: 50,
                         },
                       ]}
                     >
-                      <Text style={{ color: colors.secondaryButtonText }}>
+                      <Text style={{ color: colors.themeWhite }}>
                         Create Another Alarm
                       </Text>
                     </View>
@@ -273,7 +272,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 10,
-    backgroundColor: colors.secondaryButton,
+    backgroundColor: colors.themeSecondary,
   },
   bedOrWakeSelector: {
     flexDirection: "row",
@@ -295,7 +294,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    backgroundColor: colors.background,
+    backgroundColor: colors.themeBackground,
   },
   formContainer: {
     paddingHorizontal: 40,
@@ -305,7 +304,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     alignSelf: "center",
     fontSize: 20,
-    color: colors.textWhite,
+    color: colors.themeWhite,
   },
   hoursRecommendation: {
     display: "flex",
@@ -321,16 +320,16 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   settingHeader: {
-    color: colors.textWhite,
+    color: colors.themeWhite,
     fontSize: 12,
   },
   settingValue: {
-    color: colors.textWhite,
+    color: colors.themeWhite,
     fontWeight: "300",
     fontSize: 12,
   },
   tapToEdit: {
-    color: colors.textWhite,
+    color: colors.themeWhite,
     fontSize: 11,
   },
   tapToEditContainer: {
@@ -340,4 +339,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default OnboardingStep5;
+export default OB5Alarm;

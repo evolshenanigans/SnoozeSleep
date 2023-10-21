@@ -10,13 +10,15 @@ import { Calendar } from "react-native-calendars";
 import React, { useState } from "react";
 import useUserData from "../hooks/useUserData";
 import { colors } from "../utils/colors";
-import TaskList from "../screens/TaskList";
+import TaskList from "../common components/TaskList";
 import { text } from "../utils/text";
-import SleepLogMaker from "../screens/SleepLogMaker";
+import SleepLogMaker from "../common components/SleepLogMaker";
+import { useUserContext } from "../services/Context";
 
-function MyCalendar({ currentUser }) {
+function MyCalendar() {
   const [selected, setSelected] = useState("");
-  const { userData, tasks } = useUserData(currentUser ? currentUser.email : null);
+  const currentUser = useUserContext();
+  const { userData, tasks } = useUserData();
 
   const handleAddNewTask = () => {};
 
@@ -43,7 +45,7 @@ function MyCalendar({ currentUser }) {
           }}
         />
 
-        <SleepLogMaker currentUser={currentUser} />
+        <SleepLogMaker />
         <Pressable style={styles.plusSignContainer} onPress={handleAddNewTask}>
           {/* <Text style={styles.plusSign}>{`\u002B`}</Text> */}
           <Text style={[text.heroText, styles.addNewSleepLog]}>New Sleep Log</Text>
@@ -63,7 +65,7 @@ function MyCalendar({ currentUser }) {
           {tasks ? (
             tasks.length > 0 && (
               <View style={styles.taskContainer}>
-                <TaskList currentUser={currentUser} />
+                <TaskList />
               </View>
             )
           ) : (
@@ -78,16 +80,16 @@ function MyCalendar({ currentUser }) {
 const styles = StyleSheet.create({
   addNewSleepLog: {
     borderRadius: 30,
-    backgroundColor: colors.mainButton,
+    backgroundColor: colors.themePrimary,
     paddingVertical: 10,
     paddingHorizontal: 20,
     width: "60%",
-    color: colors.mainButtonText,
+    color: colors.themeBlack,
     fontSize: 20,
   },
   calendarContainer: {
-    backgroundColor: colors.background,
-    color: colors.textWhite,
+    backgroundColor: colors.themePrimary,
+    color: colors.themeWhite,
   },
   container: {
     flex: 1,
@@ -104,7 +106,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: "center",
     marginTop: 50,
-    color: colors.textWhite,
+    color: colors.themeWhite,
   },
   plusSignContainer: {
     display: "flex",
@@ -118,7 +120,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   todaysTaskLabel: {
-    color: colors.textWhite,
+    color: colors.themeWhite,
     paddingLeft: 20,
     paddingTop: 20,
   },
