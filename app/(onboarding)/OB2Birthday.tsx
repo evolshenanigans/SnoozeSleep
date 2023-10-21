@@ -31,7 +31,8 @@ const OB2Birthday = () => {
   const currentUser = useUserContext();
 
   const handleSubmitBirthday = async () => {
-    if (birthMonth + birthYear !== "") {
+    console.log(currentUser);
+    if (currentUser && birthMonth + birthYear !== "") {
       setLoading(true);
       try {
         // try to submit their birthday.
