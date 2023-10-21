@@ -16,6 +16,7 @@ import ContinueButton from "./ContinueButton";
 import { commonStyles } from "../utils/commonStyles";
 import { useRouter } from "expo-router";
 import { Stack } from "expo-router";
+import PropTypes from "prop-types";
 
 const OB2Birthday = ({ currentUser }) => {
   /**
@@ -29,7 +30,8 @@ const OB2Birthday = ({ currentUser }) => {
   const router = useRouter();
 
   const handleSubmitBirthday = async () => {
-    if (birthMonth + birthYear !== "") {
+    console.log(currentUser);
+    if (currentUser && birthMonth + birthYear !== "") {
       setLoading(true);
       try {
         // try to submit their birthday.
@@ -166,3 +168,7 @@ const styles = StyleSheet.create({
 });
 
 export default OB2Birthday;
+
+OB2Birthday.propTypes = {
+  currentUser: PropTypes.object.isRequired,
+};
