@@ -17,8 +17,11 @@ import { commonStyles } from "../utils/commonStyles";
 import { useRouter } from "expo-router";
 import { Stack } from "expo-router";
 import PropTypes from "prop-types";
+import { useUserContext } from "../services/Context";
 
-const OB2Birthday = ({ currentUser }) => {
+
+const OB2Birthday = ( ) => {
+  const currentUser = useUserContext();
   /**
    * This is onboarding for BIRTHDAY
    */
@@ -170,5 +173,5 @@ const styles = StyleSheet.create({
 export default OB2Birthday;
 
 OB2Birthday.propTypes = {
-  currentUser: PropTypes.object.isRequired,
+  currentUser: PropTypes.object,
 };
