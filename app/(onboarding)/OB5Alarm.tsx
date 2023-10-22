@@ -21,9 +21,10 @@ import useUserData from "../hooks/useUserData";
 import { RepeatsPopup } from "../common components/RepeatsPopup";
 import { commonStyles } from "../utils/commonStyles";
 import { useRouter } from "expo-router";
+import { useUserContext } from "../services/Context";
 
 // START COMPONENT
-const OB5Alarm = ({ currentUser, setCurrentUserIsNew }) => {
+const OB5Alarm = ({ setCurrentUserIsNew }) => {
   /**
    * This is onboarding for CREATE ALARM
    */
@@ -36,6 +37,7 @@ const OB5Alarm = ({ currentUser, setCurrentUserIsNew }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const { userData } = useUserData();
   const router = useRouter();
+  const currentUser = useUserContext();
 
   // TODO: I don't think this does what it's supposed to do.
   const handleSubmitAlarm = async () => {
@@ -90,8 +92,8 @@ const OB5Alarm = ({ currentUser, setCurrentUserIsNew }) => {
     updateUserFields(currentUser.email, { userIsNew: false })
       .then(() => {
         console.log("Successfully updated DB");
-        setCurrentUserIsNew(false); // Update the state
-        router.replace(`../../(tabs)/_layout?currentUser=${currentUser}`);
+        // setCurrentUserIsNew(false); // Update the state
+        router.replace(`/(tabs)/_layout`);
       })
       .catch((error) => {
         console.error("Error updating user onboarding status:", error);

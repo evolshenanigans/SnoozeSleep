@@ -16,6 +16,7 @@ import ContinueButton from "./ContinueButton";
 import useUserData from "../hooks/useUserData";
 import { commonStyles } from "../utils/commonStyles";
 import { useRouter } from "expo-router";
+import { useUserContext } from "../services/Context";
 
 const calculateAgeBasedSleepGoal = (age: number) => {
   switch (true) {
@@ -35,7 +36,7 @@ const calculateAgeBasedSleepGoal = (age: number) => {
 };
 
 // START COMPONENT
-const OB3SleepDurationGoal = ({ currentUser }) => {
+const OB3SleepDurationGoal = () => {
   /**
    * This is onboarding for SLEEP DURATION GOAL
    */
@@ -45,6 +46,7 @@ const OB3SleepDurationGoal = ({ currentUser }) => {
   const { userData } = useUserData();
   const currentYear = new Date().getFullYear();
   const router = useRouter();
+  const currentUser = useUserContext();
 
   useEffect(() => {
     if (userData) {

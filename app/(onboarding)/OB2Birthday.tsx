@@ -16,12 +16,9 @@ import ContinueButton from "./ContinueButton";
 import { commonStyles } from "../utils/commonStyles";
 import { useRouter } from "expo-router";
 import { Stack } from "expo-router";
-import PropTypes from "prop-types";
 import { useUserContext } from "../services/Context";
 
-
-const OB2Birthday = ( ) => {
-  const currentUser = useUserContext();
+const OB2Birthday = () => {
   /**
    * This is onboarding for BIRTHDAY
    */
@@ -31,6 +28,7 @@ const OB2Birthday = ( ) => {
   const [loading, setLoading] = useState(false);
   const currentYear = new Date().getFullYear();
   const router = useRouter();
+  const currentUser = useUserContext();
 
   const handleSubmitBirthday = async () => {
     console.log(currentUser);
@@ -171,7 +169,3 @@ const styles = StyleSheet.create({
 });
 
 export default OB2Birthday;
-
-OB2Birthday.propTypes = {
-  currentUser: PropTypes.object,
-};

@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   calendarContainer: {
-    backgroundColor: colors.themePrimary,
+    backgroundColor: colors.themeBackground,
     color: colors.themeWhite,
   },
   container: {
