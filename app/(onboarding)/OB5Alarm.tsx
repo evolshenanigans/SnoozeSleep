@@ -92,8 +92,8 @@ const OB5Alarm = ({ setCurrentUserIsNew }) => {
     updateUserFields(currentUser.email, { userIsNew: false })
       .then(() => {
         console.log("Successfully updated DB");
-        setCurrentUserIsNew(false); // Update the state
-        router.replace(`../../(tabs)/_layout`);
+        // setCurrentUserIsNew(false); // Update the state
+        router.replace(`/(tabs)/_layout`);
       })
       .catch((error) => {
         console.error("Error updating user onboarding status:", error);

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, Text } from "react-native";
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
 import { onAuthStateChanged } from "firebase/auth";
 import { FIREBASE_AUTH, FIREBASE_DB } from "./services/FirebaseConfig";
 import { doc, getDoc, getFirestore } from "firebase/firestore";
@@ -13,7 +13,7 @@ const Stack = createStackNavigator();
 
 const Index: React.FC = () => {
   const [currentUser, setCurrentUser] = useState<any | null>(null);
-  const [currentUserIsNew, setCurrentUserIsNew] = useState<boolean | null>(null);  // Initialize as null to act as a tri-state
+  const [currentUserIsNew, setCurrentUserIsNew] = useState<boolean | null>(null); // Initialize as null to act as a tri-state
   const db = getFirestore();
 
   useEffect(() => {
@@ -27,6 +27,7 @@ const Index: React.FC = () => {
       checkIfUserIsOnboarded(currentUser.email)
         .then((isNew) => {
           setCurrentUserIsNew(isNew);
+          console.log("user is new?:", isNew);
         })
         .catch((err) => {
           console.warn("Error checking if user is onboarded: ", err);
@@ -53,11 +54,15 @@ const Index: React.FC = () => {
   return (
     <Stack.Navigator initialRouteName="Loading" screenOptions={{ headerShown: false }}>
       {currentUserIsNew === null ? (
-        <Stack.Screen name="Loading" component={LoadingScreen} />  // Assuming you have a Loading component
+        <Stack.Screen
+          name="Loading"
+          component={LoadingScreen}
+          options={{ headerShown: false }}
+        /> // Assuming you have a Loading component
       ) : currentUserIsNew ? (
-        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
       ) : (
-        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
       )}
     </Stack.Navigator>
   );
