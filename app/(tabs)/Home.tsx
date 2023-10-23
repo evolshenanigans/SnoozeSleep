@@ -48,13 +48,19 @@ const Home: React.FC<UserProps> = () => {
     }
   }, [userData]);
 
-  const toggleSwitch = () => {
-    setIsBedtimeEnabled((previousState) => {
-      const newBrightness = previousState ? 0.8 : 0.1; // switch between 10% and 100% brightness
+ const toggleSwitch = () => {
+   setIsBedtimeEnabled(previousState => !previousState);
+  }
+
+  useEffect(() => {
+    if (isBedtimeEnabled) {
+      const currentHour = new Date().getHours();
+      const bedtimeHour = parseInt(bedtime.split(":")[0], 10);
+      const wakeUpHour = parseInt(wakeUpTime.split(":")[0], 10);
+      const newBrightness = (currentHour >= bedtimeHour || currentHour <= wakeUpHour) ? 0.1 : 0.8;
       toggleBrightness(newBrightness);
-      return !previousState;
-    });
-  };
+    }
+  }, [bedtime, wakeUpTime, isBedtimeEnabled]);
 
   const toggleBrightness = async (newBrightness: number): Promise<void> => {
     const { status } = await Brightness.requestPermissionsAsync();
