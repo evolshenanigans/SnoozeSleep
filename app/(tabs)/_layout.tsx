@@ -24,7 +24,7 @@ const TabLabel = (focused: boolean, title: string) => {
   );
 };
 
-const TabIcon = (focused: boolean, img) => {
+const TabIcon = (focused: boolean, img: any) => {
   return (
     <Image
       source={img}

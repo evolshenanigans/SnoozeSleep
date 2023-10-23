@@ -17,6 +17,7 @@ import { colors } from "../utils/colors";
 import * as Brightness from "expo-brightness";
 import { Link } from "expo-router";
 import { useUserContext } from "../services/Context";
+import TabLayout from "./_layout";
 
 const Home: React.FC<UserProps> = () => {
   const [isBedtimeEnabled, setIsBedtimeEnabled] = useState(false);
@@ -64,6 +65,7 @@ const Home: React.FC<UserProps> = () => {
 
   return (
     <ScrollView style={[{ flex: 1 }, styles.backgroundContainer]}>
+      <TabLayout currentUser={useUserContext} />
       {/* HERO IMAGE */}
       <Image
         source={require("../../assets/images/homeImg.png")}
@@ -157,6 +159,7 @@ const Home: React.FC<UserProps> = () => {
         </View>
       </View>
     </ScrollView>
+
   );
 };
 
