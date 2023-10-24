@@ -54,24 +54,36 @@ const Home: React.FC<UserProps> = () => {
     }
   }, [userData]);
 
- const toggleSwitch = () => {
-   setIsBedtimeEnabled(previousState => !previousState);
-  }
+  const [generalSleepTime, setGeneralSleepTime] = useState("");
+  const [generalWakeTime, setGeneralWakeTime] = useState("");
 
   useEffect(() => {
-    if (isBedtimeEnabled) {
-      const currentHour = new Date().getHours();
-      const bedtimeHour = parseInt(bedtime.split(":")[0], 10);
-      const wakeUpHour = parseInt(wakeUpTime.split(":")[0], 10);
-      const newBrightness = (currentHour >= bedtimeHour || currentHour <= wakeUpHour) ? 0.1 : 0.8;
-      toggleBrightness(newBrightness);
+    if (userData) {
+      setGeneralSleepTime(userData.generalSleepTime);
+      setGeneralWakeTime(userData.generalWakeTime);
     }
-  }, [bedtime, wakeUpTime, isBedtimeEnabled]);
+  }, [userData]);
 
-  const toggleBrightness = async (newBrightness: number): Promise<void> => {
-    const { status } = await Brightness.requestPermissionsAsync();
-    if (status === "granted") {
-      Brightness.setSystemBrightnessAsync(newBrightness);
+  const toggleSwitch = async () => {
+    setIsBedtimeEnabled((previousState) => !previousState);
+
+    const currentTime = new Date();
+    const sleepTime = new Date(`1970-01-01T${generalSleepTime}`);
+    const wakeTime = new Date(`1970-01-01T${generalWakeTime}`);
+
+    if (
+      isBedtimeEnabled &&
+      currentTime >= sleepTime &&
+      currentTime <= wakeTime
+    ) {
+      const { status } = await Brightness.requestPermissionsAsync();
+      if (status === "granted") {
+        await Brightness.setSystemBrightnessAsync(0.1); // set brightness to low
+        console.log('brightness set to low')
+      }
+    } else {
+      await Brightness.setSystemBrightnessAsync(1.0);
+      console.log('brightness set to high')
     }
   };
 
@@ -138,7 +150,9 @@ const Home: React.FC<UserProps> = () => {
             <Text style={styles.timetime}>{wakeUpTime}</Text>
             <Switch
               trackColor={{ false: "#767577", true: "#686868" }}
-              thumbColor={isWakeUpEnabled ? colors.themePrimary : colors.themeGray}
+              thumbColor={
+                isWakeUpEnabled ? colors.themePrimary : colors.themeGray
+              }
               onValueChange={() => setIsWakeUpEnabled(!isWakeUpEnabled)}
               value={isWakeUpEnabled}
               style={styles.switches}
