@@ -37,7 +37,7 @@ const Account = () => {
       {renderLogOut("Sign Out", () => {
         FIREBASE_AUTH.signOut();
         console.log("tried to sign you out.");
-        router.replace("/screens/Login");
+        router.replace("/Login");
       })}
     </SafeAreaView>
   );

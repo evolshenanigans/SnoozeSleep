@@ -1,8 +1,48 @@
-export const calculateTime = (
-  time: string,
-  hoursToAdd?: number,
-  minutesToAdd?: number
-) => {
+type CalculateSubProps = {
+  time: string;
+  hoursToSubtract?: number;
+  minutesToSubtract?: number;
+  leadingZero?: boolean;
+};
+type CalculateAddProps = {
+  time: string;
+  hoursToAdd?: number;
+  minutesToAdd?: number;
+  leadingZero?: boolean;
+};
+
+export const formatTimeForDB = (time: string) => {
+  const regex = /^(0[1-9]|1[0-2])\s[0-5][0-9]\s[APap][Mm]$/;
+
+  if (regex.test(time)) {
+    // The time is already in the correct format, return it.
+    return time;
+  } else {
+    // Attempt to convert "HH:MM PM" or "H:MM PM" format to "HH MM PM" format.
+    const match = time.match(/^(\d{1,2}):([0-5][0-9])\s([APap][Mm])$/i);
+
+    if (match) {
+      let hour = match[1];
+      if (hour.length === 1) {
+        hour = `0${hour}`; // Add a leading zero for single-digit hours.
+      }
+      const minute = match[2];
+      const period = match[3].toUpperCase(); // Convert to uppercase (AM/PM).
+
+      return `${hour} ${minute} ${period}`;
+    }
+
+    // Return null if the input format is not recognized.
+    return null;
+  }
+};
+
+export const calculateTime = ({
+  time,
+  hoursToAdd = 0,
+  minutesToAdd = 0,
+  leadingZero = true,
+}: CalculateAddProps): string => {
   try {
     let [hours, minutes, period] = time.split(" ");
     // PLAN:
@@ -32,17 +72,21 @@ export const calculateTime = (
       minutes = "00";
     }
 
-    return `${hours.padStart(2, "0")}:${minutes.padStart(2, "0")} ${period}`;
+    return `${leadingZero ? hours.padStart(2, "0") : parseInt(hours)}:${minutes.padStart(
+      2,
+      "0"
+    )} ${period}`;
   } catch (error) {
     console.log("There was an error calculating time.");
   }
 };
 
-export const calculateTimeWithSubtraction = (
-  time: string,
-  hoursToSubtract?: number,
-  minutesToSubtract?: number
-) => {
+export const calculateTimeWithSubtraction = ({
+  time,
+  hoursToSubtract = 0,
+  minutesToSubtract = 0,
+  leadingZero = true,
+}: CalculateSubProps): string => {
   // PLAN:
   // if there are hours to subtract, do that first
   //  -> subtract the subHours from hours
@@ -71,7 +115,10 @@ export const calculateTimeWithSubtraction = (
       minutes = "0";
     }
 
-    return `${hours.padStart(2, "0")}:${minutes.padStart(2, "0")} ${period}`;
+    return `${leadingZero ? hours.padStart(2, "0") : parseInt(hours)}:${minutes.padStart(
+      2,
+      "0"
+    )} ${period}`;
   } catch (error) {
     console.log("There was an error subtracting time.");
   }

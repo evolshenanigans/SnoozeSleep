@@ -18,7 +18,7 @@ import ContinueButton from "./ContinueButton";
 import { commonStyles } from "../utils/commonStyles";
 import { Link, Stack, useRouter } from "expo-router";
 
-const OB1SignUp = ({ currentUser }) => {
+const OB1SignUp = () => {
   /**
    * This is onboarding for CREATE AN ACCOUNT screen
    */

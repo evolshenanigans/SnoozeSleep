@@ -10,6 +10,11 @@ import Login from "./(onboarding)/Login";
 import LoadingScreen from "./(onboarding)/LoadingScreen";
 import TabLayout from "./(tabs)/_layout";
 import OB1SignUp from "./(onboarding)/OB1SignUp";
+import TaskForm from "./TaskForm";
+import OB2Birthday from "./(onboarding)/OB2Birthday";
+import OB3SleepDurationGoal from "./(onboarding)/OB3SleepDurationGoal";
+import OB4SleepTime from "./(onboarding)/OB4SleepTime";
+import OB5Alarm from "./(onboarding)/OB5Alarm";
 
 const Stack = createStackNavigator();
 
@@ -63,15 +68,43 @@ const Index: React.FC = () => {
         // /> // Assuming you have a Loading component
         <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
       ) : currentUserIsNew ? (
-        <Stack.Screen
-          name="OB2Birthday"
-          component={OB1SignUp}
-          options={{ headerShown: false }}
-        />
+        <>
+          <Stack.Screen
+            name="OB2Birthday"
+            component={OB2Birthday}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="OB3SleepDurationGoal"
+            component={OB3SleepDurationGoal}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="OB4SleepTime"
+            component={OB4SleepTime}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="OB5Alarm"
+            component={OB5Alarm}
+            options={{ headerShown: false }}
+          />
+        </>
       ) : (
         <>
           <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
-          <TabLayout />
+          {/* <TabLayout /> */}
+          <Stack.Screen
+            name="TabLayout"
+            component={TabLayout}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="TaskForm"
+            component={TaskForm}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
         </>
       )}
     </Stack.Navigator>

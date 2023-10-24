@@ -43,8 +43,14 @@ const Home: React.FC<UserProps> = () => {
       let time = userData[`generalSleepTime`];
       // calls calculateTime which converts the time stored in db to human readable 12H format
       // also accepts argument for # hours to add to the given time
-      setBedtime(calculateTime(time) || "");
-      setWakeUpTime(calculateTime(time, userData.sleepDurationGoal) || "");
+      setBedtime(calculateTime({ time: time }) || "");
+      setWakeUpTime(
+        calculateTime({
+          time: time,
+          hoursToAdd: userData.sleepDurationGoal,
+          leadingZero: false,
+        }) || ""
+      );
     }
   }, [userData]);
 
@@ -148,14 +154,14 @@ const Home: React.FC<UserProps> = () => {
         {/* TASKS COMPONENT */}
         <View style={styles.subtitleContainer}>
           <Text style={styles.subtitleText}>Night Routine</Text>
-          <Link href="/TaskList" style={{ paddingBottom: 20 }}>
+          <Link href="/TaskForm" style={{ paddingBottom: 20 }}>
             <Image
               source={require("../../assets/images/add.png")}
               style={styles.addIcon}
             />
           </Link>
         </View>
-        <View style={{ alignSelf: "center" }}>
+        <View style={{ alignSelf: "center", paddingHorizontal: 20 }}>
           <TaskList />
         </View>
       </View>
@@ -206,7 +212,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   goalIcon: {
-    tintColor: colors.themePrimary,
+    tintColor: colors.themeBlue,
     height: 15,
     width: 15,
     marginHorizontal: 10,
