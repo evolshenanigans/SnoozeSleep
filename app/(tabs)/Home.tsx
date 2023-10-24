@@ -43,8 +43,14 @@ const Home: React.FC<UserProps> = () => {
       let time = userData[`generalSleepTime`];
       // calls calculateTime which converts the time stored in db to human readable 12H format
       // also accepts argument for # hours to add to the given time
-      setBedtime(calculateTime(time) || "");
-      setWakeUpTime(calculateTime(time, userData.sleepDurationGoal) || "");
+      setBedtime(calculateTime({ time: time }) || "");
+      setWakeUpTime(
+        calculateTime({
+          time: time,
+          hoursToAdd: userData.sleepDurationGoal,
+          leadingZero: false,
+        }) || ""
+      );
     }
   }, [userData]);
 

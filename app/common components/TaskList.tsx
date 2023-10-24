@@ -35,8 +35,8 @@ const TaskList = () => {
                   <View style={styles.textContainer}>
                     <Text style={styles.taskText}>{task.taskTitle}</Text>
                     <Text style={styles.timeframeText}>
-                      {calculateTime(task.taskStartTime)} -{" "}
-                      {calculateTime(task.taskEndTime)}
+                      {calculateTime({ time: task.taskStartTime, leadingZero: false })} -{" "}
+                      {calculateTime({ time: task.taskEndTime, leadingZero: false })}
                     </Text>
                   </View>
                   <TouchableOpacity
