@@ -22,6 +22,7 @@ import { RepeatsPopup } from "../common components/RepeatsPopup";
 import { commonStyles } from "../utils/commonStyles";
 import { useRouter } from "expo-router";
 import { useUserContext } from "../services/Context";
+import RepeatsButton from "../common components/RepeatsButton";
 
 // START COMPONENT
 const OB5Alarm = ({ setCurrentUserIsNew }) => {
@@ -77,15 +78,6 @@ const OB5Alarm = ({ setCurrentUserIsNew }) => {
         setLoading(false);
       }
     }
-  };
-
-  const handleRepeatsPress = () => {
-    console.log("repeats presssed");
-    setPopupOpen(true);
-  };
-
-  const handleBedTimeReminderPress = () => {
-    console.log("bedtime presssed");
   };
 
   const handleNavigateHome = () => {
@@ -176,34 +168,13 @@ const OB5Alarm = ({ setCurrentUserIsNew }) => {
               {/* Row 2: Bed Time Reminder -------- None > */}
               {/* Row 3: Sound ---------------------- On > */}
               <View style={styles.alarmSettingsContainer}>
-                <Pressable style={styles.alarmSettingsRow} onPress={handleRepeatsPress}>
-                  <Text style={styles.settingHeader}>Repeats</Text>
-                  <Text style={styles.settingValue}>
-                    {repeats} <Text style={styles.settingsArrow}> {`\u3009`}</Text>
-                  </Text>
-                </Pressable>
-
-                <Pressable
-                  style={styles.alarmSettingsRow}
-                  onPress={handleBedTimeReminderPress}
-                >
-                  <Text style={styles.settingHeader}>Bed Time Reminder</Text>
-                  <Text style={styles.settingValue}>
-                    {bedtimeReminder}{" "}
-                    <Text style={styles.settingsArrow}> {`\u3009`}</Text>
-                  </Text>
-                </Pressable>
-
-                <Pressable
-                  style={styles.alarmSettingsRow}
-                  onPress={() => setWithSound((s) => !s)}
-                >
-                  <Text style={styles.settingHeader}>Sound</Text>
-                  <Text style={styles.settingValue}>
-                    {withSound ? "On" : "Off"}{" "}
-                    <Text style={styles.settingsArrow}> {`\u3009`}</Text>
-                  </Text>
-                </Pressable>
+                <RepeatsButton
+                  setPopupOpen={setPopupOpen}
+                  repeats={repeats}
+                  setRepeats={setRepeats}
+                  reminder={bedtimeReminder}
+                  setReminder={setBedtimeReminder}
+                />
               </View>
             </View>
 
@@ -256,17 +227,6 @@ const styles = StyleSheet.create({
   alarmSettingsContainer: {
     marginTop: 30,
   },
-  alarmSettingsRow: {
-    display: "flex",
-    flexDirection: "row",
-    backgroundColor: colors.themeAccent1,
-    justifyContent: "space-between",
-    alignItems: "center",
-    borderRadius: 20,
-    padding: 10,
-    marginVertical: 5,
-    paddingHorizontal: 20,
-  },
   bedOrWakeBox: {
     display: "flex",
     height: 100,
@@ -317,18 +277,6 @@ const styles = StyleSheet.create({
   icon: {
     height: 20,
     width: 20,
-  },
-  settingsArrow: {
-    fontWeight: "bold",
-  },
-  settingHeader: {
-    color: colors.themeWhite,
-    fontSize: 12,
-  },
-  settingValue: {
-    color: colors.themeWhite,
-    fontWeight: "300",
-    fontSize: 12,
   },
   tapToEdit: {
     color: colors.themeWhite,

@@ -148,14 +148,14 @@ const Home: React.FC<UserProps> = () => {
         {/* TASKS COMPONENT */}
         <View style={styles.subtitleContainer}>
           <Text style={styles.subtitleText}>Night Routine</Text>
-          <Link href="/TaskList" style={{ paddingBottom: 20 }}>
+          <Link href="/TaskForm" style={{ paddingBottom: 20 }}>
             <Image
               source={require("../../assets/images/add.png")}
               style={styles.addIcon}
             />
           </Link>
         </View>
-        <View style={{ alignSelf: "center" }}>
+        <View style={{ alignSelf: "center", paddingHorizontal: 20 }}>
           <TaskList />
         </View>
       </View>

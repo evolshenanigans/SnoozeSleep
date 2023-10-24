@@ -206,8 +206,9 @@ const userFieldsReference = {
 const taskReference = {
   taskTitle: "string",
   taskStartTime: "string",
-  taskDuration: "number",
-  enableNotification: "boolean",
+  taskEndTime: "string",
+  repeats: "string",
+  reminder: "string",
   isComplete: "boolean",
 };
 

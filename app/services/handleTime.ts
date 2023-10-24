@@ -1,3 +1,29 @@
+export const formatTimeForDB = (time: string) => {
+  const regex = /^(0[1-9]|1[0-2])\s[0-5][0-9]\s[APap][Mm]$/;
+
+  if (regex.test(time)) {
+    // The time is already in the correct format, return it.
+    return time;
+  } else {
+    // Attempt to convert "HH:MM PM" or "H:MM PM" format to "HH MM PM" format.
+    const match = time.match(/^(\d{1,2}):([0-5][0-9])\s([APap][Mm])$/i);
+
+    if (match) {
+      let hour = match[1];
+      if (hour.length === 1) {
+        hour = `0${hour}`; // Add a leading zero for single-digit hours.
+      }
+      const minute = match[2];
+      const period = match[3].toUpperCase(); // Convert to uppercase (AM/PM).
+
+      return `${hour} ${minute} ${period}`;
+    }
+
+    // Return null if the input format is not recognized.
+    return null;
+  }
+};
+
 export const calculateTime = (
   time: string,
   hoursToAdd?: number,

@@ -10,6 +10,7 @@ import Login from "./(onboarding)/Login";
 import LoadingScreen from "./(onboarding)/LoadingScreen";
 import TabLayout from "./(tabs)/_layout";
 import OB1SignUp from "./(onboarding)/OB1SignUp";
+import TaskForm from "./TaskForm";
 
 const Stack = createStackNavigator();
 
@@ -71,7 +72,17 @@ const Index: React.FC = () => {
       ) : (
         <>
           <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
-          <TabLayout />
+          {/* <TabLayout /> */}
+          <Stack.Screen
+            name="TabLayout"
+            component={TabLayout}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="TaskForm"
+            component={TaskForm}
+            options={{ headerShown: false }}
+          />
         </>
       )}
     </Stack.Navigator>

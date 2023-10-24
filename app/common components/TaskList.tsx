@@ -18,20 +18,7 @@ import { useUserContext } from "../services/Context";
 
 const TaskList = () => {
   const { tasks } = useUserData();
-  const [currTask, setCurrTask] = useState<string>("abc");
   const currentUser = useUserContext();
-
-  const handleAddATask = () => {
-    // TODO: this is how you add a task. Change out hardcoded vals for some input form vals maybe?
-    addTask(currentUser.email, {
-      taskTitle: currTask,
-      taskDuration: 20,
-      isComplete: false,
-      taskStartTime: "10 00 PM", // times must be string of HH MM AA where AA is AM or PM
-      enableNotification: true,
-    });
-    setCurrTask((prev) => prev + "abc");
-  };
 
   const handlePress = (taskTitle: string, changeTo: boolean) => {
     updateTask(currentUser.email, taskTitle, { isComplete: changeTo });
@@ -49,19 +36,23 @@ const TaskList = () => {
                     <Text style={styles.taskText}>{task.taskTitle}</Text>
                     <Text style={styles.timeframeText}>
                       {calculateTime(task.taskStartTime)} -{" "}
-                      {calculateTime(task.taskStartTime, 0, task.taskDuration)}
+                      {calculateTime(task.taskEndTime)}
                     </Text>
                   </View>
                   <TouchableOpacity
-                    style={styles.circle}
+                    style={[
+                      styles.circle,
+                      task.isComplete ? styles.circleTrue : styles.circleFalse,
+                    ]}
                     onPress={() => handlePress(task.taskTitle, !task.isComplete)}
                   >
                     {/* {task.isComplete && <Text style={styles.checkMark}>✔</Text>} */}
                     {task.isComplete && (
-                      <Image
-                        source={require("../../assets/images/loadingStar.png")}
-                        style={styles.checkMark}
-                      />
+                      // <Image
+                      //   source={require("../../assets/images/loadingStar.png")}
+                      //   style={styles.checkMark}
+                      // />
+                      <Text style={styles.checkMark}>{"\u2713"}</Text>
                     )}
                   </TouchableOpacity>
                 </View>
@@ -99,23 +90,32 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    width: "100%",
     backgroundColor: colors.themeAccent4,
     padding: 20,
     marginBottom: 10,
     borderRadius: 10,
   },
   checkMark: {
-    width: 25,
-    height: 25,
+    alignSelf: "center",
+    color: colors.themeWhite,
+    fontSize: 20,
   },
   circle: {
     width: 40,
     height: 40,
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: colors.themeWhite,
     justifyContent: "center",
     alignItems: "center",
+  },
+  circleFalse: {
+    borderColor: colors.themeWhite,
+    color: colors.themeWhite,
+  },
+  circleTrue: {
+    backgroundColor: colors.themeSecondary,
+    borderColor: colors.themePrimary,
     color: colors.themeWhite,
   },
   message: {
