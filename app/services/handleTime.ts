@@ -85,7 +85,7 @@ export const calculateTimeWithSubtraction = ({
   time,
   hoursToSubtract = 0,
   minutesToSubtract = 0,
-  leadingZero = false,
+  leadingZero = true,
 }: CalculateSubProps): string => {
   // PLAN:
   // if there are hours to subtract, do that first

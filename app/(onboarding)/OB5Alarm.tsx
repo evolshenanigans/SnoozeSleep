@@ -83,9 +83,9 @@ const OB5Alarm = ({ setCurrentUserIsNew }) => {
   const handleNavigateHome = () => {
     updateUserFields(currentUser.email, { userIsNew: false })
       .then(() => {
-        console.log("Successfully updated DB");
+        console.log("Successfully signed the user up. Should go to homepage now");
         // setCurrentUserIsNew(false); // Update the state
-        router.replace(`/(tabs)/_layout`);
+        router.replace(`/Home`);
       })
       .catch((error) => {
         console.error("Error updating user onboarding status:", error);
@@ -135,7 +135,7 @@ const OB5Alarm = ({ setCurrentUserIsNew }) => {
                     style={styles.icon}
                   />
                   <Text style={[text.subtitle, { color: colors.themeWhite }]}>
-                    {userData && calculateTime(userData.generalSleepTime)}
+                    {userData && calculateTime({ time: userData.generalSleepTime })}
                   </Text>
                   <Text style={{ color: colors.themeWhite }}>Bed Time</Text>
                 </Pressable>
@@ -150,7 +150,7 @@ const OB5Alarm = ({ setCurrentUserIsNew }) => {
                     style={styles.icon}
                   />
                   <Text style={[text.subtitle, { color: colors.themeWhite }]}>
-                    {userData && calculateTime(userData.generalWakeTime)}
+                    {userData && calculateTime({ time: userData.generalWakeTime })}
                   </Text>
                   <Text style={{ color: colors.themeWhite }}>Wake Up</Text>
                 </Pressable>

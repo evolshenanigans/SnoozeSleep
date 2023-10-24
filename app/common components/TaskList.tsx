@@ -45,6 +45,12 @@ const TaskList = () => {
     }
   }, [currentHours]);
 
+  const didStartTimePass = (taskStartTime) => {
+    let [hour, minute, period] = taskStartTime.split(" ");
+    // if (currentHours > hour && curre)
+    // task.taskStartTime.split(' ')[0]
+  };
+
   return (
     <SafeAreaView>
       <ScrollView>
@@ -79,9 +85,11 @@ const TaskList = () => {
                       )}
                     </TouchableOpacity>
                   </View>
-                  <View style={styles.progressBar}>
-                    <ProgressBar isHomepage={true} progress={20} />
-                  </View>
+                  {
+                    <View style={styles.progressBar}>
+                      <ProgressBar isHomepage={true} progress={20} />
+                    </View>
+                  }
                 </View>
                 // per card
               ))

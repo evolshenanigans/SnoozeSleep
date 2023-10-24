@@ -48,7 +48,7 @@ const TaskForm = () => {
           reminder: reminder,
           isComplete: false,
         });
-        router.replace("/");
+        router.back();
       } catch (err) {
         console.log(err);
       } finally {
