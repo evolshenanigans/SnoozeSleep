@@ -45,10 +45,17 @@ const TaskList = () => {
     }
   }, [currentHours]);
 
-  const didStartTimePass = (taskStartTime) => {
-    let [hour, minute, period] = taskStartTime.split(" ");
-    // if (currentHours > hour && curre)
-    // task.taskStartTime.split(' ')[0]
+  const isTaskInProgress = (startTime: string) => {
+    let [h, m, period]: string[] = startTime.split(" ");
+    let hour: number = parseInt(h);
+    let minute: number = parseInt(m);
+    if (currentHours > 12 && period.toUpperCase() === "PM" && currentHours - 12 >= hour) {
+      if (currentMinutes > minute) {
+        return true;
+      }
+    }
+    // not even going to take into account if you're trying between midnight & 12pm. maybe later.
+    return false;
   };
 
   return (
@@ -85,11 +92,15 @@ const TaskList = () => {
                       )}
                     </TouchableOpacity>
                   </View>
-                  {
-                    <View style={styles.progressBar}>
-                      <ProgressBar isHomepage={true} progress={20} />
-                    </View>
-                  }
+                  <View style={styles.progressBar}>
+                    {isTaskInProgress(task.taskStartTime) ? (
+                      <View style={{ width: "100%", paddingTop: 20 }}>
+                        <ProgressBar isHomepage={true} progress={20} />
+                      </View>
+                    ) : (
+                      <View style={{ width: "100%", paddingTop: 0 }}></View>
+                    )}
+                  </View>
                 </View>
                 // per card
               ))
@@ -125,6 +136,7 @@ const styles = StyleSheet.create({
   card: {
     display: "flex",
     flexDirection: "column",
+    width: "100%",
     justifyContent: "space-between",
     alignItems: "center",
     backgroundColor: colors.themeAccent4,
@@ -169,7 +181,6 @@ const styles = StyleSheet.create({
   progressBar: {
     display: "flex",
     flexDirection: "row",
-    paddingTop: 20,
   },
   taskText: {
     fontSize: 14,
