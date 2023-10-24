@@ -212,7 +212,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   goalIcon: {
-    tintColor: colors.themePrimary,
+    tintColor: colors.themeBlue,
     height: 15,
     width: 15,
     marginHorizontal: 10,

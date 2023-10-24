@@ -31,7 +31,7 @@ const LoadingScreen = () => {
       />
 
       <View style={styles.progressView}>
-        <ProgressBar progress={loadingPercent} />
+        <ProgressBar isHomepage={false} progress={loadingPercent} />
       </View>
       <Text style={styles.text}>
         Just one moment, we are getting your sleep schedule ready!

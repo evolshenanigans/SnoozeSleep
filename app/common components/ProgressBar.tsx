@@ -1,10 +1,19 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
 import { ProgressBarProps } from "../types/componentTypes";
+import { colors } from "../utils/colors";
 
-const ProgressBar: React.FC<ProgressBarProps> = ({ progress }) => {
+const ProgressBar: React.FC<ProgressBarProps> = ({ progress, isHomepage }) => {
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        {
+          height: isHomepage ? 5 : 10,
+          backgroundColor: isHomepage ? colors.themeGray : colors.themeAccent1,
+        },
+      ]}
+    >
       <View style={[styles.progressBar, { width: `${progress}%` }]} />
     </View>
   );
@@ -12,15 +21,13 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ progress }) => {
 
 const styles = StyleSheet.create({
   container: {
-    height: 10,
     borderRadius: 10,
     width: "100%",
-    backgroundColor: "#525B82",
     overflow: "hidden",
   },
   progressBar: {
     height: "100%",
-    backgroundColor: "#9174D0",
+    backgroundColor: colors.themePrimary,
   },
 });
 

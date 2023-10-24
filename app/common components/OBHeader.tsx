@@ -14,7 +14,7 @@ const OBHeader = ({ progressPercent, page }) => {
         <Text style={{ color: colors.themeWhite }}>Step {page} of 6</Text>
       </View>
       <View style={styles.progressView}>
-        <ProgressBar progress={progressPercent} />
+        <ProgressBar isHomepage={false} progress={progressPercent} />
       </View>
       <Pressable onPress={() => router.back()}>
         <Text style={styles.backButton}>{"\n<<"} Back</Text>
