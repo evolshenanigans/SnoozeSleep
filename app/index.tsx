@@ -59,7 +59,10 @@ const Index: React.FC = () => {
   }
 
   return (
-    <Stack.Navigator initialRouteName="Loading" screenOptions={{ headerShown: false }}>
+    <Stack.Navigator
+      initialRouteName="Loading"
+      screenOptions={{ headerShown: false, header: () => null }}
+    >
       {currentUser === null ? (
         // <Stack.Screen
         //   name="Loading"
@@ -69,25 +72,26 @@ const Index: React.FC = () => {
         <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
       ) : currentUserIsNew ? (
         <>
+          {/* <Stack.Screen name="OnboardingStack" component={OBLayout} /> */}
           <Stack.Screen
             name="OB2Birthday"
             component={OB2Birthday}
-            options={{ headerShown: false }}
+            options={{ headerShown: false, header: () => null }}
           />
           <Stack.Screen
             name="OB3SleepDurationGoal"
             component={OB3SleepDurationGoal}
-            options={{ headerShown: false }}
+            options={{ headerShown: false, header: () => null }}
           />
           <Stack.Screen
             name="OB4SleepTime"
             component={OB4SleepTime}
-            options={{ headerShown: false }}
+            options={{ headerShown: false, header: () => null }}
           />
           <Stack.Screen
             name="OB5Alarm"
             component={OB5Alarm}
-            options={{ headerShown: false }}
+            options={{ headerShown: false, header: () => null }}
           />
         </>
       ) : (

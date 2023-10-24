@@ -18,7 +18,7 @@ import ContinueButton from "./ContinueButton";
 import useUserData from "../hooks/useUserData";
 import TimeSelector from "./TimeSelector";
 import { commonStyles } from "../utils/commonStyles";
-import { useRouter } from "expo-router";
+import { Stack, useRouter } from "expo-router";
 import { useUserContext } from "../services/Context";
 
 // START COMPONENT
@@ -94,6 +94,8 @@ const OB4SleepTime = () => {
       keyboardVerticalOffset={50}
       style={{ flex: 1, backgroundColor: colors.themeBackground }}
     >
+      <Stack.Screen options={{ headerShown: false, header: () => null }} />
+
       <View style={commonStyles.onboardingContainer}>
         {/* HEADER */}
         <OnboardingHeader page={"4"} progressPercent={(4 / 6) * 100} />
