@@ -8,6 +8,8 @@ import { doc, getDoc, getFirestore } from "firebase/firestore";
 import Home from "./(tabs)/Home";
 import Login from "./(onboarding)/Login";
 import LoadingScreen from "./(onboarding)/LoadingScreen";
+import TabLayout from "./(tabs)/_layout";
+import OB1SignUp from "./(onboarding)/OB1SignUp";
 
 const Stack = createStackNavigator();
 
@@ -53,16 +55,24 @@ const Index: React.FC = () => {
 
   return (
     <Stack.Navigator initialRouteName="Loading" screenOptions={{ headerShown: false }}>
-      {currentUserIsNew === null ? (
-        <Stack.Screen
-          name="Loading"
-          component={LoadingScreen}
-          options={{ headerShown: false }}
-        /> // Assuming you have a Loading component
-      ) : currentUserIsNew ? (
+      {currentUser === null ? (
+        // <Stack.Screen
+        //   name="Loading"
+        //   component={LoadingScreen}
+        //   options={{ headerShown: false }}
+        // /> // Assuming you have a Loading component
         <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+      ) : currentUserIsNew ? (
+        <Stack.Screen
+          name="OB2Birthday"
+          component={OB1SignUp}
+          options={{ headerShown: false }}
+        />
       ) : (
-        <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
+        <>
+          <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
+          <TabLayout />
+        </>
       )}
     </Stack.Navigator>
   );

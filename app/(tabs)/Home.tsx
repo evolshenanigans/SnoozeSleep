@@ -15,7 +15,7 @@ import TaskList from "../common components/TaskList";
 import { UserProps } from "../types/componentTypes";
 import { colors } from "../utils/colors";
 import * as Brightness from "expo-brightness";
-import { Link } from "expo-router";
+import { Link, Stack } from "expo-router";
 import { useUserContext } from "../services/Context";
 import TabLayout from "./_layout";
 
@@ -65,7 +65,8 @@ const Home: React.FC<UserProps> = () => {
 
   return (
     <ScrollView style={[{ flex: 1 }, styles.backgroundContainer]}>
-      <TabLayout currentUser={useUserContext} />
+      <Stack.Screen options={{ headerShown: false }} />
+      <TabLayout />
       {/* HERO IMAGE */}
       <Image
         source={require("../../assets/images/homeImg.png")}
@@ -159,7 +160,6 @@ const Home: React.FC<UserProps> = () => {
         </View>
       </View>
     </ScrollView>
-
   );
 };
 

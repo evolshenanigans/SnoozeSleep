@@ -24,7 +24,7 @@ const LoadingScreen = () => {
   }, [loadingPercent]);
 
   return (
-    <View>
+    <View style={styles.container}>
       <Image
         source={require("../../assets/images/loadingStar.png")}
         style={styles.icon}
