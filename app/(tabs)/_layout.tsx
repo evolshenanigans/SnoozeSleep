@@ -6,6 +6,7 @@ import calendarIcon from "../../assets/images/calendar.png";
 import challengesIcon from "../../assets/images/challenges.png";
 import accountIcon from "../../assets/images/account.png";
 import { colors } from "../utils/colors";
+import { useUserContext } from "../services/Context";
 
 type TabLayoutProps = {
   currentUser: any; // Replace 'any' with the actual type of currentUser, if known
@@ -38,8 +39,9 @@ const TabIcon = (focused: boolean, img: any) => {
   );
 };
 
-export default function TabLayout({ currentUser }: TabLayoutProps) {
+export default function TabLayout() {
   // const colorScheme = useColorScheme();
+  const currentUser = useUserContext();
 
   return (
     <Tabs

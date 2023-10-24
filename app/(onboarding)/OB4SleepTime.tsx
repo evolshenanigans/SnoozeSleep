@@ -58,27 +58,27 @@ const OB4SleepTime = () => {
 
   useEffect(() => {
     if (bedTimeSelected) {
-      setBedTime(calculateTime(goalTime));
+      setBedTime(calculateTime({ time: goalTime }));
       const wake = userData
-        ? calculateTime(
-            goalTime,
-            Math.floor(userData.sleepDurationGoal),
-            Math.floor(
+        ? calculateTime({
+            time: goalTime,
+            hoursToAdd: Math.floor(userData.sleepDurationGoal),
+            minutesToAdd: Math.floor(
               (userData.sleepDurationGoal - Math.floor(userData.sleepDurationGoal)) * 60
-            )
-          )
+            ),
+          })
         : "";
       setWakeTime(wake);
     } else {
-      setWakeTime(calculateTime(goalTime));
+      setWakeTime(calculateTime({ time: goalTime }));
       const sleep = userData
-        ? calculateTimeWithSubtraction(
-            goalTime,
-            Math.floor(userData.sleepDurationGoal),
-            Math.floor(
+        ? calculateTimeWithSubtraction({
+            time: goalTime,
+            hoursToSubtract: Math.floor(userData.sleepDurationGoal),
+            minutesToSubtract: Math.floor(
               (userData.sleepDurationGoal - Math.floor(userData.sleepDurationGoal)) * 60
-            )
-          )
+            ),
+          })
         : "";
       setBedTime(sleep);
     }

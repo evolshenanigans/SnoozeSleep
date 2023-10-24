@@ -8,6 +8,13 @@ import { doc, getDoc, getFirestore } from "firebase/firestore";
 import Home from "./(tabs)/Home";
 import Login from "./(onboarding)/Login";
 import LoadingScreen from "./(onboarding)/LoadingScreen";
+import TabLayout from "./(tabs)/_layout";
+import OB1SignUp from "./(onboarding)/OB1SignUp";
+import TaskForm from "./TaskForm";
+import OB2Birthday from "./(onboarding)/OB2Birthday";
+import OB3SleepDurationGoal from "./(onboarding)/OB3SleepDurationGoal";
+import OB4SleepTime from "./(onboarding)/OB4SleepTime";
+import OB5Alarm from "./(onboarding)/OB5Alarm";
 
 const Stack = createStackNavigator();
 
@@ -53,16 +60,52 @@ const Index: React.FC = () => {
 
   return (
     <Stack.Navigator initialRouteName="Loading" screenOptions={{ headerShown: false }}>
-      {currentUserIsNew === null ? (
-        <Stack.Screen
-          name="Loading"
-          component={LoadingScreen}
-          options={{ headerShown: false }}
-        /> // Assuming you have a Loading component
-      ) : currentUserIsNew ? (
+      {currentUser === null ? (
+        // <Stack.Screen
+        //   name="Loading"
+        //   component={LoadingScreen}
+        //   options={{ headerShown: false }}
+        // /> // Assuming you have a Loading component
         <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+      ) : currentUserIsNew ? (
+        <>
+          <Stack.Screen
+            name="OB2Birthday"
+            component={OB2Birthday}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="OB3SleepDurationGoal"
+            component={OB3SleepDurationGoal}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="OB4SleepTime"
+            component={OB4SleepTime}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="OB5Alarm"
+            component={OB5Alarm}
+            options={{ headerShown: false }}
+          />
+        </>
       ) : (
-        <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
+        <>
+          <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
+          {/* <TabLayout /> */}
+          <Stack.Screen
+            name="TabLayout"
+            component={TabLayout}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="TaskForm"
+            component={TaskForm}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+        </>
       )}
     </Stack.Navigator>
   );

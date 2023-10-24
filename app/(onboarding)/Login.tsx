@@ -7,17 +7,20 @@ import {
   ActivityIndicator,
   Pressable,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FIREBASE_AUTH } from "../services/FirebaseConfig";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { colors } from "../utils/colors";
 import { text } from "../utils/text";
 import { Link, Stack, useRouter } from "expo-router";
+import { useUserContext } from "../services/Context";
+import useUserData from "../hooks/useUserData";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const { userData } = useUserData();
 
   const auth = FIREBASE_AUTH;
   const router = useRouter();
@@ -28,7 +31,7 @@ const Login = () => {
       try {
         const res = await signInWithEmailAndPassword(auth, email, password);
         console.log(res);
-        // router.replace("/(tabs)/_layout");
+        router.replace("/Home");
         // nav to home
       } catch (err) {
         console.log(err);

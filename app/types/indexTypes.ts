@@ -47,8 +47,9 @@ export type UserFields = {
 export type Task = {
   taskTitle: string;
   taskStartTime: string;
-  taskDuration: number;
-  enableNotification: boolean;
+  taskEndTime: string;
+  repeats: string;
+  reminder: string;
   isComplete: boolean;
 };
 
