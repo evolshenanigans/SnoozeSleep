@@ -65,27 +65,23 @@ const Home: React.FC<UserProps> = () => {
   }, [userData]);
 
   const toggleSwitch = async () => {
-    setIsBedtimeEnabled((previousState) => !previousState);
-
+    setIsBedtimeEnabled(previousState => !previousState);
+    
     const currentTime = new Date();
     const sleepTime = new Date(`1970-01-01T${generalSleepTime}`);
     const wakeTime = new Date(`1970-01-01T${generalWakeTime}`);
-
-    if (
-      isBedtimeEnabled &&
-      currentTime >= sleepTime &&
-      currentTime <= wakeTime
-    ) {
-      const { status } = await Brightness.requestPermissionsAsync();
-      if (status === "granted") {
-        await Brightness.setSystemBrightnessAsync(0.1); // set brightness to low
-        console.log('brightness set to low')
-      }
+    
+    const { status } = await Brightness.requestPermissionsAsync();
+  if (status === 'granted') {
+    if (isBedtimeEnabled && currentTime >= sleepTime && currentTime <= wakeTime) {
+      await Brightness.setSystemBrightnessAsync(0.1);  // set brightness to low
+      console.log("low");
     } else {
       await Brightness.setSystemBrightnessAsync(1.0);
-      console.log('brightness set to high')
+      console.log("high");
     }
-  };
+  }
+};
 
   return (
     <ScrollView style={[{ flex: 1 }, styles.backgroundContainer]}>
