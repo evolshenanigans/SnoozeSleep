@@ -18,6 +18,7 @@ import * as Brightness from "expo-brightness";
 import { Link, Stack } from "expo-router";
 import { useUserContext } from "../services/Context";
 import TabLayout from "./_layout";
+import Noti from "../notifications/Notifications";
 
 const Home: React.FC<UserProps> = () => {
   const [isBedtimeEnabled, setIsBedtimeEnabled] = useState(false);
@@ -72,6 +73,7 @@ const Home: React.FC<UserProps> = () => {
   return (
     <ScrollView style={[{ flex: 1 }, styles.backgroundContainer]}>
       <Stack.Screen options={{ headerShown: false }} />
+      {/* TABS */}
       <TabLayout />
       {/* HERO IMAGE */}
       <Image
@@ -150,7 +152,7 @@ const Home: React.FC<UserProps> = () => {
               : "Sleep Goal: Loading..."}
           </Text>
         </View>
-
+        <Noti />
         {/* TASKS COMPONENT */}
         <View style={styles.subtitleContainer}>
           <Text style={styles.subtitleText}>Night Routine</Text>
