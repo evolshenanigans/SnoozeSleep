@@ -18,12 +18,8 @@ import * as Brightness from "expo-brightness";
 import { Link, Stack } from "expo-router";
 import { useUserContext } from "../services/Context";
 import TabLayout from "./_layout";
-import {usePushNotifications} from "../notifications/Notifications";
 
 const Home: React.FC<UserProps> = () => {
-
-  const {expoPushToken} = usePushNotifications();
-  console.log("expoPushToken: ", expoPushToken);
 
   const [isBedtimeEnabled, setIsBedtimeEnabled] = useState(false);
   const [isWakeUpEnabled, setIsWakeUpEnabled] = useState(false);

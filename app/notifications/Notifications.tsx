@@ -28,7 +28,7 @@ const notificationListener = useRef<Notifications.Subscription>();
 const responseListener = useRef<Notifications.Subscription>();
 
 async function registerForPushNotificationsAsync() {
-  let token;
+  let token: Notifications.ExpoPushToken | undefined;
   if(Device.isDevice){
     const{status: existingStatus} = await Notifications.getPermissionsAsync();
     let finalStatus = existingStatus;

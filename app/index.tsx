@@ -15,10 +15,15 @@ import OB2Birthday from "./(onboarding)/OB2Birthday";
 import OB3SleepDurationGoal from "./(onboarding)/OB3SleepDurationGoal";
 import OB4SleepTime from "./(onboarding)/OB4SleepTime";
 import OB5Alarm from "./(onboarding)/OB5Alarm";
+import {usePushNotifications} from "../app/notifications/Notifications";
+
+
 
 const Stack = createStackNavigator();
 
 const Index: React.FC = () => {
+  const {expoPushToken} = usePushNotifications();
+  console.log("expoPushToken: ", expoPushToken);
   const [currentUser, setCurrentUser] = useState<any | null>(null);
   const [currentUserIsNew, setCurrentUserIsNew] = useState<boolean | null>(null); // Initialize as null to act as a tri-state
   const db = getFirestore();
