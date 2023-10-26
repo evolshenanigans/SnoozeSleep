@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "381149447959",
+    "project_id": "snoozesense-681af",
+    "storage_bucket": "snoozesense-681af.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:381149447959:android:2a023f4dbb27839d051952",
+        "android_client_info": {
+          "package_name": "com.SnoozeSense.SnoozeSense"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALnI8c5QpvwZdt4pZG2jnpAfzCz4IkpIM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -18,9 +18,13 @@ import * as Brightness from "expo-brightness";
 import { Link, Stack } from "expo-router";
 import { useUserContext } from "../services/Context";
 import TabLayout from "./_layout";
-import Noti from "../notifications/Notifications";
+import {usePushNotifications} from "../notifications/Notifications";
 
 const Home: React.FC<UserProps> = () => {
+
+  const {expoPushToken} = usePushNotifications();
+  console.log("expoPushToken: ", expoPushToken);
+
   const [isBedtimeEnabled, setIsBedtimeEnabled] = useState(false);
   const [isWakeUpEnabled, setIsWakeUpEnabled] = useState(false);
   const [bedtime, setBedtime] = useState<string>("8:00 PM");
@@ -152,7 +156,6 @@ const Home: React.FC<UserProps> = () => {
               : "Sleep Goal: Loading..."}
           </Text>
         </View>
-        <Noti />
         {/* TASKS COMPONENT */}
         <View style={styles.subtitleContainer}>
           <Text style={styles.subtitleText}>Night Routine</Text>
