@@ -1,17 +1,26 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, initializeAuth, getReactNativePersistence } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
-import { KEYS } from "../../app/key";
+// import { KEYS } from "../../app/key";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: KEYS.APIKEY,
-  authDomain: KEYS.AUTHDOMAIN,
-  projectId: KEYS.PROJECTID,
-  storageBucket: KEYS.STORAGEBUCKET,
-  messagingSenderId: KEYS.MESSAGESENDERID,
-  appId: KEYS.APPID,
+  apiKey: process.env.APIKEY,
+  authDomain: process.env.AUTHDOMAIN,
+  projectId: process.env.PROJECTID,
+  storageBucket: process.env.STORAGEBUCKET,
+  messagingSenderId: process.env.MESSAGESENDERID,
+  appId: process.env.APPID,
+
+  // uncomment these when you're running npx expo build
+  // but comment them back out when you do an expo build
+  // apiKey: KEYS.APIKEY,
+  // authDomain: KEYS.AUTHDOMAIN,
+  // projectId: KEYS.PROJECTID,
+  // storageBucket: KEYS.STORAGEBUCKET,
+  // messagingSenderId: KEYS.MESSAGESENDERID,
+  // appId: KEYS.APPID,
 };
 
 // Initialize Firebase
