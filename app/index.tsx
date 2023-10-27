@@ -15,10 +15,12 @@ import OB2Birthday from "./(onboarding)/OB2Birthday";
 import OB3SleepDurationGoal from "./(onboarding)/OB3SleepDurationGoal";
 import OB4SleepTime from "./(onboarding)/OB4SleepTime";
 import OB5Alarm from "./(onboarding)/OB5Alarm";
+import registerNNPushToken from 'native-notify';
 
 const Stack = createStackNavigator();
 
-const Index: React.FC = () => {
+export default function Index() {
+  registerNNPushToken(14065, 'zAyyDbddJtYILaCDcvGdMD');
   const [currentUser, setCurrentUser] = useState<any | null>(null);
   const [currentUserIsNew, setCurrentUserIsNew] = useState<boolean | null>(null); // Initialize as null to act as a tri-state
   const db = getFirestore();
@@ -111,4 +113,4 @@ const Index: React.FC = () => {
   );
 };
 
-export default Index;
+
