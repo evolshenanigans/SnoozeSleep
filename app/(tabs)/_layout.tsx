@@ -49,6 +49,7 @@ export default function TabLayout() {
         tabBarActiveTintColor: colors.themePrimary,
         tabBarInactiveTintColor: colors.themeWhite,
         tabBarStyle: styles.tabBar,
+        headerShown: false,
       }}
     >
       <Tabs.Screen
