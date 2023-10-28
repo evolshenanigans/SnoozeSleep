@@ -15,7 +15,7 @@ import OnboardingHeader from "./OBHeader";
 import ContinueButton from "./ContinueButton";
 import useUserData from "../hooks/useUserData";
 import { commonStyles } from "../utils/commonStyles";
-import { useRouter } from "expo-router";
+import { Stack, useRouter } from "expo-router";
 import { useUserContext } from "../services/Context";
 
 const calculateAgeBasedSleepGoal = (age: number) => {
@@ -88,6 +88,7 @@ const OB3SleepDurationGoal = () => {
       keyboardVerticalOffset={-150}
       style={{ flex: 1 }}
     >
+      <Stack.Screen options={{ headerShown: false, header: () => null }} />
       <View style={commonStyles.onboardingContainer}>
         {/* HEADER */}
         <OnboardingHeader page={"3"} progressPercent={(3 / 6) * 100} />

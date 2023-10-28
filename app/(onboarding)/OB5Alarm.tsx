@@ -20,7 +20,7 @@ import ContinueButton from "./ContinueButton";
 import useUserData from "../hooks/useUserData";
 import { RepeatsPopup } from "../common components/RepeatsPopup";
 import { commonStyles } from "../utils/commonStyles";
-import { useRouter } from "expo-router";
+import { Stack, useRouter } from "expo-router";
 import { useUserContext } from "../services/Context";
 import RepeatsButton from "../common components/RepeatsButton";
 
@@ -99,6 +99,7 @@ const OB5Alarm = ({ setCurrentUserIsNew }) => {
 
   return (
     <SafeAreaView style={{ backgroundColor: colors.themeBackground }}>
+      <Stack.Screen options={{ headerShown: false, header: () => null }} />
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "position"}
         keyboardVerticalOffset={-50}

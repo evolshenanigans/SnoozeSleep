@@ -69,7 +69,7 @@ const OB2Birthday = () => {
       keyboardVerticalOffset={-50}
       style={{ flex: 1 }}
     >
-      <Stack.Screen options={{ title: "BIRTH :)", headerShown: false }} />
+      <Stack.Screen options={{ headerShown: false, header: () => null }} />
       <View style={commonStyles.onboardingContainer}>
         {/* HEADER */}
         <OnboardingHeader page={"2"} progressPercent={(2 / 6) * 100} />

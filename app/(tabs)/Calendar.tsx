@@ -25,23 +25,33 @@ function MyCalendar() {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView style={styles.calendarContainer}>
-        <View style={styles.goalContainer}>
-          <Text style={styles.goalText}>
-            {userData
+        <Text style={styles.titleText}>
+          {/* {userData
               ? `${userData.username}'s Sleep Goal: ${userData.sleepDurationGoal} Hours`
-              : "Loading..."}
-          </Text>
-        </View>
+              : "Loading..."} */}
+          Progress Calendar
+        </Text>
         <Calendar
           onDayPress={(day) => {
             setSelected(day.dateString);
           }}
-          markedDates={{
-            [selected]: {
-              selected: true,
-              disableTouchEvent: true,
-              selectedColor: "orange", // ts says "selectedDotColor" doesn't exist
-            },
+          // markedDates={{
+          //   [selected]: {
+          //     selected: true,
+          //     disableTouchEvent: true,
+          //     selectedColor: colors.themePrimary, // ts says "selectedDotColor" doesn't exist
+          //   },
+          // }}
+          // style={styles.calendar}
+          theme={{
+            backgroundColor: colors.themeRed,
+            calendarBackground: colors.themeRed,
+            textSectionTitleColor: colors.themeRed,
+            selectedDayBackgroundColor: colors.themeRed,
+            selectedDayTextColor: colors.themeRed,
+            todayTextColor: colors.themeRed,
+            dayTextColor: colors.themeRed,
+            textDisabledColor: colors.themeRed,
           }}
         />
 
@@ -87,26 +97,18 @@ const styles = StyleSheet.create({
     color: colors.themeBlack,
     fontSize: 20,
   },
+  calendar: {
+    backgroundColor: colors.themeAccent4,
+    borderRadius: 20,
+  },
   calendarContainer: {
     backgroundColor: colors.themeBackground,
     color: colors.themeWhite,
+    paddingHorizontal: 20,
   },
   container: {
     flex: 1,
     padding: 20,
-  },
-  goalContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 0,
-    marginTop: 40,
-  },
-  goalText: {
-    fontSize: 20,
-    textAlign: "center",
-    marginTop: 50,
-    color: colors.themeWhite,
   },
   plusSignContainer: {
     display: "flex",
@@ -118,6 +120,14 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+  },
+  titleText: {
+    paddingTop: 40,
+    paddingBottom: 20,
+    fontSize: 16,
+    alignSelf: "flex-start",
+    marginTop: 50,
+    color: colors.themeWhite,
   },
   todaysTaskLabel: {
     color: colors.themeWhite,
