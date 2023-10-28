@@ -8,18 +8,19 @@ import {
   FlatList,
   ScrollView,
   Image,
+  Pressable,
 } from "react-native";
 import useUserData from "../hooks/useUserData";
 import { calculateTime } from "../services/handleTime";
 import TaskList from "../common components/TaskList";
-import { UserProps } from "../types/componentTypes";
 import { colors } from "../utils/colors";
 import * as Brightness from "expo-brightness";
 import { Link, Stack } from "expo-router";
 import { useUserContext } from "../services/Context";
 import TabLayout from "./_layout";
+import { setupLocalNotifications } from "../services/NotificationsService";
 
-const Home: React.FC<UserProps> = () => {
+const Home: React.FC = () => {
   const [isBedtimeEnabled, setIsBedtimeEnabled] = useState(false);
   const [isWakeUpEnabled, setIsWakeUpEnabled] = useState(false);
   const [bedtime, setBedtime] = useState<string>("8:00 PM");
@@ -53,6 +54,12 @@ const Home: React.FC<UserProps> = () => {
       );
     }
   }, [userData]);
+
+  useEffect(() => {
+    setupLocalNotifications(`ZZZ`, `Dream team colab :)`, 2);
+    const dayday = new Date();
+    // console.log("today", dayday);
+  }, []);
 
   const toggleSwitch = () => {
     setIsBedtimeEnabled((previousState) => {
@@ -103,7 +110,9 @@ const Home: React.FC<UserProps> = () => {
               style={styles.editIcon}
             />
           </View>
-          <Text style={styles.viewAllText}>View All</Text>
+          <Pressable onPress={() => setupLocalNotifications("zzzz", "Time to sleep!", 5)}>
+            <Text style={styles.viewAllText}>View All</Text>
+          </Pressable>
         </View>
 
         {/* SCHEDULE BOXES */}

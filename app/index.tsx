@@ -30,6 +30,10 @@ const Index: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    console.log("currentUser is null?: ", currentUser === null ? "true" : "false");
+  }, [currentUser]);
+
+  useEffect(() => {
     if (currentUser && currentUser.email) {
       checkIfUserIsOnboarded(currentUser.email)
         .then((isNew) => {
@@ -104,7 +108,7 @@ const Index: React.FC = () => {
             component={TaskForm}
             options={{ headerShown: false }}
           />
-          <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+          {/* <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} /> */}
         </>
       )}
     </Stack.Navigator>
