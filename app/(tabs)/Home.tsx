@@ -4,8 +4,6 @@ import {
   Switch,
   Text,
   StyleSheet,
-  TouchableOpacity,
-  FlatList,
   ScrollView,
   Image,
   Pressable,
@@ -16,9 +14,9 @@ import TaskList from "../common components/TaskList";
 import { colors } from "../utils/colors";
 import * as Brightness from "expo-brightness";
 import { Link, Stack } from "expo-router";
-import { useUserContext } from "../services/Context";
 import TabLayout from "./_layout";
 import { setupLocalNotifications } from "../services/NotificationsService";
+import TimeTilBedtime from "../common components/TimeTilBedtime";
 
 const Home: React.FC = () => {
   const [isBedtimeEnabled, setIsBedtimeEnabled] = useState(false);
@@ -101,6 +99,7 @@ const Home: React.FC = () => {
         </View>
         <Text style={styles.message}>You currently have no challenges</Text>
 
+        <TimeTilBedtime />
         {/* CURRENT SCHEDULE */}
         <View style={styles.subtitleContainer}>
           <View style={styles.sleepAndEditContainer}>

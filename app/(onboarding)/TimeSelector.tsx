@@ -1,9 +1,10 @@
-import { View, Text, Pressable, StyleSheet, TextInput } from "react-native";
+import { View, Text, Pressable, StyleSheet, TextInput, ScrollView } from "react-native";
 import React, { useState, useEffect } from "react";
 import { text } from "../utils/text";
 import { colors } from "../utils/colors";
+import { calculateTime } from "../services/handleTime";
 
-const TimeSelector = ({ setGoalTime }) => {
+const TimeSelector = ({ setGoalTime, includeTimeZone }) => {
   /**
    * This component lets you set a time
    */
@@ -35,9 +36,6 @@ const TimeSelector = ({ setGoalTime }) => {
 
   return (
     <>
-      <Text style={[text.subtitle, { textAlign: "left", fontWeight: "bold" }]}>
-        {"\n\n"}2. Select Time {"\n"}
-      </Text>
       <View style={styles.timeSelectorContainer}>
         {/* 4 columns: HOURS, colon, MINUTES, AM/PM */}
 
