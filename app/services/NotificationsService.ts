@@ -23,5 +23,5 @@ export async function setupLocalNotifications(
       // trigger MUST be in seconds from now. Convert all scheduled times to seconds from now
     },
   });
-  console.log(`Scheduled notification with ID: ${notificationId}`);
+  console.log(`Scheduled notification ${title} with ID: ${notificationId}`);
 }

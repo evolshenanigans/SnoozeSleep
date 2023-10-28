@@ -99,6 +99,7 @@ const OB4SleepTime = () => {
         <View style={commonStyles.onboardingContainer}>
           {/* HEADER */}
           <OnboardingHeader page={"4"} progressPercent={(4 / 6) * 100} />
+
           {/* LOGIN FORM */}
           <View style={styles.formContainer}>
             <Text style={text.heroText}>{"\n"}Create Sleep Schedule</Text>
