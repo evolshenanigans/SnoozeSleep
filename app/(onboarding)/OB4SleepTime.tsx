@@ -7,6 +7,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   Pressable,
+  ScrollView,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { updateUserFields } from "../services/handleFirestore";
@@ -94,98 +95,103 @@ const OB4SleepTime = () => {
       keyboardVerticalOffset={50}
       style={{ flex: 1, backgroundColor: colors.themeBackground }}
     >
-      <Stack.Screen options={{ headerShown: false, header: () => null }} />
-
-      <View style={commonStyles.onboardingContainer}>
-        {/* HEADER */}
-        <OnboardingHeader page={"4"} progressPercent={(4 / 6) * 100} />
-        {/* LOGIN FORM */}
-        <View style={styles.formContainer}>
-          <Text style={text.heroText}>{"\n"}Create Sleep Schedule</Text>
-          <View style={styles.hoursRecommendation}>
-            <Image
-              source={require("../../assets/images/white_clock.png")}
-              style={styles.icon}
-            />
-            <Text style={text.subtitle}>
-              {"\t"}
-              {userData && userData.sleepDurationGoal} Hours
-            </Text>
-          </View>
-
-          {/* BED TIME OR WAKE UP TIME SELECTOR */}
-          <Text
-            style={[
-              text.subtitle,
-              { textAlign: "left", fontWeight: "bold", paddingTop: 20 },
-            ]}
-          >
-            1. Select One {"\n"}
-          </Text>
-          <View style={styles.bedOrWakeSelector}>
-            {/* Bedtime Box: */}
-            <Pressable
-              style={[
-                styles.bedOrWakeBox,
-                bedTimeSelected ? styles.bedOrWakeTrue : styles.bedOrWakeFalse,
-              ]}
-              onPress={() => setBedTimeSelected((prev) => !prev)}
-            >
-              <Image
-                source={require("../../assets/images/blue_moon.png")}
-                style={styles.icon}
-              />
-              <Text style={{ color: colors.themeWhite }}>Bed Time At</Text>
-            </Pressable>
-
-            {/* Wake Up Box: */}
-            <Pressable
-              style={[
-                styles.bedOrWakeBox,
-                bedTimeSelected ? styles.bedOrWakeFalse : styles.bedOrWakeTrue,
-              ]}
-              onPress={() => setBedTimeSelected((prev) => !prev)}
-            >
-              <Image
-                source={require("../../assets/images/yellow_sun.png")}
-                style={styles.icon}
-              />
-              <Text style={{ color: colors.themeWhite }}>Wake Up At</Text>
-            </Pressable>
-          </View>
-
-          {/* TOGGLE TIME */}
-          <TimeSelector setGoalTime={setGoalTime} />
-
-          {/* CALCULATE WAKE HOURS */}
-          {bedTimeSelected ? (
-            <Text style={styles.calculateOtherTime}>
-              Calculated Wake Up Time:{" "}
-              {/* calculate the wake up time by the hours + durationgoal */}
-              {wakeTime}.
-            </Text>
-          ) : (
-            <Text style={styles.calculateOtherTime}>
-              Calculated Bed Time: {/* calculate bed time by the hours - durationgoal */}
-              {bedTime}.
-            </Text>
-          )}
-        </View>
-
-        {/* CONTINUE BUTTON OR LOADING INDICATOR */}
+      <ScrollView style={{ height: "100%" }}>
         <View style={commonStyles.onboardingContainer}>
-          {loading ? (
-            <ActivityIndicator size="large" color="white" />
-          ) : (
-            <View style={styles.buttonContainer}>
-              <ContinueButton
-                activeCondition={allFieldsFilled}
-                onPressFn={handleSubmitSleepSchedule}
+          {/* HEADER */}
+          <OnboardingHeader page={"4"} progressPercent={(4 / 6) * 100} />
+
+          {/* LOGIN FORM */}
+          <View style={styles.formContainer}>
+            <Text style={text.heroText}>{"\n"}Create Sleep Schedule</Text>
+            <View style={styles.hoursRecommendation}>
+              <Image
+                source={require("../../assets/images/white_clock.png")}
+                style={styles.icon}
               />
+              <Text style={text.subtitle}>
+                {"\t"}
+                {userData && userData.sleepDurationGoal} Hours
+              </Text>
             </View>
-          )}
+
+            {/* BED TIME OR WAKE UP TIME SELECTOR */}
+            <Text
+              style={[
+                text.subtitle,
+                { textAlign: "left", fontWeight: "bold", paddingTop: 20 },
+              ]}
+            >
+              1. Select One {"\n"}
+            </Text>
+            <View style={styles.bedOrWakeSelector}>
+              {/* Bedtime Box: */}
+              <Pressable
+                style={[
+                  styles.bedOrWakeBox,
+                  bedTimeSelected ? styles.bedOrWakeTrue : styles.bedOrWakeFalse,
+                ]}
+                onPress={() => setBedTimeSelected((prev) => !prev)}
+              >
+                <Image
+                  source={require("../../assets/images/blue_moon.png")}
+                  style={styles.icon}
+                />
+                <Text style={{ color: colors.themeWhite }}>Bed Time At</Text>
+              </Pressable>
+
+              {/* Wake Up Box: */}
+              <Pressable
+                style={[
+                  styles.bedOrWakeBox,
+                  bedTimeSelected ? styles.bedOrWakeFalse : styles.bedOrWakeTrue,
+                ]}
+                onPress={() => setBedTimeSelected((prev) => !prev)}
+              >
+                <Image
+                  source={require("../../assets/images/yellow_sun.png")}
+                  style={styles.icon}
+                />
+                <Text style={{ color: colors.themeWhite }}>Wake Up At</Text>
+              </Pressable>
+            </View>
+
+            {/* TOGGLE TIME */}
+
+            <Text style={[text.subtitle, { textAlign: "left", fontWeight: "bold" }]}>
+              {"\n\n"}2. Select Time {"\n"}
+            </Text>
+            <TimeSelector setGoalTime={setGoalTime} includeTimeZone={true} />
+            {/* CALCULATE WAKE HOURS */}
+            {bedTimeSelected ? (
+              <Text style={styles.calculateOtherTime}>
+                Calculated Wake Up Time:{" "}
+                {/* calculate the wake up time by the hours + durationgoal */}
+                {wakeTime}.
+              </Text>
+            ) : (
+              <Text style={styles.calculateOtherTime}>
+                Calculated Bed Time:{" "}
+                {/* calculate bed time by the hours - durationgoal */}
+                {bedTime}.
+              </Text>
+            )}
+          </View>
+
+          {/* CONTINUE BUTTON OR LOADING INDICATOR */}
+          <View style={commonStyles.onboardingContainer}>
+            {loading ? (
+              <ActivityIndicator size="large" color="white" />
+            ) : (
+              <View style={styles.buttonContainer}>
+                <ContinueButton
+                  activeCondition={allFieldsFilled}
+                  onPressFn={handleSubmitSleepSchedule}
+                />
+              </View>
+            )}
+          </View>
         </View>
-      </View>
+      </ScrollView>
     </KeyboardAvoidingView>
   );
 };

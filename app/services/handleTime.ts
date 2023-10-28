@@ -1,3 +1,27 @@
+/*
+  OVERVIEW: 
+  This file handles everything related to time and time conversion. Here are available fns,.
+    
+  formatTimeForDB = (time: string)
+    - accepts time string and attempts to convert it to db-compatible format
+    - namely, removes :, adds leading 0s if necessary, and converts am/pm to uppercase AM/PM
+  
+  calculateTime = ({ time: string, hoursToAdd?: number, minutesToAdd?: number, leadingZero?: bool })
+    - accepts time in DB recieved format "HH MM PM"
+    - optionally accepts hours and minutes to ADD to given time & option to leave out leading-0s
+    - returns time in human-readable 12-h format "HH:MM PM" or "H:MM PM" 
+
+  calculateTimeWithSubtraction = ({ time: string, hoursToSubtract?: number, minutesToSubtract?: number, leadingZero?: bool })
+    - accepts time in DB recieved format "HH MM PM"
+    - optionally accepts hours and minutes to SUBTRACT to given time & option to leave out leading-0s
+    - returns time in human-readable 12-h format "HH:MM PM" or "H:MM PM" 
+  
+  calculateSecondsFromNow = ({ scheduledTime })
+    - accepts a time in the future
+    - returns the number of seconds from now to that time.
+
+ */
+
 type CalculateSubProps = {
   time: string;
   hoursToSubtract?: number;
@@ -122,4 +146,22 @@ export const calculateTimeWithSubtraction = ({
   } catch (error) {
     console.log("There was an error subtracting time.");
   }
+};
+
+export const calculateSecondsFromNow = ({ scheduledTime }) => {
+  // accepts scheduledTime in HH MM PM format only
+  let [_, h, m, ampm] = scheduledTime.match(/^(\d{1,2})\s([0-5][0-9])\s([APap][Mm])$/i);
+  if (ampm.toUpperCase() == "PM") {
+    h += 12;
+  }
+  const scheduledTimeFormatted = `${h}:${m}:00`;
+  const currentTime = new Date();
+  const scheduledTimeDate = new Date(scheduledTimeFormatted);
+  const timeDiff = scheduledTimeDate.getTime() - currentTime.getTime();
+
+  if (timeDiff <= 0) {
+    console.log("Scheduled time is in the past.");
+    return;
+  }
+  return timeDiff;
 };
