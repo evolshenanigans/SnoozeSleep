@@ -66,13 +66,16 @@ const OB2Birthday = () => {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "position"}
-      keyboardVerticalOffset={-50}
+      keyboardVerticalOffset={-150}
       style={{ flex: 1 }}
     >
-      <Stack.Screen options={{ headerShown: false, header: () => null }} />
       <View style={commonStyles.onboardingContainer}>
         {/* HEADER */}
-        <OnboardingHeader page={"2"} progressPercent={(2 / 6) * 100} />
+        <OnboardingHeader
+          page={"2"}
+          progressPercent={(2 / 6) * 100}
+          backToWhere={"/OB1SignUp"}
+        />
         {/* BIRTHDAY FORM */}
         <View style={styles.formContainer}>
           <Text style={text.heroText}>{"\n"}Add Your Birthday</Text>

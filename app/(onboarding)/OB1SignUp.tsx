@@ -68,7 +68,11 @@ const OB1SignUp = () => {
       {/* HEADER */}
       {/* <View style={{ flex: 1 }}> */}
       <Stack.Screen options={{ headerShown: false }} />
-      <OnboardingHeader page={"1"} progressPercent={(1 / 6) * 100} />
+      <OnboardingHeader
+        page={"1"}
+        progressPercent={(1 / 6) * 100}
+        backToWhere={"/Login"}
+      />
       <View style={commonStyles.onboardingContainer}>
         {/* LOGIN FORM */}
         <View style={styles.loginForm}>
@@ -117,7 +121,7 @@ const OB1SignUp = () => {
                 onPressFn={handleSignUp}
               />
               <Link href="/">
-                <Pressable onPress={() => router.back()}>
+                <Pressable onPress={() => router.replace("/Login")}>
                   <Text style={styles.backToLogin}>{"\n<<"} Back to Login</Text>
                 </Pressable>
               </Link>

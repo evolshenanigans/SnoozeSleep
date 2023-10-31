@@ -6,6 +6,6 @@ export const commonStyles = {
     justifyContent: "flex-start",
     backgroundColor: colors.themeBackground,
     height: "100%",
-    paddingTop: 50,
+    // paddingTop: 50,
   },
 } as const;

@@ -4,7 +4,7 @@ import ProgressBar from "./ProgressBar";
 import { colors } from "../utils/colors";
 import { Stack, useRouter } from "expo-router";
 
-const OBHeader = ({ progressPercent, page }) => {
+const OBHeader = ({ progressPercent, page, backToWhere }) => {
   const router = useRouter();
   return (
     <View style={styles.container}>
@@ -16,7 +16,7 @@ const OBHeader = ({ progressPercent, page }) => {
       <View style={styles.progressView}>
         <ProgressBar isHomepage={false} progress={progressPercent} />
       </View>
-      <Pressable onPress={() => router.back()}>
+      <Pressable onPress={() => router.replace(backToWhere)}>
         <Text style={styles.backButton}>{"\n<<"} Back</Text>
       </Pressable>
     </View>
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
   },
   container: {
-    // paddingTop: 50,
+    paddingTop: 50,
     display: "flex",
     justifyContent: "center",
     backgroundColor: colors.themeBackground,
