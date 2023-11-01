@@ -23,7 +23,8 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.dreamteam2.SnoozeSleep"
+      "package": "com.dreamteam2.SnoozeSleep",
+      "versionCode":2
     },
     "web": {
       "bundler": "metro",
