@@ -20,6 +20,8 @@ import { useUserContext } from "../services/Context";
 import { Link, useRouter } from "expo-router";
 import { colors } from "../utils/colors";
 import AddChallenge from "../AddChallenge";
+import ChallengeCard from "../common components/ChallengeCard";
+import { allChallenges } from "../utils/allChallenges";
 
 const challengeList = [
   "Challenge 1",
@@ -33,8 +35,7 @@ const challengeList = [
   "Challenge 9",
   "Challenge 10",
 ];
-
-const CurrentTab = ({ challenges, onComplete, onAdd }) => (
+const CurrentTab = ({ challenges, onComplete, onAdd, router }) => (
   <View style={styles.tabContent}>
     {challenges ? (
       challenges.length > 0 ? (
@@ -48,7 +49,10 @@ const CurrentTab = ({ challenges, onComplete, onAdd }) => (
           <Link href={"/(tabs)/Challenges"} style={styles.emptyContent}>
             <Text style={styles.noChallengesText}>You currently have no challenges</Text>
           </Link>
-          <Pressable style={styles.addChallengesBtn}>
+          <Pressable
+            style={styles.addChallengesBtn}
+            onPress={() => router.push("/AddChallenge")}
+          >
             <Text>Add Challenges</Text>
           </Pressable>
         </View>
@@ -118,7 +122,12 @@ export default function Challenges() {
     switch (route.key) {
       case "current":
         return (
-          <CurrentTab challenges={challenges} onComplete={onComplete} onAdd={onAdd} />
+          <CurrentTab
+            challenges={challenges}
+            onComplete={onComplete}
+            onAdd={onAdd}
+            router={router}
+          />
         );
       case "completed":
         return <CompletedTab completedChallenges={completedChallenges} />;
@@ -186,9 +195,9 @@ export default function Challenges() {
                   source={require("../../assets/images/add.png")}
                   style={{
                     tintColor: colors.themeWhite,
-                    height: 30,
+                    height: 20,
                     backgroundColor: "blue",
-                    width: 25,
+                    width: 20,
                     resizeMode: "contain",
                   }}
                 />
@@ -216,11 +225,14 @@ export default function Challenges() {
         </View>
       </Modal>
       <View style={styles.suggestedChallengesContainer}>
-        <Text style={styles.suggestedChallengesHeader}>Suggested Challenges</Text>
+        <View style={styles.suggestedHeaderContainer}>
+          <Text style={styles.suggestedChallengesHeader}>Suggested Challenges</Text>
+          <Text style={styles.suggestedChallengesViewAll}>View All</Text>
+        </View>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {shuffledChallenges.map((challenge, index) => (
-            <View style={styles.challengeItem} key={index}>
-              <Text>{challenge}</Text>
+          {Object.keys(allChallenges).map((challenge, index) => (
+            <View key={`suggested-${index}`}>
+              <ChallengeCard challenge={allChallenges[challenge]} />
             </View>
           ))}
         </ScrollView>
@@ -237,12 +249,6 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     borderRadius: 20,
-  },
-  challengeItem: {
-    backgroundColor: "#f0f0f0",
-    borderRadius: 10,
-    padding: 10,
-    marginRight: 10,
   },
   emptyContent: {
     textAlign: "center",
@@ -284,10 +290,21 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   suggestedChallengesHeader: {
-    fontSize: 18,
-    fontWeight: "bold",
+    fontSize: 14,
     marginBottom: 10,
-    textAlign: "left",
+    color: colors.themeWhite,
+  },
+  suggestedChallengesViewAll: {
+    fontSize: 12,
+    textDecorationLine: "underline",
+    color: colors.themeWhite,
+  },
+  suggestedHeaderContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "baseline",
+    paddingHorizontal: 20,
   },
   tabContent: {
     flex: 1,
