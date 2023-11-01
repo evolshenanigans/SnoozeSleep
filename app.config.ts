@@ -10,8 +10,5 @@ export default {
         messagingSenderId: process.env.MESSAGESENDERID || 'fallback-messaging-sender-id',
         appId: process.env.APPID || 'fallback-app-id',
     },
-    eas: {
-        projectId: "3a1fc994-7c88-4dcb-a09d-d2ddeb7655e2"
-      },
   },
 };
