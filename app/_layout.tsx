@@ -111,6 +111,10 @@ function RootLayoutNav({ currentUser }) {
             name="modal"
             options={{ presentation: "modal", headerShown: false }}
           />
+          <Stack.Screen
+            name="SetupLaterModal"
+            options={{ presentation: "modal", headerShown: false }}
+          />
         </Stack>
       </ThemeProvider>
     </UserContext.Provider>

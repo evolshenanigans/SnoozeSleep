@@ -4,7 +4,7 @@ export const text = {
   heroText: {
     textAlign: "center",
     color: colors.themeWhite,
-    fontSize: 20,
+    fontSize: 18,
   },
   subtitle: {
     textAlign: "center",

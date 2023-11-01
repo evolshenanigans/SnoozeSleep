@@ -70,8 +70,9 @@ const OB1SignUp = () => {
       <Stack.Screen options={{ headerShown: false }} />
       <OnboardingHeader
         page={"1"}
-        progressPercent={(1 / 6) * 100}
         backToWhere={"/Login"}
+        isSignUp={true}
+        setShowModal={false}
       />
       <View style={commonStyles.onboardingContainer}>
         {/* LOGIN FORM */}

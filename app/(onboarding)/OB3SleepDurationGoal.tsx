@@ -17,6 +17,7 @@ import useUserData from "../hooks/useUserData";
 import { commonStyles } from "../utils/commonStyles";
 import { Stack, useRouter } from "expo-router";
 import { useUserContext } from "../services/Context";
+import SetupLaterModal from "../SetupLaterModal";
 
 const calculateAgeBasedSleepGoal = (age: number) => {
   switch (true) {
@@ -30,8 +31,8 @@ const calculateAgeBasedSleepGoal = (age: number) => {
       return "8";
     case age < 18:
       return "9";
-    // default:
-    //   return "7";
+    default:
+      return "7";
   }
 };
 
@@ -43,6 +44,9 @@ const OB3SleepDurationGoal = () => {
   const [goalHours, setGoalHours] = useState<string>();
   const [allFieldsFilled, setAllFieldsFilled] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+
+  const [showModal, setShowModal] = useState<boolean>(false);
+
   const { userData } = useUserData();
   const currentYear = new Date().getFullYear();
   const router = useRouter();
@@ -51,10 +55,10 @@ const OB3SleepDurationGoal = () => {
   useEffect(() => {
     if (userData) {
       let [_, birthYear] = userData.birthday.split(" ");
-      console.log("age: ", currentYear - birthYear);
-      setGoalHours(calculateAgeBasedSleepGoal(currentYear - birthYear));
+      console.log("age: ", currentYear - parseInt(birthYear));
+      setGoalHours(calculateAgeBasedSleepGoal(currentYear - parseInt(birthYear)));
     }
-  }, []);
+  }, [userData]);
 
   const handleSubmitGoalHours = async () => {
     if (goalHours !== "") {
@@ -64,7 +68,7 @@ const OB3SleepDurationGoal = () => {
           updateUserFields(currentUser.email, {
             sleepDurationGoal: parseFloat(goalHours),
           });
-          router.replace(`/(onboarding)/OB4SleepTime`);
+          router.replace(`/(onboarding)/OB4Alarm`);
         } else
           throw {
             message: `goal hours must be between 0 and 24.`,
@@ -91,7 +95,12 @@ const OB3SleepDurationGoal = () => {
       <Stack.Screen options={{ headerShown: false, header: () => null }} />
       <View style={commonStyles.onboardingContainer}>
         {/* HEADER */}
-        <OnboardingHeader page={"3"} progressPercent={(3 / 6) * 100} />
+        <OnboardingHeader
+          page={"3"}
+          backToWhere={"/(onboarding)/OB2Birthday"}
+          isSignUp={false}
+          setShowModal={setShowModal}
+        />
         {/* SLEEP GOAL TITLE */}
         <View style={styles.formContainer}>
           <Text style={text.heroText}>
@@ -134,6 +143,12 @@ const OB3SleepDurationGoal = () => {
           )}
         </View>
       </View>
+      {showModal && (
+        <SetupLaterModal
+          setShowModal={setShowModal}
+          whereToNext={"/(onboarding)/OB4Alarm"}
+        />
+      )}
     </KeyboardAvoidingView>
   );
 };

@@ -82,14 +82,18 @@ const Login = () => {
               <Text style={{ color: colors.themeBlack }}>Sign In</Text>
             </View>
           </Pressable>
-          <Link href="/(onboarding)/OB1SignUp" style={styles.signUpContainer}>
+          {/* <Link href="/(onboarding)/OB1SignUp" style={styles.signUpContainer}> */}
+          <Pressable
+            onPress={() => router.replace("/(onboarding)/OB1SignUp")}
+            style={styles.signUpContainer}
+          >
             <View style={styles.signUpContainer}>
               <Text style={styles.text}>
                 {"\n\n"}Don't have an account?{" "}
                 <Text style={styles.signUpButton}>Sign Up</Text>
               </Text>
             </View>
-          </Link>
+          </Pressable>
         </View>
       )}
     </View>
