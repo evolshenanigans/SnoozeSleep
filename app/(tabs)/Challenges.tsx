@@ -15,6 +15,7 @@ import useUserData from "../hooks/useUserData";
 import { addChallenge, updateChallenge } from "../services/handleFirestore";
 import { Challenge } from "../types/indexTypes";
 import { useUserContext } from "../services/Context";
+import { Link } from "expo-router";
 
 const challengeList = [
   "Challenge 1",
@@ -39,9 +40,9 @@ const CurrentTab = ({ challenges, onComplete, onAdd }) => (
           </TouchableOpacity>
         ))
       ) : (
-        <View style={styles.emptyContent}>
-          <Text>You currently have no challenges</Text>
-        </View>
+        <Link href={"/(tabs)/Challenges"} style={styles.emptyContent}>
+          <Text>Browse for challenges</Text>
+        </Link>
       )
     ) : (
       <Text>Loading...</Text>
