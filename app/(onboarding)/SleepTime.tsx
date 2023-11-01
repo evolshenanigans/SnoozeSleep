@@ -21,6 +21,8 @@ import TimeSelector from "./TimeSelector";
 import { commonStyles } from "../utils/commonStyles";
 import { Stack, useRouter } from "expo-router";
 import { useUserContext } from "../services/Context";
+import OB3SleepDurationGoal from "./OB3SleepDurationGoal";
+import SetupLaterModal from "../SetupLaterModal";
 
 // START COMPONENT
 const OB4SleepTime = () => {
@@ -35,6 +37,8 @@ const OB4SleepTime = () => {
   const [bedTimeSelected, setBedTimeSelected] = useState<boolean>(true);
   const [allFieldsFilled, setAllFieldsFilled] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const [showModal, setShowModal] = useState<boolean>(false);
+
   const { userData } = useUserData();
   const router = useRouter();
   const currentUser = useUserContext();
@@ -47,7 +51,7 @@ const OB4SleepTime = () => {
           generalSleepTime: `${bedTime[0]}${bedTime[1]} ${bedTime[3]}${bedTime[4]} ${bedTime[6]}${bedTime[7]}`,
           generalWakeTime: `${wakeTime[0]}${wakeTime[1]} ${wakeTime[3]}${wakeTime[4]} ${wakeTime[6]}${wakeTime[7]}`,
         });
-        router.replace(`/(onboarding)/OB5Alarm`);
+        router.replace(`/(onboarding)/OB4Alarm`);
       } catch (error) {
         console.error("Error submitting sleep schedule: ", error);
         alert("Whoa, " + error.message);
@@ -98,7 +102,13 @@ const OB4SleepTime = () => {
       <ScrollView style={{ height: "100%" }}>
         <View style={commonStyles.onboardingContainer}>
           {/* HEADER */}
-          <OnboardingHeader page={"4"} progressPercent={(4 / 6) * 100} />
+          <OnboardingHeader
+            page={"4"}
+            progressPercent={(4 / 6) * 100}
+            backToWhere={"/(onboarding)/OB3SleepDurationGoal"}
+            isSignUp={false}
+            setShowModal={setShowModal}
+          />
 
           {/* LOGIN FORM */}
           <View style={styles.formContainer}>
@@ -192,6 +202,12 @@ const OB4SleepTime = () => {
           </View>
         </View>
       </ScrollView>
+      {showModal && (
+        <SetupLaterModal
+          setShowModal={setShowModal}
+          whereToNext={"/(onboarding)/OB5Alarm"}
+        />
+      )}
     </KeyboardAvoidingView>
   );
 };

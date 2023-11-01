@@ -104,11 +104,17 @@ function RootLayoutNav({ currentUser }) {
     <UserContext.Provider value={currentUser}>
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
         <Stack>
-          {currentUser ? (
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          ) : (
-            <Stack.Screen name="(onboarding)" options={{ headerShown: false }} />
-          )}
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="(onboarding)" options={{ headerShown: false }} />
+          <Stack.Screen name="TaskForm" options={{ headerShown: false }} />
+          <Stack.Screen
+            name="modal"
+            options={{ presentation: "modal", headerShown: false }}
+          />
+          <Stack.Screen
+            name="SetupLaterModal"
+            options={{ presentation: "modal", headerShown: false }}
+          />
         </Stack>
       </ThemeProvider>
     </UserContext.Provider>

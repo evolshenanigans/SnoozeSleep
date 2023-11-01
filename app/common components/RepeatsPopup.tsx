@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Button, Pressable, StyleSheet, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  Button,
+  Pressable,
+  StyleSheet,
+  ScrollView,
+  Image,
+} from "react-native";
 import { RepeatsCustomPopup } from "./RepeatsCustomPopup";
 import { text } from "../utils/text";
 import { colors } from "../utils/colors";
@@ -23,59 +31,57 @@ export const RepeatsPopup = ({ popupOpen, setPopupOpen, choice, setChoice }) => 
           <Pressable onPress={() => setPopupOpen(false)}>
             <Text style={styles.exitBtn}>{"\u2715"}</Text>
           </Pressable>
-          <Text style={text.heroText}>Alarm Repeats</Text>
-          <Pressable onPress={() => setSelected("Everyday")}>
-            <Text
-              style={[
-                styles.repeatsOption,
-                selected == "Everyday"
-                  ? styles.repeatsOptionTrue
-                  : styles.repeatsOptionFalse,
-              ]}
-            >
-              Everyday{selected === "Everyday" && ` \u2713`}
-            </Text>
-          </Pressable>
-          <Pressable onPress={() => setSelected("Weekdays")}>
-            <Text
-              style={[
-                styles.repeatsOption,
-                selected == "Weekdays"
-                  ? styles.repeatsOptionTrue
-                  : styles.repeatsOptionFalse,
-              ]}
-            >
-              Weekdays{selected === "Weekdays" && ` \u2713`}
-            </Text>
-          </Pressable>
-          <Pressable onPress={() => setSelected("Weekends")}>
-            <Text
-              style={[
-                styles.repeatsOption,
-                selected == "Weekends"
-                  ? styles.repeatsOptionTrue
-                  : styles.repeatsOptionFalse,
-              ]}
-            >
-              Weekends{selected === "Weekends" ? ` \u2713` : "  "}
-            </Text>
+          <Text style={[text.heroText, { paddingBottom: 20 }]}>Alarm Repeats</Text>
+          <Pressable
+            onPress={() => setSelected("Everyday")}
+            style={[
+              styles.repeatsOption,
+              selected == "Everyday"
+                ? styles.repeatsOptionTrue
+                : styles.repeatsOptionFalse,
+            ]}
+          >
+            <Text style={{ color: colors.themeWhite }}>Everyday</Text>
+            {selected == "Everyday" && (
+              <Image
+                source={require("../../assets/images/check.png")}
+                style={styles.checkMark}
+              />
+            )}
           </Pressable>
           <Pressable
-            onPress={() => {
-              setCustomPopupOpen(true);
-              setSelected("custom");
-            }}
+            onPress={() => setSelected("Weekdays")}
+            style={[
+              styles.repeatsOption,
+              selected == "Weekdays"
+                ? styles.repeatsOptionTrue
+                : styles.repeatsOptionFalse,
+            ]}
           >
-            <Text
-              style={[
-                styles.repeatsOption,
-                selected == "custom"
-                  ? styles.repeatsOptionTrue
-                  : styles.repeatsOptionFalse,
-              ]}
-            >
-              Custom {`\u3009`}
-            </Text>
+            <Text style={{ color: colors.themeWhite }}>Weekdays (Mon-Fri)</Text>
+            {selected == "Weekdays" && (
+              <Image
+                source={require("../../assets/images/check.png")}
+                style={styles.checkMark}
+              />
+            )}
+          </Pressable>
+          <Pressable
+            onPress={() => setSelected("Weekends")}
+            style={[
+              styles.repeatsOption,
+              selected == "Weekends"
+                ? styles.repeatsOptionTrue
+                : styles.repeatsOptionFalse,
+            ]}
+          >
+            <Text style={{ color: colors.themeWhite }}>Weekends</Text>
+            {selected == "Weekends" && (
+              <Image
+                source={require("../../assets/images/check.png")}
+                style={styles.checkMark}
+              />
+            )}
           </Pressable>
           <Pressable
             onPress={() => {
@@ -92,6 +98,11 @@ export const RepeatsPopup = ({ popupOpen, setPopupOpen, choice, setChoice }) => 
 };
 
 const styles = StyleSheet.create({
+  checkMark: {
+    height: 20,
+    width: 20,
+    tintColor: colors.themeWhite,
+  },
   container: {
     position: "absolute",
     bottom: 0,
@@ -101,39 +112,49 @@ const styles = StyleSheet.create({
     borderTopColor: "rgba(240, 240, 240, 0.60)",
   },
   doneBtn: {
-    marginTop: 10,
+    marginTop: 15,
     paddingVertical: 10,
     textAlign: "center",
     backgroundColor: colors.themePrimary,
     borderRadius: 100,
     width: 300,
+    alignSelf: "center",
   },
   exitBtn: {
     color: colors.themeWhite,
     fontWeight: "bold",
-    paddingBottom: 20,
+    padding: 20,
+    paddingRight: 40,
     alignSelf: "flex-end", // why not work
   },
   menuContainer: {
     display: "flex",
     paddingBottom: 40,
-    paddingTop: 20,
+    paddingTop: 0,
     borderTopLeftRadius: 40,
     borderTopRightRadius: 40,
     justifyContent: "center",
-    alignItems: "center",
+    // alignItems: "center",
     bottom: 0,
     left: 0,
     backgroundColor: colors.themeBackground,
     width: "100%",
   },
+  optionFlex: {
+    display: "flex",
+    justifyContent: "space-between",
+  },
   popupBg: {
     backgroundColor: "rgba(240, 240, 240, 0.60)",
   },
   repeatsOption: {
-    color: colors.themeWhite,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignSelf: "center",
     padding: 10,
-    marginVertical: 8,
+    paddingHorizontal: 20,
+    marginVertical: 6,
     width: 300,
     borderRadius: 100,
     borderWidth: 2,
@@ -145,5 +166,8 @@ const styles = StyleSheet.create({
   repeatsOptionTrue: {
     backgroundColor: colors.themeSecondary,
     borderColor: colors.themePrimary,
+  },
+  trueText: {
+    color: colors.themeWhite,
   },
 });

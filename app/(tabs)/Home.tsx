@@ -128,7 +128,12 @@ const Home: React.FC = () => {
             />
           </Link>
         </View>
-        <Text style={styles.message}>You currently have no challenges</Text>
+        <Link
+          href={"/(tabs)/Challenges"}
+          style={{ alignSelf: "center", paddingVertical: 20 }}
+        >
+          <Text style={styles.message}>Browse for challenges!</Text>
+        </Link>
 
         <TimeTilBedtime />
         {/* CURRENT SCHEDULE */}
