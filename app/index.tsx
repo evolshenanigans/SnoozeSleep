@@ -1,20 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { View, Text } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
+import { View } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { onAuthStateChanged } from "firebase/auth";
 import { FIREBASE_AUTH, FIREBASE_DB } from "./services/FirebaseConfig";
 import { doc, getDoc, getFirestore } from "firebase/firestore";
-import Home from "./(tabs)/Home";
 import Login from "./(onboarding)/Login";
-import LoadingScreen from "./(onboarding)/LoadingScreen";
-import TabLayout from "./(tabs)/_layout";
-import OB1SignUp from "./(onboarding)/OB1SignUp";
-import TaskForm from "./TaskForm";
 import OB2Birthday from "./(onboarding)/OB2Birthday";
-import OB3SleepDurationGoal from "./(onboarding)/OB3SleepDurationGoal";
-import OB4SleepTime from "./(onboarding)/SleepTime";
-import OB5Alarm from "./(onboarding)/OB4Alarm";
+import LoadingScreen from "./common components/LoadingScreen";
 
 const Stack = createStackNavigator();
 
@@ -72,7 +64,7 @@ const Index: React.FC = () => {
         <OB2Birthday />
       ) : (
         // user exists and user is not new. Home Screen
-        <Home />
+        <LoadingScreen />
       )}
     </View>
   );
