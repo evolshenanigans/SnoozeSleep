@@ -1,20 +1,20 @@
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 import React, { useState, useEffect } from "react";
 import { colors } from "../utils/colors";
 import ProgressBar from "./ProgressBar";
-import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
+import { useRouter } from "expo-router";
 
 const LoadingScreen = () => {
   const [loadingPercent, setLoadingPercent] = useState<number>(0);
-  const [loadingVisible, setLoadingVisible] = useState(true);
-  // const fadeAnim = new Animated.Value(0);
+  const router = useRouter();
 
   useEffect(() => {
     const interval = setInterval(() => {
       if (loadingPercent < 100) {
-        setLoadingPercent(loadingPercent + 2);
+        setLoadingPercent(loadingPercent + 5);
       } else {
         clearInterval(interval);
+        router.replace("/(tabs)/Home");
       }
     }, 50);
 
@@ -36,6 +36,9 @@ const LoadingScreen = () => {
       <Text style={styles.text}>
         Just one moment, we are getting your sleep schedule ready!
       </Text>
+      {/* <Pressable onPress={() => router.replace("/(tabs)/Home")}>
+        <Text style={styles.homeBtn}>Go Home</Text>
+      </Pressable> */}
     </View>
   );
 };
@@ -49,6 +52,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: colors.themeBackground,
     paddingHorizontal: 40,
+    width: "100%",
+  },
+  homeBtn: {
+    marginTop: 20,
+    paddingVertical: 10,
+    paddingHorizontal: 100,
+    borderRadius: 20,
+    width: "100%",
+    backgroundColor: colors.themePrimary,
+    color: colors.themeWhite,
   },
   icon: {
     height: 110,
