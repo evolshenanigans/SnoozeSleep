@@ -7,15 +7,16 @@ import {
 import { getFirestore } from "firebase/firestore";
 import { KEYS } from "../key";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Constants from "expo-constants";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: process.env.APIKEY,
-  authDomain: process.env.AUTHDOMAIN,
-  projectId: process.env.PROJECTID,
-  storageBucket: process.env.STORAGEBUCKET,
-  messagingSenderId: process.env.MESSAGESENDERID,
-  appId: process.env.APPID,
+  apiKey: Constants.expoConfig.extra.APIKEY,
+  authDomain: Constants.expoConfig.extra.AUTHDOMAIN,
+  projectId: Constants.expoConfig.extra.PROJECTID,
+  storageBucket: Constants.expoConfig.extra.STORAGEBUCKET,
+  messagingSenderId: Constants.expoConfig.extra.MESSAGESENDERID,
+  appId: Constants.expoConfig.extra.APPID,
 };
 
 // Initialize Firebase
