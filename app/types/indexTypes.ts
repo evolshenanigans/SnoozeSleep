@@ -10,6 +10,7 @@ export type User = {
   userIsNew: boolean;
   vibrationOn: boolean;
   sleepDurationGoal: number;
+  lastKnownBrightness: number;
   generalSleepTime: string;
   generalWakeTime: string;
   sundaySleepTime: string;
@@ -67,7 +68,7 @@ export type AppNavProps = {
 };
 
 export type UserDataResponse = {
-  userData: User | any;
+  userData: User | null;
   tasks: Task[] | any;
   challenges: Challenge[] | any;
 };

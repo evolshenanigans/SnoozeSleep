@@ -48,6 +48,7 @@ export default function TabLayout() {
       screenOptions={{
         tabBarActiveTintColor: colors.themePrimary,
         tabBarInactiveTintColor: colors.themeWhite,
+        tabBarShowLabel: false,
         tabBarStyle: styles.tabBar,
         headerShown: false,
       }}
@@ -58,7 +59,6 @@ export default function TabLayout() {
           title: "Home",
           headerShown: false,
           tabBarItemStyle: styles.tabItemContainer,
-          tabBarLabel: ({ focused }) => TabLabel(focused, "Home"),
           tabBarIcon: ({ focused }) => TabIcon(focused, homeIcon),
         }}
       />
@@ -69,7 +69,6 @@ export default function TabLayout() {
           headerShown: false,
           tabBarLabelStyle: styles.tabLabel,
           tabBarItemStyle: styles.tabItemContainer,
-          tabBarLabel: ({ focused }) => TabLabel(focused, "Calendar"),
           tabBarIcon: ({ focused }) => TabIcon(focused, calendarIcon),
         }}
       />
@@ -80,7 +79,6 @@ export default function TabLayout() {
           headerShown: false,
           tabBarLabelStyle: styles.tabLabel,
           tabBarItemStyle: styles.tabItemContainer,
-          tabBarLabel: ({ focused }) => TabLabel(focused, "Challenges"),
           tabBarIcon: ({ focused }) => TabIcon(focused, challengesIcon),
         }}
       />
@@ -91,7 +89,6 @@ export default function TabLayout() {
           headerShown: false,
           tabBarLabelStyle: styles.tabLabel,
           tabBarItemStyle: styles.tabItemContainer,
-          tabBarLabel: ({ focused }) => TabLabel(focused, "Account"),
           tabBarIcon: ({ focused }) => TabIcon(focused, accountIcon),
         }}
       />
@@ -119,7 +116,7 @@ const styles = StyleSheet.create({
   },
   tabBar: {
     backgroundColor: colors.themeNavbar,
-    height: 80,
+    height: 70,
     borderColor: "transparent",
     display: "flex",
     flexDirection: "row",

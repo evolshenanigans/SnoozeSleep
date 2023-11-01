@@ -17,6 +17,7 @@ import { commonStyles } from "../utils/commonStyles";
 import { useRouter } from "expo-router";
 import { Stack } from "expo-router";
 import { useUserContext } from "../services/Context";
+import SetupLaterModal from "../SetupLaterModal";
 
 const OB2Birthday = () => {
   /**
@@ -26,6 +27,8 @@ const OB2Birthday = () => {
   const [birthYear, setBirthYear] = useState("");
   const [allFieldsFilled, setAllFieldsFilled] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [showSetupLaterModal, setShowSetupLaterModal] = useState<boolean>();
+
   const currentYear = new Date().getFullYear();
   const router = useRouter();
   const currentUser = useUserContext();
@@ -66,13 +69,17 @@ const OB2Birthday = () => {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "position"}
-      keyboardVerticalOffset={-50}
+      keyboardVerticalOffset={-150}
       style={{ flex: 1 }}
     >
-      <Stack.Screen options={{ headerShown: false, header: () => null }} />
       <View style={commonStyles.onboardingContainer}>
         {/* HEADER */}
-        <OnboardingHeader page={"2"} progressPercent={(2 / 6) * 100} />
+        <OnboardingHeader
+          page={"2"}
+          backToWhere={null}
+          isSignUp={false}
+          setShowModal={setShowSetupLaterModal}
+        />
         {/* BIRTHDAY FORM */}
         <View style={styles.formContainer}>
           <Text style={text.heroText}>{"\n"}Add Your Birthday</Text>
@@ -128,6 +135,12 @@ const OB2Birthday = () => {
             </View>
           )}
         </View>
+        {showSetupLaterModal && (
+          <SetupLaterModal
+            setShowModal={setShowSetupLaterModal}
+            whereToNext={"/(onboarding)/OB3SleepDurationGoal"}
+          />
+        )}
       </View>
     </KeyboardAvoidingView>
   );

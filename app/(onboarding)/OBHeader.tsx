@@ -1,24 +1,40 @@
 import { View, Text, StyleSheet, Image, Pressable } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import ProgressBar from "./ProgressBar";
 import { colors } from "../utils/colors";
 import { Stack, useRouter } from "expo-router";
+import SetupLaterModal from "../SetupLaterModal";
 
-const OBHeader = ({ progressPercent, page }) => {
+const OBHeader = ({ page, backToWhere, isSignUp, setShowModal }) => {
   const router = useRouter();
   return (
-    <View style={styles.container}>
-      <Stack.Screen options={{ headerShown: false }} />
-      <View style={styles.header}>
-        <Image source={require("../../assets/images/logo.png")} style={styles.icon} />
-        <Text style={{ color: colors.themeWhite }}>Step {page} of 6</Text>
+    <View>
+      <View style={styles.container}>
+        <Stack.Screen options={{ headerShown: false }} />
+        <View style={styles.header}>
+          <Image source={require("../../assets/images/logo.png")} style={styles.icon} />
+          <Text style={{ color: colors.themeWhite }}>Step {page} of 5</Text>
+        </View>
+        <View style={styles.progressView}>
+          <ProgressBar isHomepage={false} progress={(page / 5) * 100} />
+        </View>
+        <View style={styles.backAndForwardBtns}>
+          {backToWhere ? (
+            <Pressable onPress={() => router.replace(backToWhere)}>
+              <Text style={styles.backButton}>{"\n<<"} Back</Text>
+            </Pressable>
+          ) : (
+            <Text> </Text>
+          )}
+          {!isSignUp && (
+            <Pressable onPress={() => setShowModal(true)}>
+              <Text style={{ textDecorationLine: "underline", color: colors.themeWhite }}>
+                {"\n"}Set Up Later
+              </Text>
+            </Pressable>
+          )}
+        </View>
       </View>
-      <View style={styles.progressView}>
-        <ProgressBar progress={progressPercent} />
-      </View>
-      <Pressable onPress={() => router.back()}>
-        <Text style={styles.backButton}>{"\n<<"} Back</Text>
-      </Pressable>
     </View>
   );
 };
@@ -26,12 +42,17 @@ const OBHeader = ({ progressPercent, page }) => {
 export default OBHeader;
 
 const styles = StyleSheet.create({
+  backAndForwardBtns: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingHorizontal: 20,
+  },
   backButton: {
     color: colors.themeWhite,
-    paddingLeft: 20,
   },
   container: {
-    // paddingTop: 50,
+    paddingTop: 50,
     display: "flex",
     justifyContent: "center",
     backgroundColor: colors.themeBackground,

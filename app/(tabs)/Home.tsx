@@ -4,28 +4,30 @@ import {
   Switch,
   Text,
   StyleSheet,
-  TouchableOpacity,
-  FlatList,
   ScrollView,
   Image,
+  Pressable,
 } from "react-native";
 import useUserData from "../hooks/useUserData";
 import { calculateTime } from "../services/handleTime";
 import TaskList from "../common components/TaskList";
-import { UserProps } from "../types/componentTypes";
 import { colors } from "../utils/colors";
 import * as Brightness from "expo-brightness";
 import { Link, Stack } from "expo-router";
-import { useUserContext } from "../services/Context";
 import TabLayout from "./_layout";
+import { setupLocalNotifications } from "../services/NotificationsService";
+import TimeTilBedtime from "../common components/TimeTilBedtime";
+import { updateUserFields } from "../services/handleFirestore";
+import { useUserContext } from "../services/Context";
 
-const Home: React.FC<UserProps> = () => {
+const Home: React.FC = () => {
   const [isBedtimeEnabled, setIsBedtimeEnabled] = useState(false);
   const [isWakeUpEnabled, setIsWakeUpEnabled] = useState(false);
   const [bedtime, setBedtime] = useState<string>("8:00 PM");
 
   const [wakeUpTime, setWakeUpTime] = useState<string>("7:00 AM");
   const { userData } = useUserData();
+  const currentUser = useUserContext();
   const dayRef = {
     Sun: "Sunday",
     Mon: "Monday",
@@ -43,7 +45,7 @@ const Home: React.FC<UserProps> = () => {
       let time = userData[`generalSleepTime`];
       // calls calculateTime which converts the time stored in db to human readable 12H format
       // also accepts argument for # hours to add to the given time
-      setBedtime(calculateTime({ time: time }) || "");
+      setBedtime(calculateTime({ time: time, leadingZero: false }) || "");
       setWakeUpTime(
         calculateTime({
           time: time,
@@ -54,19 +56,53 @@ const Home: React.FC<UserProps> = () => {
     }
   }, [userData]);
 
-  const toggleSwitch = () => {
-    setIsBedtimeEnabled((previousState) => {
-      const newBrightness = previousState ? 0.8 : 0.1; // switch between 10% and 100% brightness
-      toggleBrightness(newBrightness);
-      return !previousState;
-    });
+  useEffect(() => {
+    // creates a new notification. Notif only shows when you exit the app but that can be changed.
+    // the number is # of seconds from now that the notif will trigger
+    // this also keeps calling several times which is annoying.
+    setupLocalNotifications(`ZZZ`, `Dream team colab :)`, 2);
+  }, []);
+
+  const toggleSwitch = async () => {
+    if (!isBedtimeEnabled) {
+      // IF SWTICH IS OFF, YOU'RE TOGGLING IT ON. ACTIVATE SCREEN DARKENING
+      const lastKnownBrightness = await getBrightness();
+      // STORING THE LAST KNOWN BRIGHTNESS SO WE STOP BLINDING PEOPLE
+      updateUserFields(currentUser.email, {
+        // for some reason mine has max brightness of 32 instead of 100 or 1 idk
+        lastKnownBrightness: lastKnownBrightness / 32.12156677246094,
+      });
+      setIsBedtimeEnabled((prev) => {
+        toggleBrightness(0.1);
+        return !prev;
+      });
+    } else {
+      // IF SWITCH WAS ON, YOU'RE TOGGLING IT OFF. REVERT TO LAST KNOWN BRIGHTNESS
+      setIsBedtimeEnabled((prev) => {
+        toggleBrightness(userData.lastKnownBrightness);
+        return !prev;
+      });
+    }
   };
 
   const toggleBrightness = async (newBrightness: number): Promise<void> => {
     const { status } = await Brightness.requestPermissionsAsync();
     if (status === "granted") {
+      // SYSTEM brightness changes whole phone so it stays the same when you leave the app
+      // NORMAL brightness only changes brightness within the app.
       Brightness.setSystemBrightnessAsync(newBrightness);
+      Brightness.setBrightnessAsync(newBrightness);
     }
+  };
+
+  const getBrightness = async (): Promise<number> => {
+    const { status } = await Brightness.requestPermissionsAsync();
+    if (status === "granted") {
+      const brightness = await Brightness.getSystemBrightnessAsync();
+      console.log("last brightness", brightness);
+      return brightness;
+    }
+    return -1;
   };
 
   return (
@@ -92,8 +128,14 @@ const Home: React.FC<UserProps> = () => {
             />
           </Link>
         </View>
-        <Text style={styles.message}>You currently have no challenges</Text>
+        <Link
+          href={"/(tabs)/Challenges"}
+          style={{ alignSelf: "center", paddingVertical: 20 }}
+        >
+          <Text style={styles.message}>Browse for challenges!</Text>
+        </Link>
 
+        <TimeTilBedtime />
         {/* CURRENT SCHEDULE */}
         <View style={styles.subtitleContainer}>
           <View style={styles.sleepAndEditContainer}>
@@ -103,12 +145,14 @@ const Home: React.FC<UserProps> = () => {
               style={styles.editIcon}
             />
           </View>
-          <Text style={styles.viewAllText}>View All</Text>
+          <Pressable onPress={() => setupLocalNotifications("zzzz", "Time to sleep!", 5)}>
+            <Text style={styles.viewAllText}>View All</Text>
+          </Pressable>
         </View>
 
         {/* SCHEDULE BOXES */}
         <View style={styles.scheduleBoxesContainer}>
-          <View style={styles.switchContainer}>
+          <View style={styles.switchBox}>
             <Image
               source={require("../../assets/images/blue_moon.png")}
               style={styles.scheduleIcon}
@@ -116,14 +160,14 @@ const Home: React.FC<UserProps> = () => {
             <Text style={styles.timeText}>Bedtime</Text>
             <Text style={styles.timetime}>{bedtime}</Text>
             <Switch
-              trackColor={{ false: "#767577", true: "#686868" }}
-              thumbColor={isBedtimeEnabled ? "#9174D0" : "#f4f3f4"}
+              trackColor={{ false: colors.themeGray2, true: colors.themeGray2 }}
+              thumbColor={isBedtimeEnabled ? colors.themePrimary : colors.themeGray}
               onValueChange={toggleSwitch}
               value={isBedtimeEnabled}
               style={styles.switches}
             />
           </View>
-          <View style={[styles.switchContainer]}>
+          <View style={[styles.switchBox]}>
             <Image
               source={require("../../assets/images/sunyellow.png")}
               style={styles.scheduleIcon}
@@ -185,11 +229,6 @@ const styles = StyleSheet.create({
   challengesContainer: {
     alignItems: "center",
   },
-  scheduleBoxesContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-  },
   dateText: {
     fontSize: 14,
     textAlign: "center",
@@ -222,22 +261,10 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: colors.themeWhite,
   },
-  subtitleText: {
-    fontSize: 14,
-    color: colors.themeWhite,
-    textAlign: "left", // Align text to the left
-  },
   homeImage: {
     width: "100%",
     height: 180,
     resizeMode: "cover",
-  },
-  scheduleIcon: {
-    position: "absolute",
-    top: -15,
-    width: 33,
-    height: 33,
-    resizeMode: "contain",
   },
   mainContainer: {
     flex: 1,
@@ -247,6 +274,24 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginVertical: 20,
     color: "gray",
+  },
+  scheduleBoxesContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 30,
+  },
+  subtitleText: {
+    fontSize: 14,
+    color: colors.themeWhite,
+    textAlign: "left", // Align text to the left
+  },
+  scheduleIcon: {
+    position: "absolute",
+    top: -15,
+    width: 33,
+    height: 33,
+    resizeMode: "contain",
   },
   subtitleContainer: {
     display: "flex",
@@ -262,13 +307,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  switchContainer: {
-    flex: 1,
+  switchBox: {
+    display: "flex",
     alignItems: "center",
-    justifyContent: "center",
-    padding: 20,
+    paddingHorizontal: 30,
+    paddingTop: 25,
+    paddingBottom: 10,
+    marginHorizontal: 20,
     borderRadius: 8,
-    margin: 20,
     backgroundColor: colors.themeAccent4,
   },
   timeText: {
@@ -284,18 +330,17 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 130,
     left: 20,
-    color: "#f2f2f2",
-    // fontFamily: 'inter',
+    color: colors.themeWhite,
     fontSize: 20,
     textAlign: "left",
     marginBottom: 0,
     marginLeft: 7,
   },
   switches: {
-    transform: [{ scaleX: 1.5 }, { scaleY: 1.5 }], // Scaling to 1.5 times the original size
+    transform: [{ scaleX: 1.7 }, { scaleY: 1.7 }], // Scaling to 1.5 times the original size
   },
   viewAllText: {
-    color: "#f2f2f2",
+    color: colors.themeWhite,
     textAlign: "left",
     fontSize: 13,
     textDecorationLine: "underline",

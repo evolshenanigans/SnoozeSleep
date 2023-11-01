@@ -6,40 +6,56 @@ import {
   TouchableOpacity,
   Image,
   TextInput,
+  ScrollView,
 } from "react-native";
 import { FIREBASE_AUTH } from "../services/FirebaseConfig";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { colors } from "../utils/colors";
 import { useUserContext } from "../services/Context";
+import useUserData from "../hooks/useUserData";
+import { calculateTime } from "../services/handleTime";
 // import React, { useState } from "react";
 
 const Account = () => {
-  // const [username, setUsername] = useState<string>("");
-
-  // const Account = ({ currentUser }) => {
   const router = useRouter();
-  // const { currentUser } = useLocalSearchParams<{ currentUser: any }>();
   const currentUser = useUserContext();
+  const { userData } = useUserData();
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Text style={styles.header}>Account Settings</Text>
-      <View style={styles.section}>
-        <Text style={styles.section}>Profile Information</Text>
-        {renderCard("Username", currentUser?.username)}
-        {renderCard("Email", currentUser?.email)}
+    <ScrollView style={styles.container}>
+      {/* HERO IMAGE */}
+      <Image
+        source={require("../../assets/images/accountSplash.png")}
+        style={styles.homeImage}
+      />
+      <Text style={styles.header1}>Account Settings</Text>
+
+      <View style={styles.allTextContainer}>
+        <View style={styles.section}>
+          <Text style={[styles.section, styles.profileInfoHeader]}>
+            Profile Information
+          </Text>
+          {renderCard("Username", userData?.username)}
+          {renderCard("Email", userData?.email)}
+          <View style={styles.separator} />
+          {renderCard(
+            "Birthday",
+            `${userData?.birthday.split(" ")[0]} / ${userData?.birthday.split(" ")[1]}`
+          )}
+          {renderCard("Password", "we actually can't change this")}
+          {renderCard(
+            "Alarm",
+            calculateTime({ time: userData?.generalSleepTime, leadingZero: false })
+          )}
+        </View>
         <View style={styles.separator} />
-        {renderCard("Birthday")}
-        {renderCard("Password Settings")}
-        {renderCard("Alarm Settings")}
+        {renderLogOut("Sign Out", () => {
+          FIREBASE_AUTH.signOut();
+          console.log("tried to sign you out.");
+          router.replace("/Login");
+        })}
       </View>
-      <View style={styles.separator} />
-      {renderLogOut("Sign Out", () => {
-        FIREBASE_AUTH.signOut();
-        console.log("tried to sign you out.");
-        router.replace("/Login");
-      })}
-    </SafeAreaView>
+    </ScrollView>
   );
 };
 
@@ -53,6 +69,7 @@ function renderCard(text: string, val?: any) {
           placeholder={text}
           autoCapitalize="none"
           value={val}
+          placeholderTextColor={colors.themeGray2}
           // onChangeText={(text) => setEmail(text)}
         />
         {/* <TouchableOpacity onPress={handlePress}>
@@ -65,31 +82,32 @@ function renderCard(text: string, val?: any) {
 
 function renderLogOut(text: string, handlePress) {
   return (
-    <View style={styles.cardContainer}>
-      <Text style={styles.cardTitle}>{text}</Text>
-      <View style={styles.card}>
-        <TouchableOpacity onPress={handlePress}>
-          <Image source={require("../../assets/images/right.png")} />
-        </TouchableOpacity>
-      </View>
+    <View style={{ paddingBottom: 40 }}>
+      <TouchableOpacity onPress={handlePress} style={styles.logoutContainer}>
+        <Image
+          source={require("../../assets/images/logout.png")}
+          style={{ tintColor: colors.themeWhite }}
+        />
+        <Text style={styles.cardTitle}>
+          {"  "}
+          {text}
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  allTextContainer: {
+    paddingHorizontal: 30,
+  },
   arrow: {
     fontSize: 20,
     marginRight: 10,
     color: colors.themeWhite,
   },
   card: {
-    // flex: 1,
-    // flexDirection: "row",
-    // justifyContent: "space-between",
-    // backgroundColor: colors.themeAccent4,
-    // borderRadius: 25,
-    // paddingVertical: 10,
-    // paddingHorizontal: 20,
+    width: "100%",
   },
   cardContainer: {
     flexDirection: "column",
@@ -108,24 +126,39 @@ const styles = StyleSheet.create({
     padding: 10,
     paddingHorizontal: 20,
     borderColor: "transparent",
-    backgroundColor: colors.themeWhite,
+    color: colors.themeWhite,
+    backgroundColor: colors.themeAccent4,
   },
   cardTitle: {
     color: colors.themeWhite,
     alignSelf: "flex-start",
+    paddingVertical: 5,
   },
   container: {
-    flex: 1,
-    justifyContent: "flex-start",
     backgroundColor: colors.themeBackground,
-    padding: 8,
   },
-  header: {
-    paddingTop: 50,
-    paddingVertical: 10,
-    paddingHorizontal: 16,
-    fontSize: 16,
+  header1: {
+    position: "absolute",
+    top: 130,
+    left: 30,
     color: colors.themeWhite,
+    fontSize: 20,
+    textAlign: "left",
+  },
+  homeImage: {
+    width: "100%",
+    height: 180,
+    resizeMode: "cover",
+  },
+  logoutContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "flex-start",
+  },
+  profileInfoHeader: {
+    color: colors.themeWhite,
+    fontSize: 14,
+    paddingTop: 30,
   },
   section: {
     marginBottom: 20,
