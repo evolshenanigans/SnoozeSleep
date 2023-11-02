@@ -2,7 +2,7 @@
   "expo": {
     "name": "SnoozeSleep",
     "slug": "SnoozeSleep",
-    "version": "1.1.0",
+    "version": "3.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
@@ -23,7 +23,8 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.dreamteam2.SnoozeSleep"
+      "package": "com.dreamteam2.SnoozeSleep",
+      "versionCode": 4
     },
     "web": {
       "bundler": "metro",
