@@ -12,7 +12,10 @@ const ChallengeCard = ({ challenge }) => {
     // todo: add a way for them to view the expanded challenge
     <Pressable
       style={styles.challengeItem}
-      onPress={() => router.push(`/common components/ViewChallenge`)}
+      // onPress={() => {
+      //   // router.setParams({ challenge: challenge });
+      //   router.push(`/ViewChallenge`);
+      // }}
     >
       <View style={styles.iconContainer}>
         <Image

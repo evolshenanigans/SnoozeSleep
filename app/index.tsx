@@ -6,6 +6,7 @@ import { doc, getDoc, getFirestore } from "firebase/firestore";
 import Login from "./(onboarding)/Login";
 import OB2Birthday from "./(onboarding)/OB2Birthday";
 import LoadingScreen from "./common components/LoadingScreen";
+import * as Notifications from "expo-notifications";
 
 const Index: React.FC = () => {
   const [currentUser, setCurrentUser] = useState<any | null>(null);

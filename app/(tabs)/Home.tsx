@@ -15,7 +15,10 @@ import { colors } from "../utils/colors";
 import * as Brightness from "expo-brightness";
 import { Link, Stack } from "expo-router";
 import TabLayout from "./_layout";
-import { setupLocalNotifications } from "../services/NotificationsService";
+import {
+  registerForPushNotificationsAsync,
+  setupLocalNotifications,
+} from "../services/NotificationsService";
 import TimeTilBedtime from "../common components/TimeTilBedtime";
 import { updateUserFields } from "../services/handleFirestore";
 import { useUserContext } from "../services/Context";
@@ -60,7 +63,8 @@ const Home: React.FC = () => {
     // creates a new notification. Notif only shows when you exit the app but that can be changed.
     // the number is # of seconds from now that the notif will trigger
     // this also keeps calling several times which is annoying.
-    setupLocalNotifications(`ZZZ`, `Dream team colab :)`, 2);
+    // setupLocalNotifications(`ZZZ`, `Dream team colab :)`, 2);
+    registerForPushNotificationsAsync();
   }, []);
 
   const toggleSwitch = async () => {
@@ -145,7 +149,12 @@ const Home: React.FC = () => {
               style={styles.editIcon}
             />
           </View>
-          <Pressable onPress={() => setupLocalNotifications("zzzz", "Time to sleep!", 5)}>
+          <Pressable
+            onPress={() => {
+              console.log("sending notif");
+              setupLocalNotifications("zzzz", "Time to sleep!", 10);
+            }}
+          >
             <Text style={styles.viewAllText}>View All</Text>
           </Pressable>
         </View>

@@ -1,11 +1,11 @@
 import { View, Text, StyleSheet } from "react-native";
 import React from "react";
 import { ScrollView } from "react-native-gesture-handler";
-import { colors } from "../utils/colors";
+import { colors } from "./utils/colors";
 import { useLocalSearchParams } from "expo-router";
 
 const ViewChallenge = () => {
-  const challenge = useLocalSearchParams();
+  // const challenge = useLocalSearchParams();
   return (
     <ScrollView style={styles.container}>
       <Text style={{ color: colors.themeWhite }}>{"challenge.title"}</Text>
