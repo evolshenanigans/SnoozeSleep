@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
   input: {
     marginVertical: 4,
     width: "100%",
-    height: 40,
+    height: 50,
     borderRadius: 20,
     padding: 10,
     borderColor: "transparent",
