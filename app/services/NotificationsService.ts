@@ -4,7 +4,7 @@
  * Note that it is possible to make one-off notifications, but this file doesn't do that (yet)
  * Available functions:
  *
- * setupRecurringNotification ({ title, message, hour, minute, weekday, relevantData?, subtitle?} )
+ * setupRecurringNotification ({ title, message, hour, minute, weekday?, relevantData?, subtitle?} )
  *    - Sets up a notification that recurs weekly at the specified time and on the specified day.
  *    - Day is a number from 1 - 7 with 1 being Sunday.
  *    - relevantData object will not be presented to the user
@@ -46,12 +46,13 @@ export async function setupRecurringNotification(
     trigger: {
       hour: options.hour,
       minute: options.minute,
-      repeats: true, // If not specified, repeats defaults to true anyway.
-      weekday: options.weekday,
+      repeats: true, // if repeats are true and no type is specified, it goes daily.
+      // type: "weekly",
+      // weekday: options.weekday,
     },
   });
   console.log(
-    `(NotificationsService) Notification ${options.title} scheduled at ${options.hour}:${options.minute} on day ${options.weekday}`
+    `(NotificationsService) Notification '${options.title}' scheduled for ${options.hour}:${options.minute} every day.`
   );
 }
 

@@ -169,7 +169,7 @@ const OB4SleepTime = () => {
             <Text style={[text.subtitle, { textAlign: "left", fontWeight: "bold" }]}>
               {"\n\n"}2. Select Time {"\n"}
             </Text>
-            <TimeSelector setGoalTime={setGoalTime} includeTimeZone={true} />
+            <TimeSelector setTime={setGoalTime} />
             {/* CALCULATE WAKE HOURS */}
             {bedTimeSelected ? (
               <Text style={styles.calculateOtherTime}>

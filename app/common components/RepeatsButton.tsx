@@ -14,16 +14,16 @@ const RepeatsButton = ({ setPopupOpen, repeats, setRepeats, reminder, setReminde
 
   return (
     <>
-      <Pressable style={styles.alarmSettingsRow} onPress={handleRepeatsPress}>
-        <Text style={styles.settingHeader}>Repeats</Text>
-        <Text style={styles.settingValue}>
-          {repeats} <Text style={styles.settingsArrow}> {`\u3009`}</Text>
-        </Text>
-      </Pressable>
       <Pressable style={styles.alarmSettingsRow} onPress={handleReminderPress}>
         <Text style={styles.settingHeader}>Reminder</Text>
         <Text style={styles.settingValue}>
           {reminder} <Text style={styles.settingsArrow}> {`\u3009`}</Text>
+        </Text>
+      </Pressable>
+      <Pressable style={styles.alarmSettingsRow} onPress={handleRepeatsPress}>
+        <Text style={styles.settingHeader}>Repeats</Text>
+        <Text style={styles.settingValue}>
+          {repeats} <Text style={styles.settingsArrow}> {`\u3009`}</Text>
         </Text>
       </Pressable>
     </>
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     borderRadius: 20,
-    padding: 10,
+    padding: 12,
     marginVertical: 10,
     paddingHorizontal: 20,
   },

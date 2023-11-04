@@ -74,7 +74,6 @@ const TaskList = () => {
                           time: task.taskStartTime,
                           leadingZero: false,
                         })}{" "}
-                        - {calculateTime({ time: task.taskEndTime, leadingZero: false })}
                       </Text>
                     </View>
                     <TouchableOpacity
