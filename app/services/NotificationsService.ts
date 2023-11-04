@@ -54,12 +54,45 @@ export async function setupLocalNotifications(
       title: title,
       body: message,
       subtitle: subtitle || "SnoozeSense",
-      // data: data,
       color: "#9174D0",
     },
     trigger: {
       seconds: scheduledTime,
       // trigger MUST be in seconds from now. Convert all scheduled times to seconds from now
+    },
+  });
+  console.log(
+    `(NotificationsService) Scheduled notification ${title} with ID: ${notificationId}`
+  );
+}
+
+export async function setupDateTriggerNotification(
+  title: string,
+  message: string,
+  date: any,
+  data?: Record<string, any>,
+  subtitle?: string
+): Promise<void> {
+  // Request permissions to display local notifications
+  const { granted } = await Notifications.requestPermissionsAsync();
+  if (!granted) {
+    console.log("(NotificationsService) Notification permissions denied.");
+    return;
+  }
+
+  // Schedule local notifications
+  const notificationId = await Notifications.scheduleNotificationAsync({
+    content: {
+      title: title,
+      body: message,
+      subtitle: subtitle || "SnoozeSense",
+      data: data || null,
+      color: "#9174D0",
+      sound: require("../../assets/sounds/toywhistlesound.wav"),
+    },
+    trigger: {
+      date: date,
+      // seconds: 20,
     },
   });
   console.log(

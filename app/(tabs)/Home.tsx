@@ -17,6 +17,7 @@ import { Link, Stack } from "expo-router";
 import TabLayout from "./_layout";
 import {
   registerForPushNotificationsAsync,
+  setupDateTriggerNotification,
   setupLocalNotifications,
 } from "../services/NotificationsService";
 import TimeTilBedtime from "../common components/TimeTilBedtime";
@@ -139,7 +140,7 @@ const Home: React.FC = () => {
           <Text style={styles.message}>Browse for challenges!</Text>
         </Link>
 
-        <TimeTilBedtime />
+        {/* <TimeTilBedtime /> */}
         {/* CURRENT SCHEDULE */}
         <View style={styles.subtitleContainer}>
           <View style={styles.sleepAndEditContainer}>
@@ -152,8 +153,20 @@ const Home: React.FC = () => {
           <Pressable
             onPress={() => {
               console.log("sending notif");
-              setupLocalNotifications("zzzz", "Time to sleep!", 10);
+              let date = new Date("2023-11-03T19:01:00");
+              // omg it worked
+              // console.log(date.toDateString());
+              // console.log(date.toTimeString());
+              setupDateTriggerNotification(
+                "Timed Notification",
+                "This is a timed notif!",
+                date
+              );
             }}
+            // onPress={() => {
+            //   console.log("sending notif");
+            //   setupLocalNotifications("zzzz", "Time to sleep!", 10);
+            // }}
           >
             <Text style={styles.viewAllText}>View All</Text>
           </Pressable>
