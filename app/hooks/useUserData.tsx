@@ -1,13 +1,20 @@
 import { useState, useEffect, useContext } from "react";
 import { FIREBASE_DB } from "../services/FirebaseConfig";
 import { collection, doc, getDoc, getDocs, onSnapshot, query } from "firebase/firestore";
-import { Challenge, Task, User, UserDataResponse } from "../types/indexTypes";
+import {
+  Challenge,
+  Task,
+  User,
+  UserDataResponse,
+  UserNotification,
+} from "../types/indexTypes";
 import { UserContext, useUserContext } from "../services/Context";
 
 const useUserData = (): UserDataResponse => {
   const [userData, setUserData] = useState<User | any>();
   const [userTasks, setUserTasks] = useState<Task[] | any>();
   const [userChallenges, setUserChallenges] = useState<Challenge[] | any>();
+  const [userNotifications, setUserNotifications] = useState<Challenge[] | any>();
   const currentUser = useUserContext();
   const email = currentUser?.email;
 
@@ -33,9 +40,12 @@ const useUserData = (): UserDataResponse => {
       }
     };
 
-    const fetchTaskAndChallengeData = async <T,>(
+    const fetchSubcollectionData = async <T,>(
       subcollection: string
     ): Promise<T[] | undefined> => {
+      /**
+       * Fetches TASKS, CHALLENGES, and NOTIFICATIONS
+       */
       try {
         const docRef = collection(db, "users", email, subcollection);
         const q = query(docRef);
@@ -61,10 +71,14 @@ const useUserData = (): UserDataResponse => {
        */
       const setData = async () => {
         fetchFieldData();
-        const tasks = await fetchTaskAndChallengeData<Task>("tasks");
-        const challenges = await fetchTaskAndChallengeData<Challenge>("challenges");
+        const tasks = await fetchSubcollectionData<Task>("tasks");
+        const challenges = await fetchSubcollectionData<Challenge>("challenges");
+        const notifications = await fetchSubcollectionData<UserNotification>(
+          "notifications"
+        );
         setUserTasks(tasks);
         setUserChallenges(challenges);
+        setUserNotifications(notifications);
       };
       setData();
       // console.log("USER DATA FROM HOOK", userData);
@@ -86,6 +100,7 @@ const useUserData = (): UserDataResponse => {
       const unsubscribeSubcollections = [
         { collectionName: "tasks", setFn: setUserTasks },
         { collectionName: "challenges", setFn: setUserChallenges },
+        { collectionName: "notifications", setFn: setUserNotifications },
       ];
 
       unsubscribeSubcollections.forEach((collectionData) => {
@@ -93,9 +108,9 @@ const useUserData = (): UserDataResponse => {
         const unsubscribeCollection = onSnapshot(
           collection(db, "users", email, collectionName),
           (snapshot) => {
-            const items: Task[] | Challenge[] = [];
+            const items: Task[] | Challenge[] | UserNotification[] = [];
             snapshot.forEach((doc) => {
-              const itemData = doc.data() as Task | Challenge | any;
+              const itemData = doc.data() as Task | Challenge | UserNotification | any;
               items.push({
                 id: doc.id,
                 ...itemData,
@@ -124,6 +139,7 @@ const useUserData = (): UserDataResponse => {
     userData,
     tasks: userTasks,
     challenges: userChallenges,
+    notifications: userNotifications,
   };
 };
 

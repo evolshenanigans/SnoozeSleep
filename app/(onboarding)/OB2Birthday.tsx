@@ -46,7 +46,9 @@ const OB2Birthday = () => {
             updateUserFields(currentUser.email, {
               birthday: `${
                 // submit the birthday, and birthmonths
-                parseInt(birthMonth) > 9 ? birthMonth : `0${birthMonth}`
+                parseInt(birthMonth) > 9
+                  ? parseInt(birthMonth)
+                  : `0${parseInt(birthMonth)}`
               } ${birthYear}`,
             });
             // then navigate to step 3 with the necessary components

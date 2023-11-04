@@ -1,16 +1,24 @@
-import { View, Text, Pressable, StyleSheet, TextInput, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  Pressable,
+  StyleSheet,
+  TextInput,
+  ScrollView,
+  Image,
+} from "react-native";
 import React, { useState, useEffect } from "react";
 import { text } from "../utils/text";
 import { colors } from "../utils/colors";
 import { calculateTime } from "../services/handleTime";
 
-const TimeSelector = ({ setGoalTime, includeTimeZone }) => {
+const TimeSelector = ({ time, setTime }) => {
   /**
    * This component lets you set a time
    */
-  const [hours, setHours] = useState<string>("09");
-  const [minutes, setMinutes] = useState<string>("00");
-  const [AMOrPM, setAMOrPM] = useState<string>("PM");
+  const [hours, setHours] = useState<string>(time.split(" ")[0]);
+  const [minutes, setMinutes] = useState<string>(time.split(" ")[1]);
+  const [AMOrPM, setAMOrPM] = useState<string>(time.split(" ")[2]);
 
   const changeHours = (plusOrMinus: string) => {
     let newH: number =
@@ -31,7 +39,7 @@ const TimeSelector = ({ setGoalTime, includeTimeZone }) => {
   };
 
   useEffect(() => {
-    setGoalTime(`${hours} ${minutes} ${AMOrPM}`);
+    setTime(`${hours} ${minutes} ${AMOrPM}`);
   }, [hours, minutes, AMOrPM]);
 
   return (
@@ -43,7 +51,10 @@ const TimeSelector = ({ setGoalTime, includeTimeZone }) => {
         <View style={styles.timeCol}>
           <Pressable onPress={() => changeHours("+")}>
             {/* Up arrow Symbol */}
-            <Text style={styles.arrowToggle}>{`\uFE3F`}</Text>
+            <Image
+              source={require("../../assets/images/up.png")}
+              style={styles.arrowToggle}
+            />
           </Pressable>
           {/* <Text style={styles.timeDisplay}>{hours}</Text> */}
           <TextInput
@@ -66,7 +77,10 @@ const TimeSelector = ({ setGoalTime, includeTimeZone }) => {
           />
           <Pressable onPress={() => changeHours("-")}>
             {/* Down arrow Symbol */}
-            <Text style={styles.arrowToggle}>{`\uFE40`}</Text>
+            <Image
+              source={require("../../assets/images/down.png")}
+              style={styles.arrowToggle}
+            />
           </Pressable>
         </View>
 
@@ -77,7 +91,10 @@ const TimeSelector = ({ setGoalTime, includeTimeZone }) => {
         <View style={styles.timeCol}>
           <Pressable onPress={() => changeMinutes("+")}>
             {/* Up arrow Symbol */}
-            <Text style={styles.arrowToggle}>{`\uFE3F`}</Text>
+            <Image
+              source={require("../../assets/images/up.png")}
+              style={styles.arrowToggle}
+            />
           </Pressable>
           <TextInput
             style={styles.timeDisplay}
@@ -99,7 +116,10 @@ const TimeSelector = ({ setGoalTime, includeTimeZone }) => {
           />
           <Pressable onPress={() => changeMinutes("-")}>
             {/* Down arrow Symbol */}
-            <Text style={styles.arrowToggle}>{`\uFE40`}</Text>
+            <Image
+              source={require("../../assets/images/down.png")}
+              style={styles.arrowToggle}
+            />
           </Pressable>
         </View>
         <Text> </Text>
@@ -108,12 +128,18 @@ const TimeSelector = ({ setGoalTime, includeTimeZone }) => {
         <View style={styles.timeCol}>
           <Pressable onPress={() => setAMOrPM((a) => (a === "AM" ? "PM" : "AM"))}>
             {/* Up arrow Symbol */}
-            <Text style={styles.arrowToggle}>{`\uFE3F`}</Text>
+            <Image
+              source={require("../../assets/images/up.png")}
+              style={styles.arrowToggle}
+            />
           </Pressable>
           <Text style={styles.timeDisplay}>{AMOrPM}</Text>
           <Pressable onPress={() => setAMOrPM((a) => (a === "AM" ? "PM" : "AM"))}>
             {/* Down arrow Symbol */}
-            <Text style={styles.arrowToggle}>{`\uFE40`}</Text>
+            <Image
+              source={require("../../assets/images/down.png")}
+              style={styles.arrowToggle}
+            />
           </Pressable>
         </View>
       </View>
@@ -125,9 +151,11 @@ export default TimeSelector;
 
 const styles = StyleSheet.create({
   arrowToggle: {
-    fontSize: 20,
-    padding: 10,
-    fontWeight: "bold",
+    height: 20,
+    width: 20,
+    resizeMode: "contain",
+    marginHorizontal: 30,
+    marginVertical: 10,
   },
   colon: {
     justifyContent: "center",

@@ -62,6 +62,13 @@ export type Challenge = {
   isSaved: boolean;
 };
 
+export type UserNotification = {
+  notificationTitle: string;
+  notificationMessage: string;
+  triggerHour: number;
+  triggerMinute: number;
+};
+
 export type AppNavProps = {
   currentUser: any;
   setCurrentUserIsNew: React.Dispatch<React.SetStateAction<boolean>>;
@@ -71,4 +78,5 @@ export type UserDataResponse = {
   userData: User | null;
   tasks: Task[] | any;
   challenges: Challenge[] | any;
+  notifications: UserNotification[] | any;
 };

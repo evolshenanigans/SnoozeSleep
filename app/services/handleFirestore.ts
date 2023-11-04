@@ -22,11 +22,15 @@
   updateChallenge = (email, challengeTitle, challengeObjToUpdate)
       - Both functions validate your object and merge the provided data object with the item data that has the provided title (belonging to user with the provided email)
       - You can include 1 to all fields that you want to update in the object
+
+  deleteTask = (email, taskTitle)
+  deleteChallenge = (email, taskTitle)
+      - Attempt to delete the task with the given title.
 */
 
 import { User } from "../types/indexTypes";
 import { FIREBASE_DB } from "./FirebaseConfig";
-import { doc, setDoc, updateDoc } from "firebase/firestore";
+import { deleteDoc, doc, setDoc, updateDoc } from "firebase/firestore";
 
 const db = FIREBASE_DB;
 
@@ -98,6 +102,11 @@ export const addChallenge = async (email: string, challengeToAdd) => {
   addToSubcollection(email, challengeToAdd, "challenge");
 };
 
+export const addNotification = async (email: string, notificationToAdd) => {
+  // Attempts to APPEND a new Notification to the existing Notification list.
+  addToSubcollection(email, notificationToAdd, "notification");
+};
+
 export const addSleepLog = async (email: string, sleepLogToAdd) => {
   // Attempts to APPEND a new Challenge to the existing Challenge list.
   addToSubcollection(email, sleepLogToAdd, "sleepLog");
@@ -108,7 +117,8 @@ const addToSubcollection = async (email: string, objToAdd, subcollection: string
       Handles all adding to subcollection one step in from user profile
       Validates with appropriate lists beforehand
   */
-  const validationError = validateObjToAdd(objToAdd, subcollection);
+  // const validationError = validateObjToAdd(objToAdd, subcollection);
+  let validationError = false;
   if (validationError) {
     console.error(validationError);
   } else {
@@ -150,6 +160,20 @@ export const updateChallenge = (
     "challenge"
   );
 };
+export const updateNotification = (
+  email: string,
+  notificationTitle: string,
+  notificationFieldsToUpdate
+) => {
+  // Attempts to MERGE the given object to the existing notifications
+  updateSubCollection(
+    email,
+    notificationTitle,
+    notificationFieldsToUpdate,
+    notificationReference,
+    "notification"
+  );
+};
 
 const updateSubCollection = (
   email: string,
@@ -174,6 +198,34 @@ const updateSubCollection = (
     } catch (error) {
       console.error(error);
     }
+  }
+};
+
+export const deleteTask = (email: string, taskTitle: string) => {
+  deleteValFromSubCollection(email, taskTitle, "task");
+};
+
+export const deleteChallenge = (email: string, challengeTitle: string) => {
+  deleteValFromSubCollection(email, challengeTitle, "challenge");
+};
+export const deleteNotification = (email: string, notificationTitle: string) => {
+  deleteValFromSubCollection(email, notificationTitle, "notification");
+};
+
+const deleteValFromSubCollection = async (
+  email: string,
+  objTitle: string,
+  subcollection: string
+) => {
+  /* 
+    Attempts to DELETE the document with given title in the given subcollection
+  */
+  try {
+    const ref = doc(db, "users", email, `${subcollection}s`, objTitle);
+    await deleteDoc(ref);
+    console.log(`Successfully deleted ${subcollection}`);
+  } catch (error) {
+    console.error(error);
   }
 };
 
@@ -208,7 +260,6 @@ const userFieldsReference = {
 const taskReference = {
   taskTitle: "string",
   taskStartTime: "string",
-  taskEndTime: "string",
   repeats: "string",
   reminder: "string",
   isComplete: "boolean",
@@ -220,6 +271,13 @@ const challengeReference = {
   isComplete: "boolean",
   isCurrent: "boolean",
   isSaved: "boolean",
+};
+
+const notificationReference = {
+  notificationTitle: "string",
+  notificationMessage: "string",
+  triggerHour: "number",
+  triggerMinute: "number",
 };
 
 const sleepLogReference = {

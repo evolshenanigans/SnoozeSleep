@@ -9,13 +9,19 @@ import {
   Modal,
   FlatList,
   ScrollView,
+  Image,
+  Pressable,
 } from "react-native";
 import { TabView, TabBar } from "react-native-tab-view";
 import useUserData from "../hooks/useUserData";
 import { addChallenge, updateChallenge } from "../services/handleFirestore";
 import { Challenge } from "../types/indexTypes";
 import { useUserContext } from "../services/Context";
-import { Link } from "expo-router";
+import { Link, useRouter } from "expo-router";
+import { colors } from "../utils/colors";
+import AddChallenge from "../AddChallenge";
+import ChallengeCard from "../common components/ChallengeCard";
+import { allChallenges } from "../utils/allChallenges";
 
 const challengeList = [
   "Challenge 1",
@@ -29,8 +35,7 @@ const challengeList = [
   "Challenge 9",
   "Challenge 10",
 ];
-
-const CurrentTab = ({ challenges, onComplete, onAdd }) => (
+const CurrentTab = ({ challenges, onComplete, onAdd, router }) => (
   <View style={styles.tabContent}>
     {challenges ? (
       challenges.length > 0 ? (
@@ -40,14 +45,22 @@ const CurrentTab = ({ challenges, onComplete, onAdd }) => (
           </TouchableOpacity>
         ))
       ) : (
-        <Link href={"/(tabs)/Challenges"} style={styles.emptyContent}>
-          <Text>Browse for challenges</Text>
-        </Link>
+        <View style={styles.noChallengesContainer}>
+          <Link href={"/(tabs)/Challenges"} style={styles.emptyContent}>
+            <Text style={styles.noChallengesText}>You currently have no challenges</Text>
+          </Link>
+          <Pressable
+            style={styles.addChallengesBtn}
+            onPress={() => router.push("/AddChallenge")}
+          >
+            <Text>Add Challenges</Text>
+          </Pressable>
+        </View>
       )
     ) : (
       <Text>Loading...</Text>
     )}
-    <Button title="Add Challenges" onPress={onAdd} />
+    {/* <Button title="Add Challenges" onPress={onAdd} /> */}
   </View>
 );
 
@@ -72,11 +85,13 @@ export default function Challenges() {
     { key: "current", title: "Current" },
     { key: "completed", title: "Completed" },
     { key: "saved", title: "Saved" },
+    // { key: "add", title: "+" },
   ]);
   // const [challenges, setChallenges] = useState(["Challenge 1", "Challenge 2"]);
   const [completedChallenges, setCompletedChallenges] = useState<string[]>([]);
   const currentUser = useUserContext();
   const { challenges } = useUserData();
+  const router = useRouter();
 
   const onComplete = (challenge) => {
     // setChallenges(challenges.filter((item) => item !== challenge));
@@ -107,34 +122,88 @@ export default function Challenges() {
     switch (route.key) {
       case "current":
         return (
-          <CurrentTab challenges={challenges} onComplete={onComplete} onAdd={onAdd} />
+          <CurrentTab
+            challenges={challenges}
+            onComplete={onComplete}
+            onAdd={onAdd}
+            router={router}
+          />
         );
       case "completed":
         return <CompletedTab completedChallenges={completedChallenges} />;
       case "saved":
         return <SavedTab />;
+      case "add":
+        return <AddChallenge />;
       default:
         return null;
     }
   };
 
   const shuffledChallenges = challengeList.sort(() => Math.random() - 0.5);
-
   return (
+    // main render
     <SafeAreaView style={styles.safeArea}>
-      <Text> Your Challenges</Text>
+      <Image
+        source={require("../../assets/images/challengeSplash.png")}
+        style={styles.splashImage}
+      />
+      <Text style={styles.title}> Your Challenges</Text>
+      {/* Tabs */}
       <TabView
         navigationState={{ index, routes }}
         renderScene={renderScene}
         onIndexChange={setIndex}
-        initialLayout={{ width: 360 }}
         renderTabBar={(props) => (
-          <TabBar
-            {...props}
-            indicatorStyle={{ backgroundColor: "blue" }}
-            labelStyle={{ color: "black" }}
-            style={{ backgroundColor: "white" }}
-          />
+          // INTERNAL TAB BAR
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <TabBar
+              {...props}
+              activeColor={colors.themePrimary}
+              indicatorStyle={{
+                backgroundColor: colors.themePrimary,
+              }}
+              labelStyle={{
+                color: "white",
+                padding: 0,
+                margin: 0,
+                textTransform: "none",
+              }}
+              style={{
+                backgroundColor: "transparent",
+                shadowColor: "transparent",
+                width: "75%",
+              }}
+            />
+            <View
+              style={{
+                display: "flex",
+                justifyContent: "flex-start",
+                alignItems: "center",
+                width: "25%",
+                height: "100%",
+              }}
+            >
+              <Link href="/AddChallenge">
+                <Image
+                  source={require("../../assets/images/add.png")}
+                  style={{
+                    tintColor: colors.themeWhite,
+                    height: 20,
+                    backgroundColor: "blue",
+                    width: 20,
+                    resizeMode: "contain",
+                  }}
+                />
+              </Link>
+            </View>
+          </View>
         )}
       />
       <Modal
@@ -156,11 +225,14 @@ export default function Challenges() {
         </View>
       </Modal>
       <View style={styles.suggestedChallengesContainer}>
-        <Text style={styles.suggestedChallengesHeader}>Suggested Challenges</Text>
+        <View style={styles.suggestedHeaderContainer}>
+          <Text style={styles.suggestedChallengesHeader}>Suggested Challenges</Text>
+          <Text style={styles.suggestedChallengesViewAll}>View All</Text>
+        </View>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {shuffledChallenges.map((challenge, index) => (
-            <View style={styles.challengeItem} key={index}>
-              <Text>{challenge}</Text>
+          {Object.keys(allChallenges).map((challenge, index) => (
+            <View key={`suggested-${index}`}>
+              <ChallengeCard challenge={allChallenges[challenge]} />
             </View>
           ))}
         </ScrollView>
@@ -170,42 +242,81 @@ export default function Challenges() {
 }
 
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    marginTop: 20,
-  },
-  tabContent: {
-    flex: 1,
+  addChallengesBtn: {
+    backgroundColor: colors.themePrimary,
+    paddingVertical: 10,
+    width: "100%",
+    display: "flex",
     alignItems: "center",
-    justifyContent: "center",
+    borderRadius: 20,
   },
   emptyContent: {
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  modalContent: {
-    flex: 1,
-    backgroundColor: "white",
-    padding: 20,
+    textAlign: "center",
+    paddingBottom: 20,
   },
   listItem: {
     padding: 10,
     borderBottomWidth: 1,
     borderBottomColor: "#ccc",
   },
+  modalContent: {
+    flex: 1,
+    backgroundColor: "white",
+    padding: 20,
+  },
+  noChallengesContainer: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    width: "50%",
+  },
+  noChallengesText: {
+    color: colors.themeWhite,
+    fontSize: 16,
+  },
+  safeArea: {
+    flex: 1,
+    backgroundColor: colors.themeBackground,
+  },
+  splashImage: {
+    width: "100%",
+    height: 200,
+    resizeMode: "cover",
+    position: "absolute",
+    top: 0,
+    left: 0,
+  },
   suggestedChallengesContainer: {
     padding: 10,
   },
   suggestedChallengesHeader: {
-    fontSize: 18,
-    fontWeight: "bold",
+    fontSize: 14,
     marginBottom: 10,
-    textAlign: "left",
+    color: colors.themeWhite,
   },
-  challengeItem: {
-    backgroundColor: "#f0f0f0",
-    borderRadius: 10,
-    padding: 10,
-    marginRight: 10,
+  suggestedChallengesViewAll: {
+    fontSize: 12,
+    textDecorationLine: "underline",
+    color: colors.themeWhite,
+  },
+  suggestedHeaderContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "baseline",
+    paddingHorizontal: 20,
+  },
+  tabContent: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  title: {
+    fontSize: 16,
+    fontWeight: "500",
+    color: colors.themeWhite,
+    paddingTop: 100,
+    paddingLeft: 20,
+    paddingBottom: 10,
   },
 });

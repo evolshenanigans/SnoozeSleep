@@ -104,7 +104,6 @@ const OB4SleepTime = () => {
           {/* HEADER */}
           <OnboardingHeader
             page={"4"}
-            progressPercent={(4 / 6) * 100}
             backToWhere={"/(onboarding)/OB3SleepDurationGoal"}
             isSignUp={false}
             setShowModal={setShowModal}
@@ -170,7 +169,7 @@ const OB4SleepTime = () => {
             <Text style={[text.subtitle, { textAlign: "left", fontWeight: "bold" }]}>
               {"\n\n"}2. Select Time {"\n"}
             </Text>
-            <TimeSelector setGoalTime={setGoalTime} includeTimeZone={true} />
+            <TimeSelector setTime={setGoalTime} />
             {/* CALCULATE WAKE HOURS */}
             {bedTimeSelected ? (
               <Text style={styles.calculateOtherTime}>

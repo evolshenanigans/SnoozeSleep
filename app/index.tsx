@@ -1,14 +1,13 @@
-import React, { useEffect, useState } from "react";
 import { View } from "react-native";
-import { createStackNavigator } from "@react-navigation/stack";
+import React, { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { FIREBASE_AUTH, FIREBASE_DB } from "./services/FirebaseConfig";
 import { doc, getDoc, getFirestore } from "firebase/firestore";
 import Login from "./(onboarding)/Login";
 import OB2Birthday from "./(onboarding)/OB2Birthday";
 import LoadingScreen from "./common components/LoadingScreen";
-
-const Stack = createStackNavigator();
+import * as Notifications from "expo-notifications";
+import { registerForPushNotificationsAsync } from "./services/NotificationsService";
 
 const Index: React.FC = () => {
   const [currentUser, setCurrentUser] = useState<any | null>(null);
@@ -16,9 +15,12 @@ const Index: React.FC = () => {
   const db = getFirestore();
 
   useEffect(() => {
+    // checks current user
     onAuthStateChanged(FIREBASE_AUTH, (user) => {
       setCurrentUser(user);
     });
+    // initializes notification permissions & token
+    registerForPushNotificationsAsync();
   }, []);
 
   useEffect(() => {

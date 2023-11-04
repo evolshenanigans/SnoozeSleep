@@ -15,8 +15,11 @@ import { colors } from "../utils/colors";
 import * as Brightness from "expo-brightness";
 import { Link, Stack } from "expo-router";
 import TabLayout from "./_layout";
-import { setupLocalNotifications } from "../services/NotificationsService";
-import TimeTilBedtime from "../common components/TimeTilBedtime";
+import {
+  cancelScheduledNotifications,
+  getAllNotifications,
+  setupRecurringNotification,
+} from "../services/NotificationsService";
 import { updateUserFields } from "../services/handleFirestore";
 import { useUserContext } from "../services/Context";
 
@@ -55,13 +58,6 @@ const Home: React.FC = () => {
       );
     }
   }, [userData]);
-
-  useEffect(() => {
-    // creates a new notification. Notif only shows when you exit the app but that can be changed.
-    // the number is # of seconds from now that the notif will trigger
-    // this also keeps calling several times which is annoying.
-    setupLocalNotifications(`ZZZ`, `Dream team colab :)`, 2);
-  }, []);
 
   const toggleSwitch = async () => {
     if (!isBedtimeEnabled) {
@@ -114,7 +110,7 @@ const Home: React.FC = () => {
         source={require("../../assets/images/homeImg.png")}
         style={styles.homeImage}
       />
-      <Text style={styles.currentMonthText}>{today}</Text>
+      <Text style={styles.currentDateHeader}>{today}</Text>
 
       {/* main container */}
       <View style={styles.mainContainer}>
@@ -135,7 +131,6 @@ const Home: React.FC = () => {
           <Text style={styles.message}>Browse for challenges!</Text>
         </Link>
 
-        <TimeTilBedtime />
         {/* CURRENT SCHEDULE */}
         <View style={styles.subtitleContainer}>
           <View style={styles.sleepAndEditContainer}>
@@ -145,7 +140,18 @@ const Home: React.FC = () => {
               style={styles.editIcon}
             />
           </View>
-          <Pressable onPress={() => setupLocalNotifications("zzzz", "Time to sleep!", 5)}>
+          <Pressable
+            onPress={() => {
+              console.log("scheduling notification");
+              // omg it worked
+              setupRecurringNotification({
+                notificationTitle: "Timed Notification",
+                notificationMessage: "This is a timed notif!",
+                triggerHour: 8,
+                triggerMinute: 15,
+              });
+            }}
+          >
             <Text style={styles.viewAllText}>View All</Text>
           </Pressable>
         </View>
@@ -229,6 +235,14 @@ const styles = StyleSheet.create({
   challengesContainer: {
     alignItems: "center",
   },
+  currentDateHeader: {
+    marginTop: 80,
+    color: colors.themeWhite,
+    fontSize: 18,
+    textAlign: "left",
+    marginBottom: 40,
+    marginLeft: 30,
+  },
   dateText: {
     fontSize: 14,
     textAlign: "center",
@@ -262,9 +276,11 @@ const styles = StyleSheet.create({
     color: colors.themeWhite,
   },
   homeImage: {
+    position: "absolute",
+    top: 0,
     width: "100%",
-    height: 180,
-    resizeMode: "cover",
+    height: 136,
+    resizeMode: "contain",
   },
   mainContainer: {
     flex: 1,
@@ -281,17 +297,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 30,
   },
-  subtitleText: {
-    fontSize: 14,
-    color: colors.themeWhite,
-    textAlign: "left", // Align text to the left
-  },
   scheduleIcon: {
     position: "absolute",
-    top: -15,
+    top: -18,
     width: 33,
     height: 33,
     resizeMode: "contain",
+  },
+  sleepAndEditContainer: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
   },
   subtitleContainer: {
     display: "flex",
@@ -301,16 +318,17 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 20,
   },
-  sleepAndEditContainer: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
+  subtitleText: {
+    fontSize: 14,
+    color: colors.themeWhite,
+    textAlign: "left", // Align text to the left
   },
   switchBox: {
     display: "flex",
     alignItems: "center",
-    paddingHorizontal: 30,
+    width: 120,
+    height: 120,
+    // paddingHorizontal: 30,
     paddingTop: 25,
     paddingBottom: 10,
     marginHorizontal: 20,
@@ -319,22 +337,12 @@ const styles = StyleSheet.create({
   },
   timeText: {
     fontSize: 12,
-    marginBottom: 10,
+    marginBottom: 7,
     color: colors.themeWhite,
   },
   timetime: {
     fontSize: 16,
     color: colors.themeWhite,
-  },
-  currentMonthText: {
-    position: "absolute",
-    top: 130,
-    left: 20,
-    color: colors.themeWhite,
-    fontSize: 20,
-    textAlign: "left",
-    marginBottom: 0,
-    marginLeft: 7,
   },
   switches: {
     transform: [{ scaleX: 1.7 }, { scaleY: 1.7 }], // Scaling to 1.5 times the original size
