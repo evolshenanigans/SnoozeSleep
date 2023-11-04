@@ -32,5 +32,6 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     marginTop: 5,
     borderRadius: 30,
+    height: 50,
   },
 });
