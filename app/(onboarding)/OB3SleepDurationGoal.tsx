@@ -12,7 +12,7 @@ import { updateUserFields } from "../services/handleFirestore";
 import { colors } from "../utils/colors";
 import { text } from "../utils/text";
 import OnboardingHeader from "./OBHeader";
-import ContinueButton from "./ContinueButton";
+import ContinueButton from "../common components/ContinueButton";
 import useUserData from "../hooks/useUserData";
 import { commonStyles } from "../utils/commonStyles";
 import { Stack, useRouter } from "expo-router";

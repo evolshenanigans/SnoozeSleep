@@ -15,7 +15,7 @@ import { calculateTime, calculateTimeWithSubtraction } from "../services/handleT
 import { colors } from "../utils/colors";
 import { text } from "../utils/text";
 import OnboardingHeader from "./OBHeader";
-import ContinueButton from "./ContinueButton";
+import ContinueButton from "../common components/ContinueButton";
 import useUserData from "../hooks/useUserData";
 import TimeSelector from "./TimeSelector";
 import { commonStyles } from "../utils/commonStyles";
@@ -169,7 +169,7 @@ const OB4SleepTime = () => {
             <Text style={[text.subtitle, { textAlign: "left", fontWeight: "bold" }]}>
               {"\n\n"}2. Select Time {"\n"}
             </Text>
-            <TimeSelector setTime={setGoalTime} />
+            <TimeSelector time={goalTime} setTime={setGoalTime} />
             {/* CALCULATE WAKE HOURS */}
             {bedTimeSelected ? (
               <Text style={styles.calculateOtherTime}>

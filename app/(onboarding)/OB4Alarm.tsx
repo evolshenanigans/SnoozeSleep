@@ -16,7 +16,7 @@ import { calculateTime } from "../services/handleTime";
 import { colors } from "../utils/colors";
 import { text } from "../utils/text";
 import OnboardingHeader from "./OBHeader";
-import ContinueButton from "./ContinueButton";
+import ContinueButton from "../common components/ContinueButton";
 import useUserData from "../hooks/useUserData";
 import { RepeatsPopup } from "../common components/RepeatsPopup";
 import { commonStyles } from "../utils/commonStyles";

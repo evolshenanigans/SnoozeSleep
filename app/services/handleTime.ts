@@ -169,3 +169,35 @@ export const calculateSecondsFromNow = ({ scheduledTime }) => {
   }
   return timeDiff;
 };
+
+export const calculateLengthOfRange = ({ startTime, endTime }) => {
+  // accepts scheduledTime in HH MM PM format only
+  if (!startTime.match(/^(\d{1,2})\s([0-5][0-9])\s([APap][Mm])$/i)) {
+    console.error(
+      "calculateLengthOfRange time arguments must be given in HH MM PM format only"
+    );
+    return null;
+  }
+  let [_, startH, startM, startP] = startTime.match(
+    /^(\d{1,2})\s([0-5][0-9])\s([APap][Mm])$/i
+  );
+  let time1: any = new Date();
+  startH = startP === "PM" ? parseInt(startH) + 12 : parseInt(startH);
+  time1.setHours(startH);
+  time1.setMinutes(parseInt(startM));
+
+  let [_1, endH, endM, endP] = endTime.match(/^(\d{1,2})\s([0-5][0-9])\s([APap][Mm])$/i);
+  let time2: any = new Date();
+  endH = endP === "PM" ? parseInt(endH) + 12 : parseInt(endH);
+  time2.setHours(endH);
+  time2.setMinutes(parseInt(endM));
+
+  let diff = (time2 - time1) / 60000 / 60;
+  if (diff < 0) {
+    diff = 24 - Math.abs(diff);
+  }
+  // console.log(time1);
+  // console.log(time2);
+  console.log("time diff", diff);
+  return diff;
+};

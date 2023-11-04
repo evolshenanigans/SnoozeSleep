@@ -5,14 +5,15 @@ import { colors } from "../utils/colors";
 import * as Notifications from "expo-notifications";
 import { updateTask } from "../services/handleFirestore";
 import { useUserContext } from "../services/Context";
+import { useReceiveLocalNotifications } from "../hooks/useReceiveLocalNotifications";
 
 type NotifModalProps = {
-  notif: Notifications.Notification;
   setOpenModal: Function;
 };
 
-const TaskModal: React.FC<NotifModalProps> = ({ notif, setOpenModal }) => {
+const TaskModal: React.FC<NotifModalProps> = ({ setOpenModal }) => {
   const currentUser = useUserContext();
+  const { notification: notif } = useReceiveLocalNotifications();
   const title = notif.request.content.title;
   const handleYes = () => {
     updateTask(currentUser.email, title, { isComplete: true });

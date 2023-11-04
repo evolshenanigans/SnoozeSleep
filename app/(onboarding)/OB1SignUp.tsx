@@ -14,7 +14,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { createNewUserWithDefaultValues } from "../services/handleFirestore";
 import { colors } from "../utils/colors";
 import OnboardingHeader from "./OBHeader";
-import ContinueButton from "./ContinueButton";
+import ContinueButton from "../common components/ContinueButton";
 import { commonStyles } from "../utils/commonStyles";
 import { Link, Stack, useRouter } from "expo-router";
 

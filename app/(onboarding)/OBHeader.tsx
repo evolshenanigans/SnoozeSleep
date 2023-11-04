@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import ProgressBar from "./ProgressBar";
 import { colors } from "../utils/colors";
 import { Stack, useRouter } from "expo-router";
-import SetupLaterModal from "../SetupLaterModal";
 
 const OBHeader = ({ page, backToWhere, isSignUp, setShowModal }) => {
   const router = useRouter();
