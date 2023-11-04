@@ -35,29 +35,29 @@ export async function setupRecurringNotification(
   // Schedule local notifications
   const notificationId = await Notifications.scheduleNotificationAsync({
     content: {
-      title: options.title,
-      body: options.message,
+      title: options.notificationTitle,
+      body: options.notificationMessage,
       subtitle: options.subtitle || "SnoozeSense",
       data: options.data || null,
       color: colors.themePrimary,
       sound: "custom",
-      categoryIdentifier: "action 1",
       // sound didn't work this way.
+      categoryIdentifier: "action 1",
     },
     trigger: {
-      hour: options.hour,
-      minute: options.minute,
+      hour: options.triggerHour,
+      minute: options.triggerMinute,
       repeats: true, // if repeats are true and no type is specified, it goes daily.
       // type: "weekly",
       // weekday: options.weekday,
     },
   });
   console.log(
-    `(NotificationsService) Notification '${options.title}' scheduled for ${options.hour}:${options.minute} every day.`
+    `(NotificationsService) Notification '${options.notificationTitle}' scheduled for ${options.triggerHour}:${options.triggerMinute} every day.`
   );
-  await Notifications.setNotificationCategoryAsync("action 1", [
-    { buttonTitle: "Button 1", identifier: "Which action" },
-  ]);
+  // await Notifications.setNotificationCategoryAsync("action 1", [
+  //   { buttonTitle: "Button 1", identifier: "Which action" },
+  // ]);
   return notificationId;
 }
 

@@ -16,7 +16,7 @@ import ContinueButton from "./common components/ContinueButton";
 import { Link, Stack, useRouter } from "expo-router";
 import { RepeatsPopup } from "./common components/RepeatsPopup";
 import RepeatsButton from "./common components/RepeatsButton";
-import { addTask, updateUserFields } from "./services/handleFirestore";
+import { addNotification, addTask, updateUserFields } from "./services/handleFirestore";
 import { useUserContext } from "./services/Context";
 import { calculateTime, formatTimeForDB } from "./services/handleTime";
 import TimeSelector from "./(onboarding)/TimeSelector";
@@ -28,7 +28,16 @@ const TaskForm = () => {
    * This is TASK FORM
    */
   const [taskTitle, setTaskTitle] = useState("");
-  const [startTime, setStartTime] = useState("00 00 PM");
+  const now = new Date();
+  let p = now.getHours() > 12 ? "PM" : "AM";
+  let h =
+    now.getHours() !== 0
+      ? now.getHours() > 12
+        ? now.getHours() - 12
+        : now.getHours()
+      : now.getHours() + 12;
+  let m = now.getMinutes();
+  const [startTime, setStartTime] = useState(`${h} ${m} ${p}`);
   const [prevTime, setPrevTime] = useState("");
   const [repeats, setRepeats] = useState("Everyday");
   const [reminder, setReminder] = useState("5 minutes before");
@@ -55,12 +64,14 @@ const TaskForm = () => {
         if (p === "PM") {
           h = (parseInt(h) + 12).toString();
         }
-        const notif = setupRecurringNotification({
-          title: `Start Your Task`,
-          message: `'${taskTitle}' begins now!`,
-          hour: parseInt(h),
-          minute: parseInt(m),
-        });
+        const content = {
+          notificationTitle: taskTitle,
+          notificationMessage: `Your night routine task begins now!`,
+          triggerHour: parseInt(h),
+          triggerMinute: parseInt(m),
+        };
+        setupRecurringNotification(content);
+        addNotification(currentUser.email, content);
         router.back();
       } catch (err) {
         console.log(err);

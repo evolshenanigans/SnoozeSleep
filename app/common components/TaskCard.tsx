@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { calculateTime } from "../services/handleTime";
 import { colors } from "../utils/colors";
 import { useUserContext } from "../services/Context";
-import { deleteTask, updateTask } from "../services/handleFirestore";
+import { deleteNotification, deleteTask, updateTask } from "../services/handleFirestore";
 import { Task } from "../types/indexTypes";
 
 type CardProps = {
@@ -38,6 +38,7 @@ const TaskCard: React.FC<CardProps> = ({ task }) => {
           <Pressable
             onPress={() => {
               deleteTask(currentUser.email, task.taskTitle);
+              deleteNotification(currentUser.email, task.taskTitle);
               setIsPressed(false);
             }}
           >

@@ -10,38 +10,11 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import useUserData from "../hooks/useUserData";
-import { addTask, updateTask } from "../services/handleFirestore";
 import { Task } from "../types/indexTypes";
-import { calculateTime } from "../services/handleTime";
-import { colors } from "../utils/colors";
-import SleepLogMaker from "./SleepLogMaker";
-import { useUserContext } from "../services/Context";
-import ProgressBar from "./ProgressBar";
 import TaskCard from "./TaskCard";
 
 const TaskList = () => {
-  const [taskProgress, setTaskProgress] = useState<number>();
-  const [currentHours, setCurrentHours] = useState<number>(new Date().getHours());
-  const [currentMinutes, setCurrentMinutes] = useState<number>(new Date().getMinutes());
-  const [currentSeconds, setCurrentSeconds] = useState<number>(new Date().getSeconds());
   const { tasks } = useUserData();
-
-  useEffect(() => {
-    const intervalID = setInterval(() => {
-      const now = new Date();
-      setCurrentHours(now.getHours());
-      setCurrentMinutes(now.getMinutes());
-      setCurrentSeconds(now.getSeconds());
-    }, 1000);
-    return () => clearInterval(intervalID);
-  }, []);
-
-  useEffect(() => {
-    if (currentHours == 0) {
-      setCurrentHours(12);
-    }
-  }, [currentHours]);
-
   return (
     <SafeAreaView>
       <ScrollView>

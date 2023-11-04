@@ -1,8 +1,8 @@
 interface NotificationOptions {
-  title: string;
-  message: string;
-  hour: number;
-  minute: number;
+  notificationTitle: string;
+  notificationMessage: string;
+  triggerHour: number;
+  triggerMinute: number;
   weekday?: number;
   relevantData?: Record<string, any>;
   subtitle?: string;
