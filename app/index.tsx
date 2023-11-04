@@ -7,6 +7,7 @@ import Login from "./(onboarding)/Login";
 import OB2Birthday from "./(onboarding)/OB2Birthday";
 import LoadingScreen from "./common components/LoadingScreen";
 import * as Notifications from "expo-notifications";
+import { registerForPushNotificationsAsync } from "./services/NotificationsService";
 
 const Index: React.FC = () => {
   const [currentUser, setCurrentUser] = useState<any | null>(null);
@@ -14,9 +15,12 @@ const Index: React.FC = () => {
   const db = getFirestore();
 
   useEffect(() => {
+    // checks current user
     onAuthStateChanged(FIREBASE_AUTH, (user) => {
       setCurrentUser(user);
     });
+    // initializes notification permissions & token
+    registerForPushNotificationsAsync();
   }, []);
 
   useEffect(() => {

@@ -104,7 +104,6 @@ const OB4SleepTime = () => {
           {/* HEADER */}
           <OnboardingHeader
             page={"4"}
-            progressPercent={(4 / 6) * 100}
             backToWhere={"/(onboarding)/OB3SleepDurationGoal"}
             isSignUp={false}
             setShowModal={setShowModal}

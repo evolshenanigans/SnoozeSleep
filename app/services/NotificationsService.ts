@@ -1,8 +1,84 @@
+/**
+ * OVERVIEW:
+ * This file contains all functions relating to scheduling recurring notifications.
+ * Note that it is possible to make one-off notifications, but this file doesn't do that (yet)
+ * Available functions:
+ *
+ * setupRecurringNotification ({ title, message, hour, minute, weekday, relevantData?, subtitle?} )
+ *    - Sets up a notification that recurs weekly at the specified time and on the specified day.
+ *    - Day is a number from 1 - 7 with 1 being Sunday.
+ *    - relevantData object will not be presented to the user
+ *
+ * cancelScheduledNotifications()
+ *    - cancels ALL scheduled notifications
+ *
+ * getAllNotifications()
+ *    - console.logs a list of all notifications. Also returns that list.
+ *
+ * registerForPushNotificationsAsync()
+ *    - asks user for notif permission and acquires token etc.
+ *
+ */
+
 import * as Notifications from "expo-notifications";
 import * as Device from "expo-device";
 import { Platform } from "react-native";
+import { colors } from "../utils/colors";
+
+export async function setupRecurringNotification(
+  options: NotificationOptions
+): Promise<void> {
+  /**
+   * This function sets up a notification at a specified time
+   */
+
+  // Schedule local notifications
+  const notificationId = await Notifications.scheduleNotificationAsync({
+    content: {
+      title: options.title,
+      body: options.message,
+      subtitle: options.subtitle || "SnoozeSense",
+      data: options.data || null,
+      color: colors.themePrimary,
+      sound: require("../../assets/sounds/toywhistlesound.wav"),
+      // sound didn't work this way.
+    },
+    trigger: {
+      hour: options.hour,
+      minute: options.minute,
+      repeats: true, // If not specified, repeats defaults to true anyway.
+      weekday: options.weekday,
+    },
+  });
+  console.log(
+    `(NotificationsService) Notification ${options.title} scheduled at ${options.hour}:${options.minute} on day ${options.weekday}`
+  );
+}
+
+export async function cancelScheduledNotifications() {
+  await Notifications.cancelAllScheduledNotificationsAsync();
+}
+
+export async function getAllNotifications() {
+  Notifications.getAllScheduledNotificationsAsync().then((notifs) => {
+    if (notifs.length > 0) {
+      notifs.forEach((notif) =>
+        // console.log(notif.identifier, notif.content.title, notif.trigger)
+        console.log(notif.content.title, notif.trigger)
+      );
+      return notifs;
+    } else {
+      console.log("(NotificationsService) No notifications scheduled!");
+      return null;
+    }
+  });
+}
 
 export async function registerForPushNotificationsAsync() {
+  /**
+   * This function sets up registration for notifications, asking permission & generating
+   * a new push notification token etc
+   */
   let token;
 
   if (Platform.OS === "android") {
@@ -32,70 +108,4 @@ export async function registerForPushNotificationsAsync() {
   }
 
   return token;
-}
-
-export async function setupLocalNotifications(
-  title: string,
-  message: string,
-  scheduledTime: number,
-  // data: Record<string, any>,
-  subtitle?: string
-): Promise<void> {
-  // Request permissions to display local notifications
-  const { granted } = await Notifications.requestPermissionsAsync();
-  if (!granted) {
-    console.log("(NotificationsService) Notification permissions denied.");
-    return;
-  }
-
-  // Schedule local notifications
-  const notificationId = await Notifications.scheduleNotificationAsync({
-    content: {
-      title: title,
-      body: message,
-      subtitle: subtitle || "SnoozeSense",
-      color: "#9174D0",
-    },
-    trigger: {
-      seconds: scheduledTime,
-      // trigger MUST be in seconds from now. Convert all scheduled times to seconds from now
-    },
-  });
-  console.log(
-    `(NotificationsService) Scheduled notification ${title} with ID: ${notificationId}`
-  );
-}
-
-export async function setupDateTriggerNotification(
-  title: string,
-  message: string,
-  date: any,
-  data?: Record<string, any>,
-  subtitle?: string
-): Promise<void> {
-  // Request permissions to display local notifications
-  const { granted } = await Notifications.requestPermissionsAsync();
-  if (!granted) {
-    console.log("(NotificationsService) Notification permissions denied.");
-    return;
-  }
-
-  // Schedule local notifications
-  const notificationId = await Notifications.scheduleNotificationAsync({
-    content: {
-      title: title,
-      body: message,
-      subtitle: subtitle || "SnoozeSense",
-      data: data || null,
-      color: "#9174D0",
-      sound: require("../../assets/sounds/toywhistlesound.wav"),
-    },
-    trigger: {
-      date: date,
-      // seconds: 20,
-    },
-  });
-  console.log(
-    `(NotificationsService) Scheduled notification ${title} with ID: ${notificationId}`
-  );
 }

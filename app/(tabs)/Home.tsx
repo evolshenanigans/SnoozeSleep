@@ -16,13 +16,14 @@ import * as Brightness from "expo-brightness";
 import { Link, Stack } from "expo-router";
 import TabLayout from "./_layout";
 import {
-  registerForPushNotificationsAsync,
-  setupDateTriggerNotification,
-  setupLocalNotifications,
+  cancelScheduledNotifications,
+  getAllNotifications,
+  setupRecurringNotification,
 } from "../services/NotificationsService";
 import TimeTilBedtime from "../common components/TimeTilBedtime";
 import { updateUserFields } from "../services/handleFirestore";
 import { useUserContext } from "../services/Context";
+import { getAllScheduledNotificationsAsync } from "expo-notifications";
 
 const Home: React.FC = () => {
   const [isBedtimeEnabled, setIsBedtimeEnabled] = useState(false);
@@ -59,14 +60,6 @@ const Home: React.FC = () => {
       );
     }
   }, [userData]);
-
-  useEffect(() => {
-    // creates a new notification. Notif only shows when you exit the app but that can be changed.
-    // the number is # of seconds from now that the notif will trigger
-    // this also keeps calling several times which is annoying.
-    // setupLocalNotifications(`ZZZ`, `Dream team colab :)`, 2);
-    registerForPushNotificationsAsync();
-  }, []);
 
   const toggleSwitch = async () => {
     if (!isBedtimeEnabled) {
@@ -152,21 +145,16 @@ const Home: React.FC = () => {
           </View>
           <Pressable
             onPress={() => {
-              console.log("sending notif");
-              let date = new Date("2023-11-03T19:01:00");
+              console.log("scheduling notification");
               // omg it worked
-              // console.log(date.toDateString());
-              // console.log(date.toTimeString());
-              setupDateTriggerNotification(
-                "Timed Notification",
-                "This is a timed notif!",
-                date
-              );
+              setupRecurringNotification({
+                title: "Timed Notification",
+                message: "This is a timed notif!",
+                hour: 8,
+                minute: 15,
+                weekday: 6,
+              });
             }}
-            // onPress={() => {
-            //   console.log("sending notif");
-            //   setupLocalNotifications("zzzz", "Time to sleep!", 10);
-            // }}
           >
             <Text style={styles.viewAllText}>View All</Text>
           </Pressable>
