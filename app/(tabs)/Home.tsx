@@ -18,19 +18,25 @@ import TabLayout from "./_layout";
 import {
   cancelScheduledNotifications,
   getAllNotifications,
+  reinstateCurrentUserNotifications,
   setupRecurringNotification,
 } from "../services/NotificationsService";
 import { updateUserFields } from "../services/handleFirestore";
 import { useUserContext } from "../services/Context";
+import { useReceiveLocalNotifications } from "../hooks/useReceiveLocalNotifications";
+import TaskModal from "../common components/TaskModal";
+import { UserNotification } from "../types/indexTypes";
 
 const Home: React.FC = () => {
   const [isBedtimeEnabled, setIsBedtimeEnabled] = useState(false);
   const [isWakeUpEnabled, setIsWakeUpEnabled] = useState(false);
   const [bedtime, setBedtime] = useState<string>("8:00 PM");
+  const [showNotification, setShowNotification] = useState<boolean>(false);
 
   const [wakeUpTime, setWakeUpTime] = useState<string>("7:00 AM");
-  const { userData } = useUserData();
+  const { userData, notifications } = useUserData();
   const currentUser = useUserContext();
+  const { notification } = useReceiveLocalNotifications();
   const dayRef = {
     Sun: "Sunday",
     Mon: "Monday",
@@ -44,18 +50,35 @@ const Home: React.FC = () => {
   const today = `${dayRef[weekday]}, ${month} ${dateNum}`;
 
   useEffect(() => {
+    if (notification !== undefined) {
+      console.log("(home) notification recieved", notification);
+      setShowNotification(true);
+    }
+  }, [notification]);
+
+  useEffect(() => {
     if (userData) {
+      // handle sleep times
       let time = userData[`generalSleepTime`];
       // calls calculateTime which converts the time stored in db to human readable 12H format
       // also accepts argument for # hours to add to the given time
-      setBedtime(calculateTime({ time: time, leadingZero: false }) || "");
+      setBedtime(
+        calculateTime({ time: time, leadingZero: false, whoCalls: "homeBedtime" }) || ""
+      );
       setWakeUpTime(
         calculateTime({
           time: time,
           hoursToAdd: userData.sleepDurationGoal,
           leadingZero: false,
+          whoCalls: "homeWakeup",
         }) || ""
       );
+
+      // cancel & reinstate all notifications
+      if (notifications && notifications.length > 0) {
+        reinstateCurrentUserNotifications(notifications);
+        console.log("==");
+      }
     }
   }, [userData]);
 
@@ -102,120 +125,126 @@ const Home: React.FC = () => {
   };
 
   return (
-    <ScrollView style={[{ flex: 1 }, styles.backgroundContainer]}>
-      <Stack.Screen options={{ headerShown: false }} />
-      <TabLayout />
-      {/* HERO IMAGE */}
-      <Image
-        source={require("../../assets/images/homeImg.png")}
-        style={styles.homeImage}
-      />
-      <Text style={styles.currentDateHeader}>{today}</Text>
+    <>
+      <ScrollView style={[{ flex: 1 }, styles.backgroundContainer]}>
+        {/* <Stack.Screen options={{ headerShown: false }} /> */}
+        <TabLayout />
+        {/* HERO IMAGE */}
+        <Image
+          source={require("../../assets/images/homeImg.png")}
+          style={styles.homeImage}
+        />
+        <Text style={styles.currentDateHeader}>{today}</Text>
 
-      {/* main container */}
-      <View style={styles.mainContainer}>
-        {/* CHALLENGES (HORIZONTAL SCROLLING) */}
-        <View style={styles.subtitleContainer}>
-          <Text style={styles.subtitleText}>Challenges</Text>
-          <Link href="/Challenges" style={{ paddingBottom: 20 }}>
-            <Image
-              source={require("../../assets/images/add.png")}
-              style={styles.addIcon}
-            />
-          </Link>
-        </View>
-        <Link
-          href={"/(tabs)/Challenges"}
-          style={{ alignSelf: "center", paddingVertical: 20 }}
-        >
-          <Text style={styles.message}>Browse for challenges!</Text>
-        </Link>
-
-        {/* CURRENT SCHEDULE */}
-        <View style={styles.subtitleContainer}>
-          <View style={styles.sleepAndEditContainer}>
-            <Text style={styles.subtitleText}>Sleep Schedule</Text>
-            <Image
-              source={require("../../assets/images/editwhite.png")}
-              style={styles.editIcon}
-            />
+        {/* main container */}
+        <View style={styles.mainContainer}>
+          {/* CHALLENGES (HORIZONTAL SCROLLING) */}
+          <View style={styles.subtitleContainer}>
+            <Text style={styles.subtitleText}>Challenges</Text>
+            <Link href="/Challenges" style={{ paddingBottom: 20 }}>
+              <Image
+                source={require("../../assets/images/add.png")}
+                style={styles.addIcon}
+              />
+            </Link>
           </View>
-          <Pressable
-            onPress={() => {
-              console.log("scheduling notification");
-              // omg it worked
-              setupRecurringNotification({
-                notificationTitle: "Timed Notification",
-                notificationMessage: "This is a timed notif!",
-                triggerHour: 8,
-                triggerMinute: 15,
-              });
-            }}
+          <Link
+            href={"/(tabs)/Challenges"}
+            style={{ alignSelf: "center", paddingVertical: 20 }}
           >
-            <Text style={styles.viewAllText}>View All</Text>
-          </Pressable>
-        </View>
-
-        {/* SCHEDULE BOXES */}
-        <View style={styles.scheduleBoxesContainer}>
-          <View style={styles.switchBox}>
-            <Image
-              source={require("../../assets/images/blue_moon.png")}
-              style={styles.scheduleIcon}
-            />
-            <Text style={styles.timeText}>Bedtime</Text>
-            <Text style={styles.timetime}>{bedtime}</Text>
-            <Switch
-              trackColor={{ false: colors.themeGray2, true: colors.themeGray2 }}
-              thumbColor={isBedtimeEnabled ? colors.themePrimary : colors.themeGray}
-              onValueChange={toggleSwitch}
-              value={isBedtimeEnabled}
-              style={styles.switches}
-            />
-          </View>
-          <View style={[styles.switchBox]}>
-            <Image
-              source={require("../../assets/images/sunyellow.png")}
-              style={styles.scheduleIcon}
-            />
-            <Text style={styles.timeText}>Wake Up</Text>
-            <Text style={styles.timetime}>{wakeUpTime}</Text>
-            <Switch
-              trackColor={{ false: "#767577", true: "#686868" }}
-              thumbColor={isWakeUpEnabled ? colors.themePrimary : colors.themeGray}
-              onValueChange={() => setIsWakeUpEnabled(!isWakeUpEnabled)}
-              value={isWakeUpEnabled}
-              style={styles.switches}
-            />
-          </View>
-        </View>
-        <View style={styles.goalContainer}>
-          <Image
-            source={require("../../assets/images/sleep_white.png")}
-            style={styles.goalIcon}
-          />
-          <Text style={styles.goalText}>
-            {userData
-              ? `${userData.username}'s Sleep Goal: ${userData.sleepDurationGoal} hours`
-              : "Sleep Goal: Loading..."}
-          </Text>
-        </View>
-
-        {/* TASKS COMPONENT */}
-        <View style={styles.subtitleContainer}>
-          <Text style={styles.subtitleText}>Night Routine</Text>
-          <Link href="/TaskForm" style={{ paddingBottom: 20 }}>
-            <Image
-              source={require("../../assets/images/add.png")}
-              style={styles.addIcon}
-            />
+            <Text style={styles.message}>Browse for challenges!</Text>
           </Link>
+
+          {/* CURRENT SCHEDULE */}
+          <View style={styles.subtitleContainer}>
+            <View style={styles.sleepAndEditContainer}>
+              <Text style={styles.subtitleText}>Sleep Schedule</Text>
+              <Image
+                source={require("../../assets/images/editwhite.png")}
+                style={styles.editIcon}
+              />
+            </View>
+            <Pressable
+              onPress={() => {
+                console.log("scheduling notification");
+                // omg it worked
+                setupRecurringNotification({
+                  notificationTitle: "Timed Notification",
+                  notificationMessage: "This is a timed notif!",
+                  triggerHour: 20,
+                  triggerMinute: 15,
+                  notificationType: "task",
+                });
+              }}
+            >
+              <Text style={styles.viewAllText}>View All</Text>
+            </Pressable>
+          </View>
+
+          {/* SCHEDULE BOXES */}
+          <View style={styles.scheduleBoxesContainer}>
+            <View style={styles.switchBox}>
+              <Image
+                source={require("../../assets/images/blue_moon.png")}
+                style={styles.scheduleIcon}
+              />
+              <Text style={styles.timeText}>Bedtime</Text>
+              <Text style={styles.timetime}>{bedtime}</Text>
+              <Switch
+                trackColor={{ false: colors.themeGray2, true: colors.themeGray2 }}
+                thumbColor={isBedtimeEnabled ? colors.themePrimary : colors.themeGray}
+                onValueChange={toggleSwitch}
+                value={isBedtimeEnabled}
+                style={styles.switches}
+              />
+            </View>
+            <View style={[styles.switchBox]}>
+              <Image
+                source={require("../../assets/images/sunyellow.png")}
+                style={styles.scheduleIcon}
+              />
+              <Text style={styles.timeText}>Wake Up</Text>
+              <Text style={styles.timetime}>{wakeUpTime}</Text>
+              <Switch
+                trackColor={{ false: "#767577", true: "#686868" }}
+                thumbColor={isWakeUpEnabled ? colors.themePrimary : colors.themeGray}
+                onValueChange={() => setIsWakeUpEnabled(!isWakeUpEnabled)}
+                value={isWakeUpEnabled}
+                style={styles.switches}
+              />
+            </View>
+          </View>
+          <View style={styles.goalContainer}>
+            <Image
+              source={require("../../assets/images/sleep_white.png")}
+              style={styles.goalIcon}
+            />
+            <Text style={styles.goalText}>
+              {userData
+                ? `${userData.username}'s Sleep Goal: ${userData.sleepDurationGoal} hours`
+                : "Sleep Goal: Loading..."}
+            </Text>
+          </View>
+
+          {/* TASKS COMPONENT */}
+          <View style={styles.subtitleContainer}>
+            <Text style={styles.subtitleText}>Night Routine</Text>
+            <Link href="/TaskForm" style={{ paddingBottom: 20 }}>
+              <Image
+                source={require("../../assets/images/add.png")}
+                style={styles.addIcon}
+              />
+            </Link>
+          </View>
+          <View style={{ alignSelf: "center", paddingHorizontal: 20 }}>
+            <TaskList />
+          </View>
         </View>
-        <View style={{ alignSelf: "center", paddingHorizontal: 20 }}>
-          <TaskList />
-        </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+      {showNotification && (
+        <TaskModal notif={notification} setOpenModal={setShowNotification} />
+      )}
+    </>
   );
 };
 

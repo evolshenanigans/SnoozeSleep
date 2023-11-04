@@ -278,6 +278,7 @@ const notificationReference = {
   notificationMessage: "string",
   triggerHour: "number",
   triggerMinute: "number",
+  notificationType: "string",
 };
 
 const sleepLogReference = {

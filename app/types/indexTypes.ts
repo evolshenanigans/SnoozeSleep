@@ -67,6 +67,7 @@ export type UserNotification = {
   notificationMessage: string;
   triggerHour: number;
   triggerMinute: number;
+  notificationType: string;
 };
 
 export type AppNavProps = {

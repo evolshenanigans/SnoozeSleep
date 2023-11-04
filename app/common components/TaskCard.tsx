@@ -23,6 +23,7 @@ const TaskCard: React.FC<CardProps> = ({ task }) => {
       onLongPress={() => {
         setIsPressed((prev) => !prev);
       }}
+      onPress={() => handlePress(task.taskTitle, !task.isComplete)}
     >
       <View style={styles.textAndBtnRow}>
         <View style={styles.textContainer}>
@@ -31,6 +32,7 @@ const TaskCard: React.FC<CardProps> = ({ task }) => {
             {calculateTime({
               time: task.taskStartTime,
               leadingZero: false,
+              whoCalls: "taskcard",
             })}{" "}
           </Text>
         </View>
@@ -54,6 +56,9 @@ const TaskCard: React.FC<CardProps> = ({ task }) => {
               task.isComplete ? styles.circleTrue : styles.circleFalse,
             ]}
             onPress={() => handlePress(task.taskTitle, !task.isComplete)}
+            onLongPress={() => {
+              setIsPressed((prev) => !prev);
+            }}
           >
             {task.isComplete && (
               <Image

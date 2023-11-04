@@ -27,11 +27,13 @@ type CalculateSubProps = {
   hoursToSubtract?: number;
   minutesToSubtract?: number;
   leadingZero?: boolean;
+  whoCalls?: string;
 };
 type CalculateAddProps = {
   time: string;
   hoursToAdd?: number;
   minutesToAdd?: number;
+  whoCalls?: string;
   leadingZero?: boolean;
 };
 
@@ -66,6 +68,7 @@ export const calculateTime = ({
   hoursToAdd = 0,
   minutesToAdd = 0,
   leadingZero = true,
+  whoCalls = "",
 }: CalculateAddProps): string => {
   try {
     let [hours, minutes, period] = time.split(" ");
@@ -101,7 +104,7 @@ export const calculateTime = ({
       "0"
     )} ${period}`;
   } catch (error) {
-    console.log("There was an error calculating time.");
+    console.log(`(${whoCalls})(handleTime) There was an error calculating time.`);
   }
 };
 
@@ -110,6 +113,7 @@ export const calculateTimeWithSubtraction = ({
   hoursToSubtract = 0,
   minutesToSubtract = 0,
   leadingZero = true,
+  whoCalls = "",
 }: CalculateSubProps): string => {
   // PLAN:
   // if there are hours to subtract, do that first
@@ -144,7 +148,7 @@ export const calculateTimeWithSubtraction = ({
       "0"
     )} ${period}`;
   } catch (error) {
-    console.log("There was an error subtracting time.");
+    console.log(`(${whoCalls})(handleTime) There was an error subtracting time.`);
   }
 };
 
