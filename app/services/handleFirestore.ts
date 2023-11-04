@@ -22,11 +22,15 @@
   updateChallenge = (email, challengeTitle, challengeObjToUpdate)
       - Both functions validate your object and merge the provided data object with the item data that has the provided title (belonging to user with the provided email)
       - You can include 1 to all fields that you want to update in the object
+
+  deleteTask = (email, taskTitle)
+  deleteChallenge = (email, taskTitle)
+      - Attempt to delete the task with the given title.
 */
 
 import { User } from "../types/indexTypes";
 import { FIREBASE_DB } from "./FirebaseConfig";
-import { doc, setDoc, updateDoc } from "firebase/firestore";
+import { deleteDoc, doc, setDoc, updateDoc } from "firebase/firestore";
 
 const db = FIREBASE_DB;
 
@@ -174,6 +178,31 @@ const updateSubCollection = (
     } catch (error) {
       console.error(error);
     }
+  }
+};
+
+export const deleteTask = (email: string, taskTitle: string) => {
+  deleteValFromSubCollection(email, taskTitle, "task");
+};
+
+export const deleteChallenge = (email: string, challengeTitle: string) => {
+  deleteValFromSubCollection(email, challengeTitle, "challenge");
+};
+
+const deleteValFromSubCollection = async (
+  email: string,
+  objTitle: string,
+  subcollection: string
+) => {
+  /* 
+    Attempts to DELETE the document with given title in the given subcollection
+  */
+  try {
+    const ref = doc(db, "users", email, `${subcollection}s`, objTitle);
+    await deleteDoc(ref);
+    console.log(`Successfully deleted ${subcollection}`);
+  } catch (error) {
+    console.error(error);
   }
 };
 

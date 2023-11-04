@@ -27,7 +27,7 @@ import { colors } from "../utils/colors";
 
 export async function setupRecurringNotification(
   options: NotificationOptions
-): Promise<void> {
+): Promise<string> {
   /**
    * This function sets up a notification at a specified time
    */
@@ -40,7 +40,8 @@ export async function setupRecurringNotification(
       subtitle: options.subtitle || "SnoozeSense",
       data: options.data || null,
       color: colors.themePrimary,
-      sound: require("../../assets/sounds/toywhistlesound.wav"),
+      sound: "custom",
+      categoryIdentifier: "action 1",
       // sound didn't work this way.
     },
     trigger: {
@@ -54,6 +55,10 @@ export async function setupRecurringNotification(
   console.log(
     `(NotificationsService) Notification '${options.title}' scheduled for ${options.hour}:${options.minute} every day.`
   );
+  await Notifications.setNotificationCategoryAsync("action 1", [
+    { buttonTitle: "Button 1", identifier: "Which action" },
+  ]);
+  return notificationId;
 }
 
 export async function cancelScheduledNotifications() {
@@ -73,6 +78,10 @@ export async function getAllNotifications() {
       return null;
     }
   });
+}
+
+export async function setNotificationCategory(identifier, actions, options?) {
+  await Notifications.setNotificationCategoryAsync(identifier, actions, options || {});
 }
 
 export async function registerForPushNotificationsAsync() {

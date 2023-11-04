@@ -6,6 +6,7 @@ import {
   Image,
   SafeAreaView,
   ScrollView,
+  Pressable,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import useUserData from "../hooks/useUserData";
@@ -16,6 +17,7 @@ import { colors } from "../utils/colors";
 import SleepLogMaker from "./SleepLogMaker";
 import { useUserContext } from "../services/Context";
 import ProgressBar from "./ProgressBar";
+import TaskCard from "./TaskCard";
 
 const TaskList = () => {
   const [taskProgress, setTaskProgress] = useState<number>();
@@ -23,11 +25,6 @@ const TaskList = () => {
   const [currentMinutes, setCurrentMinutes] = useState<number>(new Date().getMinutes());
   const [currentSeconds, setCurrentSeconds] = useState<number>(new Date().getSeconds());
   const { tasks } = useUserData();
-  const currentUser = useUserContext();
-
-  const handlePress = (taskTitle: string, changeTo: boolean) => {
-    updateTask(currentUser.email, taskTitle, { isComplete: changeTo });
-  };
 
   useEffect(() => {
     const intervalID = setInterval(() => {
@@ -45,19 +42,6 @@ const TaskList = () => {
     }
   }, [currentHours]);
 
-  const isTaskInProgress = (startTime: string) => {
-    let [h, m, period]: string[] = startTime.split(" ");
-    let hour: number = parseInt(h);
-    let minute: number = parseInt(m);
-    if (currentHours > 12 && period.toUpperCase() === "PM" && currentHours - 12 >= hour) {
-      if (currentMinutes > minute) {
-        return true;
-      }
-    }
-    // not even going to take into account if you're trying between midnight & 12pm. maybe later.
-    return false;
-  };
-
   return (
     <SafeAreaView>
       <ScrollView>
@@ -65,46 +49,19 @@ const TaskList = () => {
           {tasks ? (
             tasks.length > 0 ? (
               tasks.map((task: Task, index: number) => (
-                <View style={styles.card} key={`tasks-${index}`}>
-                  <View style={styles.textAndBtnRow}>
-                    <View style={styles.textContainer}>
-                      <Text style={styles.taskText}>{task.taskTitle}</Text>
-                      <Text style={styles.timeframeText}>
-                        {calculateTime({
-                          time: task.taskStartTime,
-                          leadingZero: false,
-                        })}{" "}
-                      </Text>
-                    </View>
-                    <TouchableOpacity
-                      style={[
-                        styles.circle,
-                        task.isComplete ? styles.circleTrue : styles.circleFalse,
-                      ]}
-                      onPress={() => handlePress(task.taskTitle, !task.isComplete)}
-                    >
-                      {task.isComplete && (
-                        <Image
-                          source={require("../../assets/images/check.png")}
-                          style={styles.checkMark}
-                        />
-                      )}
-                    </TouchableOpacity>
-                  </View>
-                  <View style={styles.progressBar}>
-                    {isTaskInProgress(task.taskStartTime) ? (
-                      <View style={{ width: "100%", paddingTop: 20 }}>
-                        <ProgressBar isHomepage={true} progress={20} />
-                      </View>
-                    ) : (
-                      <View style={{ width: "100%", paddingTop: 0 }}></View>
-                    )}
-                  </View>
+                <View key={`tasks-${index}`}>
+                  <TaskCard task={task} />
                 </View>
                 // per card
               ))
             ) : (
-              <Text style={styles.message}>You currently have no sleep tasks</Text>
+              <View>
+                <Image
+                  source={require("../../assets/images/sadCloud.png")}
+                  style={{ alignSelf: "center" }}
+                />
+                <Text style={styles.message}>You have no night routine tasks</Text>
+              </View>
             )
           ) : (
             <Text style={styles.message}>Loading...</Text>
@@ -132,43 +89,9 @@ const styles = StyleSheet.create({
     color: "black",
     fontSize: 18,
   },
-  card: {
-    display: "flex",
-    flexDirection: "column",
-    width: "100%",
-    justifyContent: "space-between",
-    alignItems: "center",
-    backgroundColor: colors.themeAccent4,
-    padding: 20,
-    marginBottom: 10,
-    borderRadius: 10,
-  },
   cardCol: {
     display: "flex",
     flexDirection: "column",
-  },
-  checkMark: {
-    width: 25,
-    height: 25,
-    tintColor: colors.themeWhite,
-  },
-  circle: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    borderWidth: 2,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  circleFalse: {
-    borderColor: colors.themeGray,
-    backgroundColor: colors.themeGray,
-    color: colors.themeWhite,
-  },
-  circleTrue: {
-    backgroundColor: colors.themeSecondary,
-    borderColor: colors.themePrimary,
-    color: colors.themeWhite,
   },
   message: {
     fontSize: 12,
@@ -177,30 +100,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     color: "gray",
   },
-  progressBar: {
-    display: "flex",
-    flexDirection: "row",
-  },
-  taskText: {
-    fontSize: 14,
-    fontWeight: "500",
-    marginBottom: 5,
-    color: colors.themeWhite,
-  },
   tasksContainer: {
     flex: 1,
-  },
-  textAndBtnRow: {
-    display: "flex",
-    flexDirection: "row",
-  },
-  textContainer: {
-    flex: 1,
-    color: colors.themeWhite,
-  },
-  timeframeText: {
-    fontSize: 12,
-    fontWeight: "400",
-    color: colors.themeWhite,
   },
 });

@@ -11,7 +11,6 @@ import {
   ScrollView,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { createUserWithEmailAndPassword } from "firebase/auth";
 import { colors } from "./utils/colors";
 import ContinueButton from "./common components/ContinueButton";
 import { Link, Stack, useRouter } from "expo-router";
@@ -56,7 +55,7 @@ const TaskForm = () => {
         if (p === "PM") {
           h = (parseInt(h) + 12).toString();
         }
-        setupRecurringNotification({
+        const notif = setupRecurringNotification({
           title: `Start Your Task`,
           message: `'${taskTitle}' begins now!`,
           hour: parseInt(h),
