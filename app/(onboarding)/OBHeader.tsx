@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import ProgressBar from "./ProgressBar";
 import { colors } from "../utils/colors";
 import { Stack, useRouter } from "expo-router";
-import SetupLaterModal from "../SetupLaterModal";
 
 const OBHeader = ({ page, backToWhere, isSignUp, setShowModal }) => {
   const router = useRouter();
@@ -21,7 +20,7 @@ const OBHeader = ({ page, backToWhere, isSignUp, setShowModal }) => {
         <View style={styles.backAndForwardBtns}>
           {backToWhere ? (
             <Pressable onPress={() => router.replace(backToWhere)}>
-              <Text style={styles.backButton}>{"\n<<"} Back</Text>
+              <Text style={styles.backButton}>{"\n<"} Back</Text>
             </Pressable>
           ) : (
             <Text> </Text>

@@ -14,7 +14,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { createNewUserWithDefaultValues } from "../services/handleFirestore";
 import { colors } from "../utils/colors";
 import OnboardingHeader from "./OBHeader";
-import ContinueButton from "./ContinueButton";
+import ContinueButton from "../common components/ContinueButton";
 import { commonStyles } from "../utils/commonStyles";
 import { Link, Stack, useRouter } from "expo-router";
 
@@ -62,7 +62,7 @@ const OB1SignUp = () => {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "position"}
-      keyboardVerticalOffset={-50}
+      keyboardVerticalOffset={-150}
       style={{ flex: 1 }}
     >
       {/* HEADER */}
@@ -81,8 +81,9 @@ const OB1SignUp = () => {
           <Text style={styles.inputLabel}>{"\n"}Name</Text>
           <TextInput
             style={styles.input}
-            placeholder="username"
+            placeholder="Username"
             autoCapitalize="none"
+            placeholderTextColor={colors.themeGray2}
             value={username}
             onChangeText={(text) => setUsername(text)}
           />
@@ -91,14 +92,16 @@ const OB1SignUp = () => {
             style={styles.input}
             placeholder="example@snooze.com"
             autoCapitalize="none"
+            placeholderTextColor={colors.themeGray2}
             value={email}
             onChangeText={(text) => setEmail(text)}
           />
           <Text style={styles.inputLabel}>{"\n"}Password</Text>
           <TextInput
             style={styles.input}
-            placeholder="******"
+            placeholder="Enter Password"
             autoCapitalize="none"
+            placeholderTextColor={colors.themeGray2}
             value={password}
             secureTextEntry={true}
             onChangeText={(text) => setPassword(text)}
@@ -106,8 +109,9 @@ const OB1SignUp = () => {
           <Text style={styles.inputLabel}>{"\n"}Retype Password</Text>
           <TextInput
             style={styles.input}
-            placeholder="******"
+            placeholder="Retype Password"
             autoCapitalize="none"
+            placeholderTextColor={colors.themeGray2}
             value={retypePassword}
             secureTextEntry={true}
             onChangeText={(text) => setRetypePassword(text)}
@@ -146,9 +150,9 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   heroText: {
-    fontWeight: "bold",
     alignSelf: "center",
-    fontSize: 20,
+    fontSize: 16,
+    fontWeight: "400",
     color: colors.themeWhite,
   },
   input: {
@@ -157,11 +161,14 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 20,
     padding: 10,
+    paddingHorizontal: 20,
     borderColor: "transparent",
-    backgroundColor: colors.themeWhite,
+    color: colors.themeWhite,
+    backgroundColor: colors.themeAccent4,
   },
   inputLabel: {
     alignSelf: "flex-start",
+    fontSize: 12,
     color: colors.themeWhite,
   },
   loginForm: {

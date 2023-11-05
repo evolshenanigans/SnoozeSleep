@@ -3,6 +3,7 @@ interface NotificationOptions {
   notificationMessage: string;
   triggerHour: number;
   triggerMinute: number;
+  notificationType: string;
   weekday?: number;
   relevantData?: Record<string, any>;
   subtitle?: string;

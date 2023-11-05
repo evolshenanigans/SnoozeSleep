@@ -11,7 +11,13 @@ import { colors } from "../utils/colors";
 
 const ContinueButton = ({ activeCondition, onPressFn }) => {
   return (
-    <Pressable onPress={onPressFn}>
+    <Pressable
+      onPress={() => {
+        if (activeCondition) {
+          onPressFn();
+        }
+      }}
+    >
       <View
         style={{
           ...styles.button,

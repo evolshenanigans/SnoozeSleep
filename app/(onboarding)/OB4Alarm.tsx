@@ -12,11 +12,11 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { updateUserFields } from "../services/handleFirestore";
-import { calculateTime } from "../services/handleTime";
+import { calculateLengthOfRange, calculateTime } from "../services/handleTime";
 import { colors } from "../utils/colors";
 import { text } from "../utils/text";
 import OnboardingHeader from "./OBHeader";
-import ContinueButton from "./ContinueButton";
+import ContinueButton from "../common components/ContinueButton";
 import useUserData from "../hooks/useUserData";
 import { RepeatsPopup } from "../common components/RepeatsPopup";
 import { commonStyles } from "../utils/commonStyles";
@@ -24,18 +24,22 @@ import { Link, Stack, useRouter } from "expo-router";
 import { useUserContext } from "../services/Context";
 import RepeatsButton from "../common components/RepeatsButton";
 import SetupLaterModal from "../SetupLaterModal";
+import TimeSelector from "./TimeSelector";
+import SetBedtimeModal from "../common components/SetBedtimeModal";
+import SetWakeUpTimeModal from "../common components/SetWakeUpTimeModal";
+import MeetsSleepGoal from "../common components/MeetsSleepGoal";
 
 // START COMPONENT
-const OB5Alarm = ({ setCurrentUserIsNew }) => {
+const OB5Alarm = () => {
   /**
    * This is onboarding for CREATE ALARM
    */
   const [repeats, setRepeats] = useState<string>("Everyday");
   const [bedtimeReminder, setBedtimeReminder] = useState<string>("None");
-  const [withSound, setWithSound] = useState<boolean>(true);
+  const [bedTime, setBedTime] = useState("10 00 PM");
+  const [wakeTime, setWakeTime] = useState("06 00 AM");
   const [popupOpen, setPopupOpen] = useState<boolean>(false);
-  const [showSetupLaterModal, setSetupLaterShowModal] = useState<boolean>(false);
-  const [meetsSleepGoal, setMeetsSleepGoal] = useState<boolean>(true);
+  const [showModal, setShowModal] = useState<string>("");
 
   // if bedTimeSelected is false, defaults to wake time is selected
   const [allFieldsFilled, setAllFieldsFilled] = useState<boolean>(false);
@@ -115,9 +119,9 @@ const OB5Alarm = ({ setCurrentUserIsNew }) => {
               {/* HEADER */}
               <OnboardingHeader
                 page={"4"}
-                backToWhere={"/(onboarding)/OB4SleepTime"}
+                backToWhere={"/(onboarding)/OB3SleepDurationGoal"}
                 isSignUp={false}
-                setShowModal={setSetupLaterShowModal}
+                setShowModal={() => setShowModal("set up later")}
               />
               {/* ALARM FORM */}
               <View style={styles.formContainer}>
@@ -140,37 +144,16 @@ const OB5Alarm = ({ setCurrentUserIsNew }) => {
                     />
                   </Pressable>
                 </View>
-                {/* SCHEDULE MEETS SLEEP GOAL OR NOT */}
-                <View style={styles.meetsSleepGoalContainer}>
-                  {meetsSleepGoal ? (
-                    <>
-                      <Image
-                        source={require("../../assets/images/check.png")}
-                        style={{ height: 20, width: 20, tintColor: colors.themeGreen }}
-                      />
-                      <Text style={{ color: colors.themeWhite, fontSize: 12 }}>
-                        This schedule meets your sleep goal
-                      </Text>
-                    </>
-                  ) : (
-                    <>
-                      <Image
-                        source={require("../../assets/images/cancel.png")}
-                        style={{ height: 20, width: 20, tintColor: colors.themeRed }}
-                      />
-                      <Text style={{ color: colors.themeWhite, fontSize: 12 }}>
-                        This schedule does NOT meet your sleep goal
-                      </Text>
-                    </>
-                  )}
-                </View>
+
+                {/* THIS SCHEDULE MEETS YOUR SLEEP GOAL (OR NOT) */}
+                <MeetsSleepGoal />
 
                 {/* BED TIME AND WAKE UP TIME BOX */}
                 <View style={[styles.bedOrWakeSelector, { paddingTop: 40 }]}>
                   {/* Bedtime Box: */}
                   <Pressable
                     style={styles.bedOrWakeBox}
-                    onPress={() => router.push(`/(onboarding)/SleepTime`)}
+                    onPress={() => setShowModal("set bedtime")}
                   >
                     <Image
                       source={require("../../assets/images/blue_moon.png")}
@@ -187,7 +170,7 @@ const OB5Alarm = ({ setCurrentUserIsNew }) => {
                   {/* Wake Up Box: */}
                   <Pressable
                     style={styles.bedOrWakeBox}
-                    onPress={() => router.push(`/(onboarding)/SleepTime`)}
+                    onPress={() => setShowModal("set wake up time")}
                   >
                     <Image
                       source={require("../../assets/images/yellow_sun.png")}
@@ -215,11 +198,9 @@ const OB5Alarm = ({ setCurrentUserIsNew }) => {
                 {/* Row 3: Sound ---------------------- On > */}
                 <View style={styles.alarmSettingsContainer}>
                   <RepeatsButton
-                    setPopupOpen={setPopupOpen}
+                    setPopupOpen={() => setShowModal("repeats")}
                     repeats={repeats}
-                    setRepeats={setRepeats}
                     reminder={bedtimeReminder}
-                    setReminder={setBedtimeReminder}
                   />
                 </View>
               </View>
@@ -253,22 +234,32 @@ const OB5Alarm = ({ setCurrentUserIsNew }) => {
                   </View>
                 )}
               </View>
-              {popupOpen && (
+              {showModal === "repeats" && (
                 <RepeatsPopup
-                  popupOpen={popupOpen}
-                  setPopupOpen={setPopupOpen}
+                  popupOpen={showModal === "repeats"}
+                  setPopupOpen={setShowModal}
                   choice={repeats}
                   setChoice={setRepeats}
                 />
               )}
-              {/* <RepeatsPopup popupOpen={popupOpen} setPopupOpen={setPopupOpen} /> */}
             </View>
           </ScrollView>
         </KeyboardAvoidingView>
-        {showSetupLaterModal && (
-          <SetupLaterModal
-            setShowModal={setSetupLaterShowModal}
-            whereToNext={"/(tabs)/Home"}
+        {showModal === "set up later" && (
+          <SetupLaterModal setShowModal={setShowModal} whereToNext={"/(tabs)/Home"} />
+        )}
+        {showModal === "set bedtime" && (
+          <SetBedtimeModal
+            bedtime={bedTime}
+            setBedTime={setBedTime}
+            setShowModal={setShowModal}
+          />
+        )}
+        {showModal === "set wake up time" && (
+          <SetWakeUpTimeModal
+            wakeTime={wakeTime}
+            setWakeTime={setWakeTime}
+            setShowModal={setShowModal}
           />
         )}
       </SafeAreaView>
@@ -350,12 +341,6 @@ const styles = StyleSheet.create({
     width: 20,
     resizeMode: "contain",
     tintColor: colors.themeWhite,
-  },
-  meetsSleepGoalContainer: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
-    paddingTop: 10,
   },
   sunMoonIcon: {
     height: 30,

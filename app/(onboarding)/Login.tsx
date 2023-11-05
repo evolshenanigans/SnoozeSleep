@@ -19,6 +19,7 @@ import useUserData from "../hooks/useUserData";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isPwHidden, setIsPwHidden] = useState<boolean>(true);
   const [loading, setLoading] = useState(false);
   const { userData } = useUserData();
 
@@ -58,19 +59,36 @@ const Login = () => {
       <TextInput
         style={styles.input}
         placeholder="example@snooze.com"
+        placeholderTextColor={colors.themeGray2}
         autoCapitalize="none"
         value={email}
         onChangeText={(text) => setEmail(text)}
       />
       <Text style={styles.inputLabel}>{"\n"}Password</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="******"
-        autoCapitalize="none"
-        value={password}
-        secureTextEntry={true}
-        onChangeText={(text) => setPassword(text)}
-      />
+      <View style={[styles.input, styles.pwInput]}>
+        <TextInput
+          style={{ width: "90%" }}
+          placeholder="Enter Password"
+          placeholderTextColor={colors.themeGray2}
+          autoCapitalize="none"
+          value={password}
+          secureTextEntry={isPwHidden}
+          onChangeText={(text) => setPassword(text)}
+        />
+        <Pressable onPress={() => setIsPwHidden((prev) => !prev)}>
+          {isPwHidden ? (
+            <Image
+              source={require("../../assets/images/passwordshow.png")}
+              style={styles.pwIcon}
+            />
+          ) : (
+            <Image
+              source={require("../../assets/images/passwordhide.png")}
+              style={styles.pwIcon}
+            />
+          )}
+        </Pressable>
+      </View>
       <Text style={styles.forgotPw}>Forgot Password?{"\n"}</Text>
 
       {loading ? (
@@ -143,7 +161,8 @@ const styles = StyleSheet.create({
     padding: 10,
     paddingHorizontal: 20,
     borderColor: "transparent",
-    backgroundColor: colors.themeWhite,
+    color: colors.themeWhite,
+    backgroundColor: colors.themeAccent4,
   },
   inputLabel: {
     alignSelf: "flex-start",
@@ -151,6 +170,16 @@ const styles = StyleSheet.create({
   },
   loginButton: {
     backgroundColor: colors.themePrimary,
+  },
+  pwIcon: {
+    height: 20,
+    width: 20,
+    tintColor: colors.themeWhite,
+  },
+  pwInput: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   signUpButton: {
     textDecorationLine: "underline",

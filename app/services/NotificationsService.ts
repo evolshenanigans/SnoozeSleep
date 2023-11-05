@@ -24,6 +24,7 @@ import * as Notifications from "expo-notifications";
 import * as Device from "expo-device";
 import { Platform } from "react-native";
 import { colors } from "../utils/colors";
+import { UserNotification } from "../types/indexTypes";
 
 export async function setupRecurringNotification(
   options: NotificationOptions
@@ -38,7 +39,7 @@ export async function setupRecurringNotification(
       title: options.notificationTitle,
       body: options.notificationMessage,
       subtitle: options.subtitle || "SnoozeSense",
-      data: options.data || null,
+      data: { notificationType: options.notificationType },
       color: colors.themePrimary,
       sound: "custom",
       // sound didn't work this way.
@@ -62,7 +63,21 @@ export async function setupRecurringNotification(
 }
 
 export async function cancelScheduledNotifications() {
+  console.log("(NotificationService) Cancelling all scheduled notifs.");
   await Notifications.cancelAllScheduledNotificationsAsync();
+}
+
+export async function reinstateCurrentUserNotifications(notifications) {
+  cancelScheduledNotifications();
+  notifications.map((n: UserNotification) => {
+    setupRecurringNotification({
+      notificationMessage: n.notificationMessage,
+      notificationTitle: n.notificationTitle,
+      triggerHour: n.triggerHour,
+      triggerMinute: n.triggerMinute,
+      notificationType: n.notificationType,
+    });
+  });
 }
 
 export async function getAllNotifications() {

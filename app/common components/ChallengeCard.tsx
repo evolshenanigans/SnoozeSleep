@@ -6,8 +6,6 @@ import { useRouter } from "expo-router";
 
 const ChallengeCard = ({ challenge }) => {
   const [isSaved, setIsSaved] = useState<boolean>(false);
-  const { userData } = useUserData();
-  const router = useRouter();
   return (
     // todo: add a way for them to view the expanded challenge
     <Pressable
@@ -22,13 +20,23 @@ const ChallengeCard = ({ challenge }) => {
           source={require("../../assets/images/streak.png")}
           style={styles.fireIcon}
         />
-        <Image
-          source={require("../../assets/images/bookmarkinactive.png")}
-          style={styles.saveIcon}
-        />
+        <Pressable onPress={() => setIsSaved((prev) => !prev)}>
+          {isSaved ? (
+            <Image
+              source={require("../../assets/images/bookmarkactive.png")}
+              style={styles.saveIcon}
+            />
+          ) : (
+            <Image
+              source={require("../../assets/images/bookmarkinactive.png")}
+              style={styles.saveIcon}
+            />
+          )}
+        </Pressable>
       </View>
       <Text style={styles.challengeTitle}>{challenge.title}</Text>
-      {!isSaved && <Text style={styles.detailsText}>Tap for Details</Text>}
+      <Text style={styles.detailsText}>Tap for Details</Text>
+      {/* {!isSaved && <Text style={styles.detailsText}>Tap for Details</Text>} */}
     </Pressable>
   );
 };
@@ -39,7 +47,7 @@ const styles = StyleSheet.create({
   challengeItem: {
     backgroundColor: colors.themeAccent4,
     borderRadius: 10,
-    padding: 20,
+    padding: 15,
     width: 150,
     marginRight: 10,
   },

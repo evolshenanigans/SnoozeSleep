@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { colors } from "../utils/colors";
 import ProgressBar from "./ProgressBar";
 import { useRouter } from "expo-router";
+import Home from "../(tabs)/Home";
 
 const LoadingScreen = () => {
   const [loadingPercent, setLoadingPercent] = useState<number>(0);
@@ -11,7 +12,7 @@ const LoadingScreen = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       if (loadingPercent < 100) {
-        setLoadingPercent(loadingPercent + 5);
+        setLoadingPercent((prev) => prev + 7.5);
       } else {
         clearInterval(interval);
         router.replace("/(tabs)/Home");
@@ -24,22 +25,24 @@ const LoadingScreen = () => {
   }, [loadingPercent]);
 
   return (
-    <View style={styles.container}>
-      <Image
-        source={require("../../assets/images/loadingStar.png")}
-        style={styles.icon}
-      />
+    <>
+      <View style={styles.container}>
+        <Image
+          source={require("../../assets/images/loadingStar.png")}
+          style={styles.icon}
+        />
 
-      <View style={styles.progressView}>
-        <ProgressBar isHomepage={false} progress={loadingPercent} />
-      </View>
-      <Text style={styles.text}>
-        Just one moment, we are getting your sleep schedule ready!
-      </Text>
-      {/* <Pressable onPress={() => router.replace("/(tabs)/Home")}>
+        <View style={styles.progressView}>
+          <ProgressBar isHomepage={false} progress={loadingPercent} />
+        </View>
+        <Text style={styles.text}>
+          Just one moment, we are getting your sleep schedule ready!
+        </Text>
+        {/* <Pressable onPress={() => router.replace("/(tabs)/Home")}>
         <Text style={styles.homeBtn}>Go Home</Text>
       </Pressable> */}
-    </View>
+      </View>
+    </>
   );
 };
 

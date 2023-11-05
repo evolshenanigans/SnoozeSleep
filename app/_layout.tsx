@@ -107,6 +107,7 @@ function RootLayoutNav({ currentUser }) {
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="(onboarding)" options={{ headerShown: false }} />
           <Stack.Screen name="TaskForm" options={{ headerShown: false }} />
+          <Stack.Screen name="AlarmDetails" options={{ headerShown: false }} />
           <Stack.Screen name="AddChallenge" options={{ headerShown: false }} />
           <Stack.Screen
             name="modal"

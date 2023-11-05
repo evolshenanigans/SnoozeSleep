@@ -21,7 +21,11 @@ import { useUserContext } from "./services/Context";
 import { calculateTime, formatTimeForDB } from "./services/handleTime";
 import TimeSelector from "./(onboarding)/TimeSelector";
 import { commonStyles } from "./utils/commonStyles";
-import { setupRecurringNotification } from "./services/NotificationsService";
+import {
+  reinstateCurrentUserNotifications,
+  setupRecurringNotification,
+} from "./services/NotificationsService";
+import useUserData from "./hooks/useUserData";
 
 const TaskForm = () => {
   /**
@@ -48,6 +52,7 @@ const TaskForm = () => {
 
   const currentUser = useUserContext();
   const router = useRouter();
+  const { notifications } = useUserData();
 
   const handleSubmitTask = async () => {
     if (taskTitle + startTime !== "") {
@@ -55,7 +60,7 @@ const TaskForm = () => {
       try {
         addTask(currentUser.email, {
           taskTitle: taskTitle,
-          taskStartTime: formatTimeForDB(startTime),
+          taskStartTime: startTime,
           repeats: repeats,
           reminder: reminder,
           isComplete: false,
@@ -69,9 +74,11 @@ const TaskForm = () => {
           notificationMessage: `Your night routine task begins now!`,
           triggerHour: parseInt(h),
           triggerMinute: parseInt(m),
+          notificationType: "task",
         };
         setupRecurringNotification(content);
         addNotification(currentUser.email, content);
+        notifications && reinstateCurrentUserNotifications(notifications);
         router.back();
       } catch (err) {
         console.log(err);
@@ -138,7 +145,9 @@ const TaskForm = () => {
                   setOpenModal("timeSelector");
                 }}
               >
-                <Text style={styles.timeInput}>{calculateTime({ time: startTime })}</Text>
+                <Text style={styles.timeInput}>
+                  {calculateTime({ time: startTime, whoCalls: "taskform" })}
+                </Text>
               </Pressable>
             </View>
 
