@@ -5,6 +5,7 @@ import {
   Text,
   SafeAreaView,
   Pressable,
+  Image,
 } from "react-native";
 import { Calendar } from "react-native-calendars";
 import React, { useState } from "react";
@@ -19,46 +20,53 @@ function MyCalendar() {
   const [selected, setSelected] = useState("");
   const currentUser = useUserContext();
   const { userData, tasks } = useUserData();
+  const getCurrentDate = () => {
+    const date = new Date();
+    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
+      2,
+      "0"
+    )}-${String(date.getDate()).padStart(2, "0")}`;
+  };
 
   const handleAddNewTask = () => {};
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <ScrollView style={styles.calendarContainer}>
-        <Text style={styles.titleText}>
-          {/* {userData
-              ? `${userData.username}'s Sleep Goal: ${userData.sleepDurationGoal} Hours`
-              : "Loading..."} */}
-          Progress Calendar
-        </Text>
+        <Image
+          source={require("../../assets/images/CalendarHeader.png")}
+          style={styles.homeImage}
+        />
+        <Text style={styles.titleText}>Calendar</Text>
         <Calendar
+          style={{borderRadius: 20,
+          overflow: 'hidden',
+        position:'relative'}}
           onDayPress={(day) => {
             setSelected(day.dateString);
           }}
-          // markedDates={{
-          //   [selected]: {
-          //     selected: true,
-          //     disableTouchEvent: true,
-          //     selectedColor: colors.themePrimary, // ts says "selectedDotColor" doesn't exist
-          //   },
-          // }}
-          // style={styles.calendar}
+          markedDates={{
+            [getCurrentDate()]: {
+              selected: true,
+            },
+          }}
           theme={{
-            backgroundColor: colors.themeRed,
-            calendarBackground: colors.themeRed,
-            textSectionTitleColor: colors.themeRed,
-            selectedDayBackgroundColor: colors.themeRed,
-            selectedDayTextColor: colors.themeRed,
-            todayTextColor: colors.themeRed,
-            dayTextColor: colors.themeRed,
-            textDisabledColor: colors.themeRed,
+            backgroundColor: colors.themeAccent4,
+            calendarBackground: colors.themeAccent4,
+            textSectionTitleColor: colors.themeWhite,
+            todayTextColor: colors.themeBlack,
+            dayTextColor: colors.themeWhite,
+            textDisabledColor: colors.themeGrey2,
+            selectedDayBackgroundColor: colors.themeSecondary, 
           }}
         />
 
         <SleepLogMaker />
         <Pressable style={styles.plusSignContainer} onPress={handleAddNewTask}>
           {/* <Text style={styles.plusSign}>{`\u002B`}</Text> */}
-          <Text style={[text.heroText, styles.addNewSleepLog]}>New Sleep Log</Text>
+          <Text style={[text.heroText, styles.addNewSleepLog]}>
+            New Sleep Log
+          </Text>
         </Pressable>
 
         <View>
@@ -98,7 +106,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   calendar: {
-    backgroundColor: colors.themeAccent4,
+    backgroundColor: colors.themeAccent1,
     borderRadius: 20,
   },
   calendarContainer: {
@@ -122,17 +130,24 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   titleText: {
-    paddingTop: 40,
-    paddingBottom: 20,
-    fontSize: 16,
-    alignSelf: "flex-start",
-    marginTop: 50,
+    position: "absolute",
+    top: 130,
+    left: 20,
     color: colors.themeWhite,
+    fontSize: 20,
+    textAlign: "left",
+    marginBottom: 0,
+    marginLeft: 7,
   },
   todaysTaskLabel: {
     color: colors.themeWhite,
     paddingLeft: 20,
     paddingTop: 20,
+  },
+  homeImage: {
+    width: "100%",
+    height: 180,
+    resizeMode: "cover",
   },
 });
 
