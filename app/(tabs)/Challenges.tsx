@@ -2,13 +2,11 @@ import React, { useState } from "react";
 import {
   View,
   Text,
-  Button,
   StyleSheet,
   TouchableOpacity,
   SafeAreaView,
   Modal,
   FlatList,
-  ScrollView,
   Image,
   Pressable,
 } from "react-native";
@@ -21,7 +19,7 @@ import { Link, useRouter } from "expo-router";
 import { colors } from "../utils/colors";
 import AddChallenge from "../AddChallenge";
 import ChallengeCard from "../common components/ChallengeCard";
-import { allChallenges } from "../utils/allChallenges";
+import SuggestedChallenges from "../common components/SuggestedChallenges";
 
 const challengeList = [
   "Challenge 1",
@@ -224,19 +222,12 @@ export default function Challenges() {
           />
         </View>
       </Modal>
-      <View style={styles.suggestedChallengesContainer}>
-        <View style={styles.suggestedHeaderContainer}>
-          <Text style={styles.suggestedChallengesHeader}>Suggested Challenges</Text>
-          <Text style={styles.suggestedChallengesViewAll}>View All</Text>
-        </View>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {Object.keys(allChallenges).map((challenge, index) => (
-            <View key={`suggested-${index}`}>
-              <ChallengeCard challenge={allChallenges[challenge]} />
-            </View>
-          ))}
-        </ScrollView>
+
+      <View style={styles.suggestedHeaderContainer}>
+        <Text style={styles.suggestedChallengesHeader}>Suggested Challenges</Text>
+        <Text style={styles.suggestedChallengesViewAll}>View All</Text>
       </View>
+      <SuggestedChallenges />
     </SafeAreaView>
   );
 }
@@ -286,17 +277,9 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
   },
-  suggestedChallengesContainer: {
-    padding: 10,
-  },
   suggestedChallengesHeader: {
     fontSize: 14,
     marginBottom: 10,
-    color: colors.themeWhite,
-  },
-  suggestedChallengesViewAll: {
-    fontSize: 12,
-    textDecorationLine: "underline",
     color: colors.themeWhite,
   },
   suggestedHeaderContainer: {
@@ -305,6 +288,11 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "baseline",
     paddingHorizontal: 20,
+  },
+  suggestedChallengesViewAll: {
+    fontSize: 12,
+    textDecorationLine: "underline",
+    color: colors.themeWhite,
   },
   tabContent: {
     flex: 1,

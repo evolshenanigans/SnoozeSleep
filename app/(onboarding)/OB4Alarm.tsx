@@ -27,6 +27,7 @@ import SetupLaterModal from "../SetupLaterModal";
 import TimeSelector from "./TimeSelector";
 import SetBedtimeModal from "../common components/SetBedtimeModal";
 import SetWakeUpTimeModal from "../common components/SetWakeUpTimeModal";
+import MeetsSleepGoal from "../common components/MeetsSleepGoal";
 
 // START COMPONENT
 const OB5Alarm = () => {
@@ -39,7 +40,6 @@ const OB5Alarm = () => {
   const [wakeTime, setWakeTime] = useState("06 00 AM");
   const [popupOpen, setPopupOpen] = useState<boolean>(false);
   const [showModal, setShowModal] = useState<string>("");
-  const [meetsSleepGoal, setMeetsSleepGoal] = useState<boolean>(true);
 
   // if bedTimeSelected is false, defaults to wake time is selected
   const [allFieldsFilled, setAllFieldsFilled] = useState<boolean>(false);
@@ -101,16 +101,6 @@ const OB5Alarm = () => {
   };
 
   useEffect(() => {
-    if (userData) {
-      let diff = calculateLengthOfRange({
-        startTime: userData.generalSleepTime,
-        endTime: userData.generalWakeTime,
-      });
-      setMeetsSleepGoal(diff >= userData.sleepDurationGoal);
-    }
-  }, [userData]);
-
-  useEffect(() => {
     setAllFieldsFilled(repeats !== "");
   }, [repeats]);
 
@@ -154,30 +144,9 @@ const OB5Alarm = () => {
                     />
                   </Pressable>
                 </View>
-                {/* SCHEDULE MEETS SLEEP GOAL OR NOT */}
-                <View style={styles.meetsSleepGoalContainer}>
-                  {meetsSleepGoal ? (
-                    <>
-                      <Image
-                        source={require("../../assets/images/check.png")}
-                        style={{ height: 20, width: 20, tintColor: colors.themeGreen }}
-                      />
-                      <Text style={{ color: colors.themeWhite, fontSize: 12 }}>
-                        This schedule meets your sleep goal
-                      </Text>
-                    </>
-                  ) : (
-                    <>
-                      <Image
-                        source={require("../../assets/images/cancel.png")}
-                        style={{ height: 20, width: 20, tintColor: colors.themeRed }}
-                      />
-                      <Text style={{ color: colors.themeWhite, fontSize: 12 }}>
-                        This schedule does NOT meet your sleep goal
-                      </Text>
-                    </>
-                  )}
-                </View>
+
+                {/* THIS SCHEDULE MEETS YOUR SLEEP GOAL (OR NOT) */}
+                <MeetsSleepGoal />
 
                 {/* BED TIME AND WAKE UP TIME BOX */}
                 <View style={[styles.bedOrWakeSelector, { paddingTop: 40 }]}>
@@ -231,9 +200,7 @@ const OB5Alarm = () => {
                   <RepeatsButton
                     setPopupOpen={() => setShowModal("repeats")}
                     repeats={repeats}
-                    setRepeats={setRepeats}
                     reminder={bedtimeReminder}
-                    setReminder={setBedtimeReminder}
                   />
                 </View>
               </View>
@@ -374,12 +341,6 @@ const styles = StyleSheet.create({
     width: 20,
     resizeMode: "contain",
     tintColor: colors.themeWhite,
-  },
-  meetsSleepGoalContainer: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
-    paddingTop: 10,
   },
   sunMoonIcon: {
     height: 30,

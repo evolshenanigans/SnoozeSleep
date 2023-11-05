@@ -2,7 +2,13 @@ import { View, Text, Pressable, StyleSheet } from "react-native";
 import React from "react";
 import { colors } from "../utils/colors";
 
-const RepeatsButton = ({ setPopupOpen, repeats, setRepeats, reminder, setReminder }) => {
+const RepeatsButton = ({
+  setPopupOpen,
+  repeats,
+  reminder,
+  editTimes = false,
+  setShowModal = (e) => {},
+}) => {
   const handleRepeatsPress = () => {
     console.log("repeats presssed");
     setPopupOpen(true);
@@ -14,6 +20,17 @@ const RepeatsButton = ({ setPopupOpen, repeats, setRepeats, reminder, setReminde
 
   return (
     <>
+      {editTimes && (
+        <Pressable
+          style={styles.alarmSettingsRow}
+          onPress={() => setShowModal("set bed time")}
+        >
+          <Text style={styles.settingHeader}>Edit Times</Text>
+          <Text style={styles.settingValue}>
+            <Text style={styles.settingsArrow}> {`\u3009`}</Text>
+          </Text>
+        </Pressable>
+      )}
       <Pressable style={styles.alarmSettingsRow} onPress={handleReminderPress}>
         <Text style={styles.settingHeader}>Reminder</Text>
         <Text style={styles.settingValue}>

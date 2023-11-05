@@ -8,6 +8,7 @@ import { useUserContext } from "./services/Context";
 import { calculateLengthOfRange, calculateTime } from "./services/handleTime";
 import { reinstateCurrentUserNotifications } from "./services/NotificationsService";
 import { Link, useRouter } from "expo-router";
+import SetBedtimeModal from "./common components/SetBedtimeModal";
 
 const BedAndWakeBox = () => {
   const [bedtime, setBedtime] = useState<string>("8:00 PM");
@@ -29,8 +30,7 @@ const BedAndWakeBox = () => {
       );
       setWakeUpTime(
         calculateTime({
-          time: time,
-          hoursToAdd: userData.sleepDurationGoal,
+          time: userData.generalWakeTime,
           leadingZero: false,
           whoCalls: "homeWakeup",
         }) || ""
@@ -80,38 +80,40 @@ const BedAndWakeBox = () => {
     return -1;
   };
   return (
-    <View style={styles.scheduleBoxesContainer}>
-      <Pressable style={styles.switchBox} onPress={() => router.push("/AlarmDetails")}>
-        <Image
-          source={require("../assets/images/blue_moon.png")}
-          style={styles.scheduleIcon}
-        />
-        <Text style={styles.timeText}>Bedtime</Text>
-        <Text style={styles.timetime}>{bedtime}</Text>
-        <Switch
-          trackColor={{ false: colors.themeGray2, true: colors.themeGray2 }}
-          thumbColor={isBedtimeEnabled ? colors.themePrimary : colors.themeGray}
-          onValueChange={toggleSwitch}
-          value={isBedtimeEnabled}
-          style={styles.switches}
-        />
-      </Pressable>
-      <Pressable style={styles.switchBox} onPress={() => router.push("/AlarmDetails")}>
-        <Image
-          source={require("../assets/images/sunyellow.png")}
-          style={styles.scheduleIcon}
-        />
-        <Text style={styles.timeText}>Wake Up</Text>
-        <Text style={styles.timetime}>{wakeUpTime}</Text>
-        <Switch
-          trackColor={{ false: "#767577", true: "#686868" }}
-          thumbColor={isWakeUpEnabled ? colors.themePrimary : colors.themeGray}
-          onValueChange={() => setIsWakeUpEnabled(!isWakeUpEnabled)}
-          value={isWakeUpEnabled}
-          style={styles.switches}
-        />
-      </Pressable>
-    </View>
+    <>
+      <View style={styles.scheduleBoxesContainer}>
+        <Pressable style={styles.switchBox} onPress={() => router.push("/AlarmDetails")}>
+          <Image
+            source={require("../assets/images/blue_moon.png")}
+            style={styles.scheduleIcon}
+          />
+          <Text style={styles.timeText}>Bedtime</Text>
+          <Text style={styles.timetime}>{bedtime}</Text>
+          <Switch
+            trackColor={{ false: colors.themeGray2, true: colors.themeGray2 }}
+            thumbColor={isBedtimeEnabled ? colors.themePrimary : colors.themeGray}
+            onValueChange={toggleSwitch}
+            value={isBedtimeEnabled}
+            style={styles.switches}
+          />
+        </Pressable>
+        <Pressable style={styles.switchBox} onPress={() => router.push("/AlarmDetails")}>
+          <Image
+            source={require("../assets/images/sunyellow.png")}
+            style={styles.scheduleIcon}
+          />
+          <Text style={styles.timeText}>Wake Up</Text>
+          <Text style={styles.timetime}>{wakeUpTime}</Text>
+          <Switch
+            trackColor={{ false: "#767577", true: "#686868" }}
+            thumbColor={isWakeUpEnabled ? colors.themePrimary : colors.themeGray}
+            onValueChange={() => setIsWakeUpEnabled(!isWakeUpEnabled)}
+            value={isWakeUpEnabled}
+            style={styles.switches}
+          />
+        </Pressable>
+      </View>
+    </>
   );
 };
 

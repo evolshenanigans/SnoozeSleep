@@ -4,7 +4,7 @@ import useUserData from "../hooks/useUserData";
 import { calculateTime } from "../services/handleTime";
 import TaskList from "../common components/TaskList";
 import { colors } from "../utils/colors";
-import { Link } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import TabLayout from "./_layout";
 import {
   reinstateCurrentUserNotifications,
@@ -14,6 +14,7 @@ import { useUserContext } from "../services/Context";
 import { useReceiveLocalNotifications } from "../hooks/useReceiveLocalNotifications";
 import TaskModal from "../common components/TaskModal";
 import BedAndWakeBox from "../BedAndWakeBox";
+import SuggestedChallenges from "../common components/SuggestedChallenges";
 
 const Home: React.FC = () => {
   const [showNotification, setShowNotification] = useState<boolean>(false);
@@ -31,6 +32,7 @@ const Home: React.FC = () => {
   };
   const [weekday, month, dateNum] = new Date().toDateString().split(" ");
   const today = `${dayRef[weekday]}, ${month} ${dateNum}`;
+  const router = useRouter();
 
   useEffect(() => {
     if (notification !== undefined) {
@@ -73,33 +75,32 @@ const Home: React.FC = () => {
               />
             </Link>
           </View>
-          <Link
-            href={"/(tabs)/Challenges"}
-            style={{ alignSelf: "center", paddingVertical: 20 }}
-          >
-            <Text style={styles.message}>Browse for challenges!</Text>
-          </Link>
+          <View style={{ paddingBottom: 20 }}>
+            <SuggestedChallenges />
+          </View>
 
           {/* CURRENT SCHEDULE */}
           <View style={styles.subtitleContainer}>
             <View style={styles.sleepAndEditContainer}>
               <Text style={styles.subtitleText}>Sleep Schedule</Text>
-              <Image
-                source={require("../../assets/images/editwhite.png")}
-                style={styles.editIcon}
-              />
+              <Pressable onPress={() => router.push("/AlarmDetails")}>
+                <Image
+                  source={require("../../assets/images/editwhite.png")}
+                  style={styles.editIcon}
+                />
+              </Pressable>
             </View>
             <Pressable
               onPress={() => {
                 console.log("scheduling notification");
                 // omg it worked
-                setupRecurringNotification({
-                  notificationTitle: "Timed Notification",
-                  notificationMessage: "This is a timed notif!",
-                  triggerHour: 20,
-                  triggerMinute: 15,
-                  notificationType: "task",
-                });
+                // setupRecurringNotification({
+                //   notificationTitle: "Timed Notification",
+                //   notificationMessage: "This is a timed notif!",
+                //   triggerHour: 20,
+                //   triggerMinute: 15,
+                //   notificationType: "task",
+                // });
               }}
             >
               <Text style={styles.viewAllText}>View All</Text>

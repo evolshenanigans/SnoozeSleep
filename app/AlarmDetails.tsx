@@ -4,7 +4,7 @@ import useUserData from "./hooks/useUserData";
 import { calculateTime } from "./services/handleTime";
 import TaskList from "./common components/TaskList";
 import { colors } from "./utils/colors";
-import { Link, Stack } from "expo-router";
+import { Link, Stack, useRouter } from "expo-router";
 import {
   reinstateCurrentUserNotifications,
   setupRecurringNotification,
@@ -13,11 +13,20 @@ import { useUserContext } from "./services/Context";
 import { useReceiveLocalNotifications } from "./hooks/useReceiveLocalNotifications";
 import TaskModal from "./common components/TaskModal";
 import BedAndWakeBox from "./BedAndWakeBox";
+import SetBedtimeModal from "./common components/SetBedtimeModal";
+import { updateUserFields } from "./services/handleFirestore";
+import SetWakeUpTimeModal from "./common components/SetWakeUpTimeModal";
+import RepeatsButton from "./common components/RepeatsButton";
+import MeetsSleepGoal from "./common components/MeetsSleepGoal";
 
 const AlarmDetails: React.FC = () => {
   const [showNotification, setShowNotification] = useState<boolean>(false);
+  const [showModal, setShowModal] = useState<string>("");
+  const [bedtime, setBedtime] = useState<string>("");
+  const [wakeTime, setWakeTime] = useState<string>("");
 
   const { userData } = useUserData();
+  const currentUser = useUserContext();
   const dayRef = {
     Sun: "Sunday",
     Mon: "Monday",
@@ -29,9 +38,13 @@ const AlarmDetails: React.FC = () => {
   };
   const [weekday, month, dateNum] = new Date().toDateString().split(" ");
   const today = `${dayRef[weekday]}, ${month} ${dateNum}`;
+  const router = useRouter();
 
   useEffect(() => {
-    console.log("we are at alarm details");
+    if (userData) {
+      setBedtime(userData.generalSleepTime);
+      setWakeTime(userData.generalWakeTime);
+    }
   }, []);
 
   return (
@@ -39,22 +52,10 @@ const AlarmDetails: React.FC = () => {
       <ScrollView style={[{ flex: 1 }, styles.backgroundContainer]}>
         {/* Back and View All Header */}
         <View style={styles.headerContainer}>
-          <Pressable>
+          <Pressable onPress={() => router.replace("/(tabs)/Home")}>
             <Text style={{ color: colors.themeWhite }}>{"< "}Back</Text>
           </Pressable>
-          <Pressable
-            onPress={() => {
-              console.log("scheduling notification");
-              // omg it worked
-              setupRecurringNotification({
-                notificationTitle: "Timed Notification",
-                notificationMessage: "This is a timed notif!",
-                triggerHour: 20,
-                triggerMinute: 15,
-                notificationType: "task",
-              });
-            }}
-          >
+          <Pressable>
             <Text style={styles.viewAllText}>View All</Text>
           </Pressable>
         </View>
@@ -65,13 +66,14 @@ const AlarmDetails: React.FC = () => {
             source={require("../assets/images/calendar.png")}
             style={styles.calendarIcon}
           />
-          <Text style={styles.currentDateHeader}>{today}</Text>
+          <Text style={styles.currentDateHeader}>
+            {"  "}
+            {today}
+          </Text>
         </View>
 
         {/* main container */}
         <View style={styles.mainContainer}>
-          {/* CURRENT SCHEDULE */}
-
           {/* SCHEDULE BOXES (contains Bedtime and Wake Up time and switches) */}
           <BedAndWakeBox />
 
@@ -86,9 +88,34 @@ const AlarmDetails: React.FC = () => {
                 : "Sleep Goal: Loading..."}
             </Text>
           </View>
+          <MeetsSleepGoal />
+        </View>
+        <View style={{ padding: 40 }}>
+          <RepeatsButton
+            setPopupOpen={setShowModal}
+            repeats={"Every Day"}
+            reminder={"5 minutes before"}
+            editTimes={true}
+            setShowModal={setShowModal}
+          />
         </View>
       </ScrollView>
       {showNotification && <TaskModal setOpenModal={setShowNotification} />}
+
+      {showModal === "set bed time" && (
+        <SetBedtimeModal
+          bedtime={bedtime}
+          setBedTime={setBedtime}
+          setShowModal={setShowModal}
+        />
+      )}
+      {showModal === "set wake up time" && (
+        <SetWakeUpTimeModal
+          wakeTime={wakeTime}
+          setWakeTime={setWakeTime}
+          setShowModal={setShowModal}
+        />
+      )}
     </>
   );
 };
@@ -142,7 +169,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    marginVertical: 10,
+    marginTop: 20,
   },
   goalIcon: {
     tintColor: colors.themeBlue,
@@ -182,6 +209,17 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: colors.themeWhite,
     textAlign: "left", // Align text to the left
+  },
+  tapToEditContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-around",
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+  },
+  tapToEditText: {
+    color: colors.themeWhite,
+    fontSize: 12,
   },
   viewAllText: {
     color: colors.themeWhite,
