@@ -11,7 +11,7 @@ import {
   SafeAreaView,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { updateUserFields } from "../services/handleFirestore";
+import { addNotification, updateUserFields } from "../services/handleFirestore";
 import { calculateLengthOfRange, calculateTime } from "../services/handleTime";
 import { colors } from "../utils/colors";
 import { text } from "../utils/text";
@@ -28,6 +28,10 @@ import TimeSelector from "./TimeSelector";
 import SetBedtimeModal from "../common components/SetBedtimeModal";
 import SetWakeUpTimeModal from "../common components/SetWakeUpTimeModal";
 import MeetsSleepGoal from "../common components/MeetsSleepGoal";
+import {
+  reinstateCurrentUserNotifications,
+  setupRecurringNotification,
+} from "../services/NotificationsService";
 
 // START COMPONENT
 const OB5Alarm = () => {
@@ -44,7 +48,7 @@ const OB5Alarm = () => {
   // if bedTimeSelected is false, defaults to wake time is selected
   const [allFieldsFilled, setAllFieldsFilled] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const { userData } = useUserData();
+  const { userData, notifications } = useUserData();
   const router = useRouter();
   const currentUser = useUserContext();
 
@@ -92,6 +96,19 @@ const OB5Alarm = () => {
       .then(() => {
         console.log("Successfully signed the user up. Should go to homepage now");
         // setCurrentUserIsNew(false); // Update the state
+        let content = {
+          notificationTitle: "Go to Sleep",
+          notificationMessage: "It's Bed Time!",
+          triggerHour:
+            bedTime.split(" ")[2] === "PM"
+              ? parseInt(bedTime.split(" ")[0]) + 12
+              : parseInt(bedTime.split(" ")[0]),
+          triggerMinute: parseInt(bedTime.split(" ")[1]),
+          notificationType: "bedtime",
+        };
+        addNotification(currentUser.email, content);
+        setupRecurringNotification(content);
+        notifications && reinstateCurrentUserNotifications(notifications);
         router.replace(`/Home`);
       })
       .catch((error) => {
@@ -103,6 +120,13 @@ const OB5Alarm = () => {
   useEffect(() => {
     setAllFieldsFilled(repeats !== "");
   }, [repeats]);
+
+  useEffect(() => {
+    if (userData) {
+      setBedTime(userData.generalSleepTime);
+      setWakeTime(userData.generalWakeTime);
+    }
+  }, [userData]);
 
   return (
     <ScrollView>

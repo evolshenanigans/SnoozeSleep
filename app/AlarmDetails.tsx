@@ -45,7 +45,7 @@ const AlarmDetails: React.FC = () => {
       setBedtime(userData.generalSleepTime);
       setWakeTime(userData.generalWakeTime);
     }
-  }, []);
+  }, [userData]);
 
   return (
     <>
@@ -121,17 +121,8 @@ const AlarmDetails: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
-  addIcon: {
-    height: 25,
-    width: 25,
-    tintColor: colors.themeWhite,
-  },
   backgroundContainer: {
     backgroundColor: colors.themeBackground,
-  },
-  buttonText: {
-    color: "black",
-    fontSize: 18,
   },
   calendarAndDate: {
     display: "flex",
@@ -145,25 +136,12 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
     tintColor: colors.themeWhite,
   },
-  challengesContainer: {
-    alignItems: "center",
-  },
   currentDateHeader: {
     color: colors.themeWhite,
     fontSize: 18,
     textAlign: "left",
     marginTop: 50,
     paddingBottom: 20,
-  },
-  dayText: {
-    fontSize: 12,
-    color: colors.themeWhite,
-  },
-  editIcon: {
-    height: 15,
-    width: 15,
-    marginLeft: 10,
-    tintColor: colors.themePrimary,
   },
   goalContainer: {
     flexDirection: "row",
@@ -192,34 +170,6 @@ const styles = StyleSheet.create({
   },
   mainContainer: {
     flex: 1,
-  },
-  message: {
-    fontSize: 12,
-    textAlign: "center",
-    marginVertical: 20,
-    color: "gray",
-  },
-  sleepAndEditContainer: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  subtitleText: {
-    fontSize: 14,
-    color: colors.themeWhite,
-    textAlign: "left", // Align text to the left
-  },
-  tapToEditContainer: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-around",
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-  },
-  tapToEditText: {
-    color: colors.themeWhite,
-    fontSize: 12,
   },
   viewAllText: {
     color: colors.themeWhite,

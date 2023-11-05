@@ -68,7 +68,7 @@ export async function cancelScheduledNotifications() {
 }
 
 export async function reinstateCurrentUserNotifications(notifications) {
-  cancelScheduledNotifications();
+  await cancelScheduledNotifications();
   notifications.map((n: UserNotification) => {
     setupRecurringNotification({
       notificationMessage: n.notificationMessage,

@@ -15,6 +15,7 @@ import TaskList from "../common components/TaskList";
 import { text } from "../utils/text";
 import SleepLogMaker from "../common components/SleepLogMaker";
 import { useUserContext } from "../services/Context";
+import { calculateTime } from "../services/handleTime";
 
 function MyCalendar() {
   const [selected, setSelected] = useState("");
@@ -38,47 +39,65 @@ function MyCalendar() {
           style={styles.homeImage}
         />
         <Text style={styles.titleText}>Calendar</Text>
-        <Calendar
-          style={{borderRadius: 20,
-          overflow: 'hidden',
-        position:'relative'}}
-          onDayPress={(day) => {
-            setSelected(day.dateString);
-          }}
-          markedDates={{
-            [getCurrentDate()]: {
-              selected: true,
-            },
-          }}
-          theme={{
-            backgroundColor: colors.themeAccent4,
-            calendarBackground: colors.themeAccent4,
-            textSectionTitleColor: colors.themeWhite,
-            todayTextColor: colors.themeBlack,
-            dayTextColor: colors.themeWhite,
-            textDisabledColor: colors.themeGrey2,
-            selectedDayBackgroundColor: colors.themeSecondary, 
-          }}
-        />
-
-        <SleepLogMaker />
-        <Pressable style={styles.plusSignContainer} onPress={handleAddNewTask}>
-          {/* <Text style={styles.plusSign}>{`\u002B`}</Text> */}
-          <Text style={[text.heroText, styles.addNewSleepLog]}>
-            New Sleep Log
-          </Text>
-        </Pressable>
-
-        <View>
-          <Text style={styles.todaysTaskLabel}>
-            {tasks
-              ? tasks.length === 1
-                ? "Today's Task"
-                : "Today's Tasks"
-              : "Loading..."}{" "}
-          </Text>
+        <View style={styles.calendarTileContainer}>
+          <Calendar
+            style={styles.calendar}
+            onDayPress={(day) => {
+              setSelected(day.dateString);
+            }}
+            markedDates={{
+              [getCurrentDate()]: {
+                selected: true,
+              },
+            }}
+            theme={{
+              backgroundColor: colors.themeAccent4,
+              calendarBackground: colors.themeAccent4,
+              textSectionTitleColor: colors.themeWhite,
+              todayTextColor: colors.themeBlack,
+              dayTextColor: colors.themeWhite,
+              textDisabledColor: colors.themeGrey2,
+              selectedDayBackgroundColor: colors.themeSecondary,
+            }}
+          />
         </View>
 
+        <SleepLogMaker />
+
+        <View>
+          <Text style={styles.todaysTaskLabel}>Sleep Goal</Text>
+          <View style={styles.sleepGoalContainer}>
+            <View style={styles.sleepGoalBox}>
+              <Text style={styles.sleepGoalText}>
+                <Image
+                  source={require("../../assets/images/blue_moon.png")}
+                  style={styles.sleepGoalIcon}
+                />
+                {"  "}Bedtime
+              </Text>
+              <Text style={styles.sleepGoalText}>
+                {calculateTime({ time: userData.generalSleepTime, whoCalls: "calendar" })}
+              </Text>
+            </View>
+            <View style={styles.sleepGoalBox}>
+              <Text style={styles.sleepGoalText}>
+                <Image
+                  source={require("../../assets/images/yellow_sun.png")}
+                  style={styles.sleepGoalIcon}
+                />
+                {"  "}Wake Up
+              </Text>
+              <Text style={styles.sleepGoalText}>
+                {calculateTime({ time: userData.generalWakeTime, whoCalls: "calendar" })}
+              </Text>
+            </View>
+          </View>
+        </View>
+
+        {/* NIGHT ROUTINE TASK LIST */}
+        <View>
+          <Text style={styles.todaysTaskLabel}>Today's Night Routine</Text>
+        </View>
         <View style={styles.container}>
           {tasks ? (
             tasks.length > 0 && (
@@ -106,12 +125,15 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   calendar: {
-    backgroundColor: colors.themeAccent1,
     borderRadius: 20,
+    overflow: "hidden",
+    position: "relative",
   },
   calendarContainer: {
     backgroundColor: colors.themeBackground,
     color: colors.themeWhite,
+  },
+  calendarTileContainer: {
     paddingHorizontal: 20,
   },
   container: {
@@ -124,20 +146,42 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingTop: 20,
   },
+  sleepGoalBox: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingVertical: 15,
+    backgroundColor: colors.themeAccent4,
+    borderRadius: 10,
+  },
+  sleepGoalContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    margin: 20,
+  },
+  sleepGoalIcon: {
+    height: 15,
+    width: 15,
+  },
+  sleepGoalText: {
+    fontSize: 12,
+    color: colors.themeWhite,
+    paddingHorizontal: 10,
+  },
   taskContainer: {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
   },
   titleText: {
-    position: "absolute",
-    top: 130,
-    left: 20,
     color: colors.themeWhite,
     fontSize: 20,
     textAlign: "left",
-    marginBottom: 0,
-    marginLeft: 7,
+    marginTop: 100,
+    marginBottom: 40,
+    paddingHorizontal: 30,
   },
   todaysTaskLabel: {
     color: colors.themeWhite,
@@ -145,8 +189,9 @@ const styles = StyleSheet.create({
     paddingTop: 20,
   },
   homeImage: {
+    position: "absolute",
     width: "100%",
-    height: 180,
+    height: 220,
     resizeMode: "cover",
   },
 });

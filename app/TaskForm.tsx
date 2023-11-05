@@ -156,9 +156,7 @@ const TaskForm = () => {
               <RepeatsButton
                 setPopupOpen={setPopupOpen}
                 repeats={repeats}
-                setRepeats={setRepeats}
                 reminder={reminder}
-                setReminder={setReminder}
               />
             </View>
 

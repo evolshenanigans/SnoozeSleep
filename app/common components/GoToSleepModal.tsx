@@ -11,33 +11,32 @@ type NotifModalProps = {
   setOpenModal: Function;
 };
 
-const TaskModal: React.FC<NotifModalProps> = ({ setOpenModal }) => {
+const GoToSleepModal: React.FC<NotifModalProps> = ({ setOpenModal }) => {
   const currentUser = useUserContext();
   const { notification: notif } = useReceiveLocalNotifications();
-  const title = notif ? notif.request.content.title : "";
+  const title = notif.request.content.title;
   const handleYes = () => {
-    updateTask(currentUser.email, title, { isComplete: true });
-    setOpenModal(false);
+    setOpenModal("");
   };
   const handleNo = () => {
-    setOpenModal(false);
+    setOpenModal("");
   };
   return (
     <View style={commonStyles.modalPositioning}>
       <View style={commonStyles.modalOverlay}>
         <View style={styles.contentContainer}>
-          <Text style={styles.titleText}>Did you start your task '{title}'?</Text>
+          <Text style={styles.titleText}>Are you about to go to sleep?</Text>
           <Pressable
             style={[styles.btn, { backgroundColor: colors.themeSecondary }]}
             onPress={handleNo}
           >
-            <Text style={{ color: colors.themeWhite }}>Start in 5 minutes</Text>
+            <Text style={{ color: colors.themeWhite }}>Sleep in 5 minutes</Text>
           </Pressable>
           <Pressable
             style={[styles.btn, { backgroundColor: colors.themePrimary }]}
             onPress={handleYes}
           >
-            <Text>Yes, I did</Text>
+            <Text>Yes, I am!</Text>
           </Pressable>
         </View>
       </View>
@@ -45,7 +44,7 @@ const TaskModal: React.FC<NotifModalProps> = ({ setOpenModal }) => {
   );
 };
 
-export default TaskModal;
+export default GoToSleepModal;
 
 const styles = StyleSheet.create({
   contentContainer: {

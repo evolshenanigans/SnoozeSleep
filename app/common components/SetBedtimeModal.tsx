@@ -3,13 +3,33 @@ import React from "react";
 import { commonStyles } from "../utils/commonStyles";
 import TimeSelector from "../(onboarding)/TimeSelector";
 import { colors } from "../utils/colors";
-import { updateUserFields } from "../services/handleFirestore";
+import { addNotification, updateUserFields } from "../services/handleFirestore";
 import { useUserContext } from "../services/Context";
+import {
+  reinstateCurrentUserNotifications,
+  setupRecurringNotification,
+} from "../services/NotificationsService";
+import useUserData from "../hooks/useUserData";
 
 const SetBedtimeModal = ({ bedtime, setBedTime, setShowModal }) => {
   const currentUser = useUserContext();
+  const { userData, notifications } = useUserData();
   const handleSubmitSleepTime = () => {
     updateUserFields(currentUser.email, { generalSleepTime: bedtime });
+
+    let content = {
+      notificationTitle: "Go to Sleep",
+      notificationMessage: "It's Bed Time!",
+      triggerHour:
+        bedtime.split(" ")[2] === "PM"
+          ? parseInt(bedtime.split(" ")[0]) + 12
+          : parseInt(bedtime.split(" ")[0]),
+      triggerMinute: parseInt(bedtime.split(" ")[1]),
+      notificationType: "bedtime",
+    };
+    addNotification(currentUser.email, content);
+    setupRecurringNotification(content);
+    notifications && reinstateCurrentUserNotifications(notifications);
   };
   return (
     <View style={commonStyles.modalPositioning}>
