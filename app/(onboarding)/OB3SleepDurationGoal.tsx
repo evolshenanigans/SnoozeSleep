@@ -41,6 +41,7 @@ const OB3SleepDurationGoal = () => {
   /**
    * This is onboarding for SLEEP DURATION GOAL
    */
+  const [recommendedHours, setRecommendedHours] = useState<string>();
   const [goalHours, setGoalHours] = useState<string>();
   const [allFieldsFilled, setAllFieldsFilled] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
@@ -57,6 +58,7 @@ const OB3SleepDurationGoal = () => {
       let [_, birthYear] = userData.birthday.split(" ");
       console.log("age: ", currentYear - parseInt(birthYear));
       setGoalHours(calculateAgeBasedSleepGoal(currentYear - parseInt(birthYear)));
+      setRecommendedHours(calculateAgeBasedSleepGoal(currentYear - parseInt(birthYear)));
     }
   }, [userData]);
 
@@ -113,7 +115,12 @@ const OB3SleepDurationGoal = () => {
               <Text style={styles.inputLabel}>{"\n"}Tap to Edit</Text>
               {/* INPUT OWN GOAL HOURS */}
               <TextInput
-                style={styles.input}
+                style={[
+                  styles.input,
+                  parseFloat(recommendedHours) === parseFloat(goalHours)
+                    ? styles.noBorder
+                    : styles.yesBorder,
+                ]}
                 placeholder="00"
                 autoCapitalize="none"
                 value={goalHours}
@@ -158,6 +165,9 @@ const styles = StyleSheet.create({
     width: "100%",
     padding: 40,
   },
+  formContainer: {
+    padding: 40,
+  },
   input: {
     color: colors.themeWhite,
     alignSelf: "center",
@@ -185,13 +195,17 @@ const styles = StyleSheet.create({
   inputLabel: {
     color: colors.themeWhite,
   },
-  formContainer: {
-    padding: 40,
+  noBorder: {
+    borderWidth: 0,
   },
   tapToEditContainer: {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+  },
+  yesBorder: {
+    borderWidth: 2,
+    borderColor: colors.themePrimary,
   },
 });
 

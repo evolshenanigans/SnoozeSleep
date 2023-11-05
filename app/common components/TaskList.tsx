@@ -31,7 +31,12 @@ const TaskList = () => {
               <View>
                 <Image
                   source={require("../../assets/images/sadCloud.png")}
-                  style={{ alignSelf: "center" }}
+                  style={{
+                    alignSelf: "center",
+                    height: 30,
+                    width: 50,
+                    resizeMode: "contain",
+                  }}
                 />
                 <Text style={styles.message}>You have no night routine tasks</Text>
               </View>

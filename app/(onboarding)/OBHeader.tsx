@@ -20,7 +20,7 @@ const OBHeader = ({ page, backToWhere, isSignUp, setShowModal }) => {
         <View style={styles.backAndForwardBtns}>
           {backToWhere ? (
             <Pressable onPress={() => router.replace(backToWhere)}>
-              <Text style={styles.backButton}>{"\n<<"} Back</Text>
+              <Text style={styles.backButton}>{"\n<"} Back</Text>
             </Pressable>
           ) : (
             <Text> </Text>

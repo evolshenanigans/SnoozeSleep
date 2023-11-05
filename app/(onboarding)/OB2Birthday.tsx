@@ -85,7 +85,7 @@ const OB2Birthday = () => {
         {/* BIRTHDAY FORM */}
         <View style={styles.formContainer}>
           <Text style={text.heroText}>{"\n"}Add Your Birthday</Text>
-          <Text style={[text.subtitle]}>
+          <Text style={styles.subtitle}>
             We use your age to estimate the amount of hours of sleep you need.{"\n"}
           </Text>
 
@@ -99,12 +99,18 @@ const OB2Birthday = () => {
             <TextInput
               style={styles.input}
               placeholder="MM"
+              placeholderTextColor={colors.themeGray2}
               autoCapitalize="none"
               value={birthMonth}
               keyboardType="numeric"
               onChangeText={(text) => {
                 if (text.length <= 2 && (parseInt(text) <= 12 || text == "")) {
                   setBirthMonth(text);
+                }
+              }}
+              onBlur={() => {
+                if (birthMonth.length < 2) {
+                  setBirthMonth(`0${birthMonth}`);
                 }
               }}
             />
@@ -115,6 +121,7 @@ const OB2Birthday = () => {
               style={styles.input}
               keyboardType="numeric"
               placeholder="YYYY"
+              placeholderTextColor={colors.themeGray2}
               autoCapitalize="none"
               value={birthYear}
               onChangeText={(text) => {
@@ -180,6 +187,12 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 10,
     backgroundColor: colors.themeAccent4,
+  },
+  subtitle: {
+    fontSize: 14,
+    color: colors.themeWhite,
+    textAlign: "center",
+    paddingTop: 10,
   },
 });
 

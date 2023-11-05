@@ -17,7 +17,9 @@ const TimeSelector = ({ time, setTime }) => {
    * This component lets you set a time
    */
   const [hours, setHours] = useState<string>(
-    parseInt(time.split(" ")[0]) < 10 ? `0${time.split(" ")[0]}` : time.split(" ")[0]
+    parseInt(time.split(" ")[0]) < 10
+      ? parseInt(time.split(" ")[0]).toString().padStart(2, "0")
+      : time.split(" ")[0]
   );
   const [minutes, setMinutes] = useState<string>(time.split(" ")[1]);
   const [AMOrPM, setAMOrPM] = useState<string>(time.split(" ")[2]);
