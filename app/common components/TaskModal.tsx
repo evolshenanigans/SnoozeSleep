@@ -26,7 +26,7 @@ const TaskModal: React.FC<NotifModalProps> = ({ setOpenModal }) => {
     <View style={commonStyles.modalPositioning}>
       <View style={commonStyles.modalOverlay}>
         <View style={styles.contentContainer}>
-          <Text style={styles.titleText}>Did you start your task '{title}'?</Text>
+          <Text style={styles.titleText}>Did you start your task {title}?</Text>
           <Pressable
             style={[styles.btn, { backgroundColor: colors.themeSecondary }]}
             onPress={handleNo}

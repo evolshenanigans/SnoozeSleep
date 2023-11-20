@@ -98,7 +98,7 @@ const Home: React.FC = () => {
                 //   notificationTitle: "Timed Notification",
                 //   notificationMessage: "This is a timed notif!",
                 //   triggerHour: 20,
-                //   triggerMinute: 15,
+                //   triggerMinute: 17,
                 //   notificationType: "task",
                 // });
               }}

@@ -76,7 +76,11 @@ function MyCalendar() {
                 {"  "}Bedtime
               </Text>
               <Text style={styles.sleepGoalText}>
-                {calculateTime({ time: userData.generalSleepTime, whoCalls: "calendar" })}
+                {userData &&
+                  calculateTime({
+                    time: userData.generalSleepTime,
+                    whoCalls: "calendar",
+                  })}
               </Text>
             </View>
             <View style={styles.sleepGoalBox}>
@@ -88,7 +92,8 @@ function MyCalendar() {
                 {"  "}Wake Up
               </Text>
               <Text style={styles.sleepGoalText}>
-                {calculateTime({ time: userData.generalWakeTime, whoCalls: "calendar" })}
+                {userData &&
+                  calculateTime({ time: userData.generalWakeTime, whoCalls: "calendar" })}
               </Text>
             </View>
           </View>

@@ -1,6 +1,5 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, ScrollView } from "react-native";
 import React from "react";
-import { ScrollView } from "react-native-gesture-handler";
 import { colors } from "./utils/colors";
 import { useLocalSearchParams } from "expo-router";
 

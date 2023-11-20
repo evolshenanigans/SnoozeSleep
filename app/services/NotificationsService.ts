@@ -43,13 +43,14 @@ export async function setupRecurringNotification(
       color: colors.themePrimary,
       sound: "custom",
       // sound didn't work this way.
-      categoryIdentifier: "action 1",
     },
     trigger: {
-      hour: options.triggerHour,
-      minute: options.triggerMinute,
-      repeats: true, // if repeats are true and no type is specified, it goes daily.
-      // type: "weekly",
+      seconds: 10,
+      channelId: "default",
+      // hour: options.triggerHour,
+      // minute: options.triggerMinute,
+      // repeats: true, // if repeats are true and no type is specified, it goes daily.
+      // type: "daily",
       // weekday: options.weekday,
     },
   });
