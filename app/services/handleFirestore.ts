@@ -1,6 +1,6 @@
 /*
   OVERVIEW:
-  This file contains most things that have to do with reading and writing to the Firestore database.
+  This file contains most things that have to do with writing to the Firestore database.
   Available functions and their parameters and descriptsions are as follows:
 
   createNewUserWithDefaultValues
